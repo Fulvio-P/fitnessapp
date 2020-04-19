@@ -1,3 +1,6 @@
+Ringraziamenti:
+https://product.hubspot.com/blog/git-and-github-tutorial-for-beginners
+
 git add
     Aggiunge i file specificati allo staging enviromnent, aka index,
     affinché possano essere inclusi nel prossimo commit.
@@ -24,13 +27,27 @@ git commit
             In pratica fa da solo la add di tutti i cambiamenti effettuati,
             ma solo per i file già noti a git.
 
+git remote add
+    Aggiunge una posizione remota (tipo GitHub).
+    Necessario se si sta caricando una repo locale su una piattaforma remota,
+    eseguito in automatico se si scarica una repo remota in locale (git clone).
+    La convenzione è chiamare la posizione remota principale "origin".
+
 git push
     Carica la repo locale in una posizione remota (tipo GitHub).
     Se tale posizione remota è già configurata, il comando si può usare
     tranquillamente senza argomenti.
+
     Modi noti per configurare la posizione remota:
         - In automatico quando si usa git clone
         - Opzione -u di questo comando
+
+    Comando consigliato se la posizione remota non è ancora configurata
+    (ad esempio perché si vuole caricare una branch appena creata) :
+        git push -u origin <branchname>
+    (GitHub creerà automaticamente una branch remota corrispondente a una appena
+    creata in locale.)
+
     Questo comando rappresenta il modo per caricare il proprio lavoro
     su una piattaforma condivisa.
 
@@ -52,7 +69,7 @@ git branch
         -d: Elimina la branch indicata, ma solo se è merge-ata correttamente.
         -D: Forza l'eliminazione della branch.
 
-git checkout
+git checkout <branch>
     Permette di passare da una branch a un'altra.
     Opzioni:
         -b: Crea una nuova branch, poi passa ad essa.
