@@ -8,8 +8,9 @@ git add
         Registra tutti i file. Apparentemente solo le modifiche.
 
 git status
-    Mostra un po' di informazioni, tra cui quali cambiamenti verranno
-    inclusi nel prossimo commit e quali no.
+    Mostra un po' di informazioni, tra cui:
+    - commit creati ma non push-ati
+    - quali cambiamenti verranno inclusi nel prossimo commit e quali no.
 
 git commit
     Crea un commit che contiene i cambiamenti registrati nello staging.
@@ -32,3 +33,27 @@ git push
         - Opzione -u di questo comando
     Questo comando rappresenta il modo per caricare il proprio lavoro
     su una piattaforma condivisa.
+
+git pull
+    Incorpora i cambiamenti di una repository remota (tipo GitHub).
+    Ancora, se la repo remota è già configurata, si può usare questo comando
+    senza argomenti (vedi il paragrafo su pull).
+    In realtà questo comando esegue due azioni in successione: fetch per recuperare
+    i cambiamenti remoti e merge per incorporarli nella repo locale.
+    Per questo ha anche il doppio delle opzioni.
+    Questo comando è il modo migliore per integrare in locale i cambiamenti
+    degli altri collaboratori.
+
+git branch
+    Senza ulteriori argomenti/opzioni, mostra le branch esistenti del progetto,
+    evidenziando quella attiva con un asterisco.
+    Le varie opzioni permettono di gestire le branch.
+    Opzioni:
+        -d: Elimina la branch indicata, ma solo se è merge-ata correttamente.
+        -D: Forza l'eliminazione della branch.
+
+git checkout
+    Permette di passare da una branch a un'altra.
+    Opzioni:
+        -b:
+            Crea una nuova branch, poi passa ad essa.
