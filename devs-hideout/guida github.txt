@@ -55,5 +55,4 @@ git branch
 git checkout
     Permette di passare da una branch a un'altra.
     Opzioni:
-        -b:
-            Crea una nuova branch, poi passa ad essa.
+        -b: Crea una nuova branch, poi passa ad essa.
