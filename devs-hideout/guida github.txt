@@ -1,0 +1,34 @@
+git add
+    Aggiunge i file specificati allo staging enviromnent, aka index,
+    affinché possano essere inclusi nel prossimo commit.
+    Deve essere eseguito, se vogliamo che i cambiamenti vengano
+    registrati nei commit.
+
+    git add .
+        Registra tutti i file. Apparentemente solo le modifiche.
+
+git status
+    Mostra un po' di informazioni, tra cui quali cambiamenti verranno
+    inclusi nel prossimo commit e quali no.
+
+git commit
+    Crea un commit che contiene i cambiamenti registrati nello staging.
+    I commit sono alla base del sistema di versioning.
+    I commit creati in questo modo sono solo locali.
+    Opzioni:
+        -m "messaggio"
+            Aggiunge un messaggio di log.
+            Utilssimo per ricordarsi cosa riguardano i cambiamenti di questo commit.
+        -a
+            In pratica fa da solo la add di tutti i cambiamenti effettuati,
+            ma solo per i file già noti a git.
+
+git push
+    Carica la repo locale in una posizione remota (tipo GitHub).
+    Se tale posizione remota è già configurata, il comando si può usare
+    tranquillamente senza argomenti.
+    Modi noti per configurare la posizione remota:
+        - In automatico quando si usa git clone
+        - Opzione -u di questo comando
+    Questo comando rappresenta il modo per caricare il proprio lavoro
+    su una piattaforma condivisa.
