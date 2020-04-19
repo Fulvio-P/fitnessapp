@@ -56,3 +56,19 @@ git checkout
     Permette di passare da una branch a un'altra.
     Opzioni:
         -b: Crea una nuova branch, poi passa ad essa.
+
+
+
+git config
+    Configurazioni utili.
+    In particolare:
+        git config --global user.email "you@example.com"
+            Necessaria per usare git.
+        git config --global user.name "Your Name"
+            Necessaria per usare git.
+        git config --global credential.helper cache
+            Attiva il caching delle credenziali per non doverle reinserire
+            a ogni push/pull. (Timeout di default: 15 minuti.)
+        git config --global credential.helper 'cache --timeout=3600'
+            Modifica il timeout del caching delle credenziali (e.g. 1 ora)
+            (parametro in secondi)
