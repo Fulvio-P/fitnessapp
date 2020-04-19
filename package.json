@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "nodemon server/index.js"
-
   },
   "author": "Fulvio, Francesco",
   "license": "MIT",
