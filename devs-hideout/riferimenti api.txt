@@ -1,0 +1,28 @@
+OPEN FOOD FACTS
+    Database che contiene ingredienti e stat nutrizionali di prodotti confezionati.
+    È indicizzato per codice a barre.
+
+    Endpoint API: https://world.openfoodfacts.org/api/v0/product/[barcode].json
+    Tipo di risposta: JSON
+
+    Sito di riferimento: https://world.openfoodfacts.org/data
+    Documentazione: nulla
+
+    Proprietà da usare: product.nutriments (contiene le stat nutrizionali)
+    Altre:  product.nutriscore_data (ancora stat nutrizionali)
+            product.nutrition_data_per (dovrebbe dare l'unità di misura rispetto alla quale sono date le stat nutrizionali)
+
+    Nota: chiedono che a ogni chiamata API corrisponda una scansione reale di un utente.
+        Se intendiamo usare quest'api semplicemente come "utente, dimmi che hai mangiato
+        e ti dico quanta roba hai preso" DOVREBBE andare bene, ma se la usiamo più frequentemente
+        di così ci conviene cachare i risultati nel DB.
+        Questo da un punto di vista realistico, almeno...
+    
+    Nota: senza ulteriori tecnologie, i codici a barre andrebbero letti dalla confezione
+        e digitati a mano nella nostra barra di ricerca.
+        Nulla di improponibile, per carità, ma se mai volessimo rendere la cosa
+        un filino più user-friendly abbiamo un paio di alternative:
+        1. Trovare il modo di scansionare codici a barre (API web?)
+        2. Salvare i prodotti recenti di un utente in modo che le volte successive possa scegliere tra quelli
+        (3. Mettere su un listone dei prodotti più mainstream e permettere all'utente di cercare tra quelli... ma mi sembra imporponibile per noi)
+
