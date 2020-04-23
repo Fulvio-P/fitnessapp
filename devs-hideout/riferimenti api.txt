@@ -12,6 +12,10 @@ OPEN FOOD FACTS
     Altre:  product.nutriscore_data (ancora stat nutrizionali)
             product.nutrition_data_per (dovrebbe dare l'unità di misura rispetto alla quale sono date le stat nutrizionali)
 
+    Altra roba che quest'API può fare:
+        Lista degli ingredienti. La lingua non è garantita.
+        Spulciando tra i tag si potrebbero trovare un po' di allergeni e altra roba.
+
     Nota: chiedono che a ogni chiamata API corrisponda una scansione reale di un utente.
         Se intendiamo usare quest'api semplicemente come "utente, dimmi che hai mangiato
         e ti dico quanta roba hai preso" DOVREBBE andare bene, ma se la usiamo più frequentemente
