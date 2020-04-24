@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Questa è la pagina di login</h1>
-    <button v-if="!$store.state.isUserLoggedIn" @click="logIn">Login</button>
+    <button v-if="!$store.state.isUserLoggedIn" @click="login">Login</button>
   </div>
 </template>
 
@@ -9,8 +9,8 @@
 export default {
   name: "Login",
   methods: {
-    logIn() {
-      this.$store.dispatch("logIn");
+    login() {
+      this.$store.dispatch("login");
     }
   }
 };

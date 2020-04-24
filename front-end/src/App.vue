@@ -4,6 +4,9 @@
       <Topbar />
     </div>
     <router-view />
+    <b-overlay>
+      <!-- inserire schermata di login in overlay -->
+    </b-overlay>
   </div>
 </template>
 
