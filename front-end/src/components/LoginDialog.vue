@@ -8,9 +8,8 @@
         class="text-center p-3"
         >
         <p><strong id="form-confirm-label">Log in</strong></p>
-        <div class="d-flex">
             <b-button @click="login">Log in with Google</b-button>
-        </div>
+    </div>
 </template>
 
 
@@ -20,7 +19,8 @@ export default {
     methods: {
         login() {
         this.$store.dispatch("login");
-    }
-    },
+        } 
+    }  
+
 }
 </script>
