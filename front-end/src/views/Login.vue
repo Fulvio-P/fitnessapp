@@ -7,12 +7,11 @@
 </template>
 
 <script>
-
-import LoginDialog from "@/components/LoginDialog.vue"
+import LoginDialog from "@/components/LoginDialog.vue";
 
 export default {
   name: "Login",
-  components:{
+  components: {
     LoginDialog
   },
   methods: {

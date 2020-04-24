@@ -4,20 +4,20 @@
       <Topbar />
     </div>
     <router-view />
-    <b-overlay
-    v-show="$store.state.displayLoginDialog"
-    >
-      <!-- inserire schermata di login in overlay -->
+    <b-overlay v-show="$store.state.displayLoginDialog">
+      <LoginDialog />
     </b-overlay>
   </div>
 </template>
 
 <script>
+import LoginDialog from "@/components/LoginDialog.vue";
 import Topbar from "@/components/Topbar.vue";
 export default {
   name: "App",
   components: {
-    Topbar
+    Topbar,
+    LoginDialog
   }
 };
 </script>

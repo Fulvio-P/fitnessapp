@@ -15,10 +15,9 @@ export default new Vuex.Store({
     logout(state) {
       state.isUserLoggedIn = false;
     },
-    displayLoginDialog(state, payload){
+    displayLoginDialog(state, payload) {
       state.loginDialog = payload;
     }
-
   },
   actions: {
     login({ commit }) {
@@ -27,8 +26,8 @@ export default new Vuex.Store({
     logout({ commit }) {
       commit("logout");
     },
-    displayLoginDialog({commit}, payload){
-      commit('displayLoginDialog', payload);
+    displayLoginDialog({ commit }, payload) {
+      commit("displayLoginDialog", payload);
     }
   },
   modules: {}
