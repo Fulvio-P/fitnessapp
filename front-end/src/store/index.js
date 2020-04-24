@@ -5,7 +5,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    isUserLoggedIn: false
+    isUserLoggedIn: false,
+    loginDialog: false
   },
   mutations: {
     login(state) {
@@ -13,7 +14,11 @@ export default new Vuex.Store({
     },
     logout(state) {
       state.isUserLoggedIn = false;
+    },
+    displayLoginDialog(state, payload){
+      state.loginDialog = payload;
     }
+
   },
   actions: {
     login({ commit }) {
@@ -21,6 +26,9 @@ export default new Vuex.Store({
     },
     logout({ commit }) {
       commit("logout");
+    },
+    displayLoginDialog({commit}, payload){
+      commit('displayLoginDialog', payload);
     }
   },
   modules: {}

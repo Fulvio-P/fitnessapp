@@ -4,7 +4,9 @@
       <Topbar />
     </div>
     <router-view />
-    <b-overlay>
+    <b-overlay
+    v-show="$store.state.displayLoginDialog"
+    >
       <!-- inserire schermata di login in overlay -->
     </b-overlay>
   </div>
