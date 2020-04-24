@@ -1,7 +1,8 @@
 <template>
     <div class="footer">
         <p>Questo è un footer, qua possiamo mettere link a tipo la pagina github e info nostre per vantarci, <br>
-        per adesso è giallo perchè ho scritto un hex a caso</p>
+        per adesso è giallo perchè ho scritto un hex a caso<br>
+        Anche qui dovrebbe bastare HTML e CSS</p>
     </div>
 </template>
 
