@@ -150,6 +150,14 @@ GOOGLE FIT
          - Lettura aggregata facendo riferimento alla DS
 
 
+
+
+
+...........
+
+
+
+
 STRAVA
     Lo scrivo qui solo perché l'ho trovato oggi pomeriggio e non voglio dimenticarmene
     completamente, sembra essere una specie di social network per atleti in cui la gente
