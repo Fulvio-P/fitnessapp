@@ -28,5 +28,62 @@ OPEN FOOD FACTS
         un filino più user-friendly abbiamo un paio di alternative:
         1. Trovare il modo di scansionare codici a barre (API web?)
         2. Salvare i prodotti recenti di un utente in modo che le volte successive possa scegliere tra quelli
-        (3. Mettere su un listone dei prodotti più mainstream e permettere all'utente di cercare tra quelli... ma mi sembra imporponibile per noi)
+        (3. Mettere su un listone dei prodotti più mainstream e permettere all'utente di cercare tra quelli... ma mi sembra improponibile per noi)
+
+
+EDAMAM
+    In realtà ha 3 API diverse che tratta separatamente (pure a livello di account),
+    quindi le tratterò separatamente anch'io.
+
+    Nota: non ho ancora fatto un account per testarle, per ora sto solo riportando
+        la documentazione che mi sembra abbastanza descrittiva.
+
+
+EDAMAM - DATABASE CIBO
+    Database di informazioni nutrizionali di cibi generici e di marca,
+    accessibile via query testuale (o codice a barre).
+    La modalità "food logging" praticamente permette all'utente di scrivere
+    "oggi ho mangiato pasta" e ricevere le stat nutrizionali del suo pasto.
+    Non so come se la cavi a gestire più di 1~2 ingredienti,
+    ma è semplice da usare.
+
+    Modo d'uso: prima fare una richiesta al Parser per ottenere risultati dal DB,
+        poi passare quei risultati al Nutrients per ottenere i dati di una
+        quantità specifica.
+    Tipo di risposta: JSON
+
+    Documentazione: https://developer.edamam.com/food-database-api-docs
+
+    Limiti: 10 richieste/minuto
+    Dettagli: https://developer.edamam.com/food-database-api
+
+    Nota: va da sé che l'api accetta solo testo in inglese, se vogliamo usare
+        questa funzionalità suggerisco di renderlo chiaro, magari facendo
+        l'intero sito in inglese (ma non a costo della credibilità)
+
+
+EDAMAM - ANALISI NUTRIZIONALE
+    Analizza una ricetta completa (o solo un ingrediente) e ne restituisce
+    le info nutrizionali. Molto completa, ma difficile da usare,
+    sia per l'utente (che deve sapere la ricetta esatta)
+    che per lo sviluppatore (c'è un po' di lavoro da fare dietro le quinte
+    e le richieste sono limitate al mese)
+
+    Modo d'uso: Richiesta POST all'endpoint opportuno
+    Tipo di risposta: JSON
+
+    Documentazione: https://developer.edamam.com/edamam-docs-nutrition-api
+
+    Limiti: 200 ricette/MESE
+    Dettagli: https://developer.edamam.com/edamam-nutrition-api
+
+    Nota: L'api ha due modalità: una per ricette complete e una per singole righe.
+        Sembra vengano trattate separatamente. (?)
+    
+    Nota: L'api usa il meccanismo degli Etag HTTP per evitare di farti pagare più
+        volte la stessa richiesta. Sta tutto scritto nella documentazione,
+        ma praticamente quando fai una richiesta ti danno un Etag nell'header
+        di risposta che poi devi rimandare ogni volta che fai la stessa richiesta
+        per evitare di pagarla ogni volta.
+        Oppure semplicemente cachamo la risposta...
 
