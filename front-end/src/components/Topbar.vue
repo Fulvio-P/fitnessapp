@@ -16,6 +16,16 @@
             @click="displayOverlay()"
             >Log in</b-nav-item
           >
+
+          <!-- Questo pulsante deve essere sostituito con la foto del profilo e il nome una volta implementato il login -->
+          <b-nav-item
+            v-if="$store.state.isUserLoggedIn"
+            router-link
+            to="/profile"
+            >Profile</b-nav-item
+          >
+
+          <!-- Questo pulsante va spostato come item della sidebar della pagina del profilo oppure come dropdown del pulsate profilo -->
           <b-nav-item
             v-if="$store.state.isUserLoggedIn"
             @click="logout"
