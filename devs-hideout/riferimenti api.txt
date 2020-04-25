@@ -92,3 +92,19 @@ EDAMAM - RICERCA RICETTE
     La trovo poco utile
 
 
+WGER
+    Permette di gestire agende di allenamento, e di nutrizione,
+    nonché di mantenere una storia del proprio peso.
+
+    Endpoint API: https://wger.de/api/v2/
+    Tipo di risposta: JSON
+
+    Sito di riferimento: https://wger.de/en/software/api
+    Documentazione: vd. sopra
+
+    Nota: mi preoccupa l'autenticazione. Con un account si può gestire
+        una persona sola, e non ho trovato alcun supporto OAuth per permettere
+        a ciascun utente di avere un proprio account in maniera sicura.
+        In più, molte delle cose che fa questo può farle anche Google Fit.
+
+
