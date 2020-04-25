@@ -87,3 +87,8 @@ EDAMAM - ANALISI NUTRIZIONALE
         per evitare di pagarla ogni volta.
         Oppure semplicemente cachamo la risposta...
 
+
+EDAMAM - RICERCA RICETTE
+    La trovo poco utile
+
+
