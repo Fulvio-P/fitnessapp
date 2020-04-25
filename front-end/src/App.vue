@@ -4,8 +4,11 @@
       <Topbar />
     </div>
     <router-view />
-    <b-overlay v-show="$store.state.displayLoginDialog">
-      <LoginDialog />
+
+    <b-overlay :show="$store.state.loginDialog" no-wrap>
+      <template v-slot:overlay>
+        <LoginDialog />
+      </template>
     </b-overlay>
   </div>
 </template>

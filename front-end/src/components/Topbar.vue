@@ -13,8 +13,7 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-item
             v-if="!$store.state.isUserLoggedIn"
-            router-link
-            to="/login"
+            @click="displayOverlay()"
             >Log in</b-nav-item
           >
           <b-nav-item
@@ -36,6 +35,9 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch("logout");
+    },
+    displayOverlay() {
+      this.$store.dispatch("displayLoginDialog", true);
     }
   }
 };
