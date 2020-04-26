@@ -3,7 +3,7 @@
     <ul class="SideNavList">
       <li class="SideNavItem">
         <a href="#" class="SideNavLink">
-          <SvgTest />
+          <SvgTest class="centopercento" />
           <span class="LinkText">Food</span>
         </a>
       </li>
@@ -12,7 +12,8 @@
 </template>
 
 <script>
-import SvgTest from "@/components/SvgTest.vue";
+//import SvgTest from "@/components/SvgTest.vue";
+import SvgTest from "../assets/icons/user-profile.svg";
 export default {
   name: "SideNav",
   components: {
@@ -52,5 +53,17 @@ export default {
   height: 5rem;
   text-decoration: none;
   align-items: center;
+}
+
+.centopercento {
+  width: 100%;
+  height: 100%;
+}
+
+.path1 {
+  fill: blue;
+}
+.path2 {
+  fill: green;
 }
 </style>
