@@ -3,7 +3,7 @@
     <ul class="SideNavList">
       <li class="SideNavItem">
         <a href="#" class="SideNavLink">
-          <img src="../assets/icons/user-profile.svg" />
+          <SvgTest />
           <span class="LinkText">Food</span>
         </a>
       </li>
@@ -12,8 +12,12 @@
 </template>
 
 <script>
+import SvgTest from "@/components/SvgTest.vue";
 export default {
-  name: "SideNav"
+  name: "SideNav",
+  components: {
+    SvgTest
+  }
 };
 </script>
 
