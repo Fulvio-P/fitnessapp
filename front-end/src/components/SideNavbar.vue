@@ -3,8 +3,26 @@
     <ul class="SideNavList">
       <li class="SideNavItem">
         <a href="#" class="SideNavLink">
-          <SvgTest class="centopercento" />
-          <span class="LinkText">Food</span>
+          <SvgTest class="centopercento luigi" />
+          <span class="LinkText">Luigi</span>
+        </a>
+      </li>
+      <li class="SideNavItem">
+        <a href="#" class="SideNavLink">
+          <SvgTest class="centopercento mario" />
+          <span class="LinkText">Mario</span>
+        </a>
+      </li>
+      <li class="SideNavItem">
+        <a href="#" class="SideNavLink">
+          <SvgTest class="centopercento pippo" />
+          <span class="LinkText">Pippo</span>
+        </a>
+      </li>
+      <li class="SideNavItem">
+        <a href="#" class="SideNavLink">
+          <SvgTest class="centopercento paperino" />
+          <span class="LinkText">Paper.</span>
         </a>
       </li>
     </ul>
@@ -53,6 +71,13 @@ export default {
   height: 5rem;
   text-decoration: none;
   align-items: center;
+  filter: grayscale(100%) opacity(0.7);
+  transition: 600ms
+}
+.SideNavLink:hover {
+  filter: grayscale(0%) opacity(1);
+  background: purple;
+  color: skyblue;
 }
 
 .centopercento {
@@ -60,10 +85,31 @@ export default {
   height: 100%;
 }
 
-.path1 {
+.luigi .path1 {
   fill: blue;
 }
-.path2 {
+.luigi .path2 {
   fill: green;
+}
+
+.mario .path1 {
+  fill: blue;
+}
+.mario .path2 {
+  fill: red;
+}
+
+.pippo .path1 {
+  fill: black;
+}
+.pippo .path2 {
+  fill: green;
+}
+
+.paperino .path1 {
+  fill: blue;
+}
+.paperino .path2 {
+  fill: yellow;
 }
 </style>
