@@ -1,3 +1,4 @@
+<!--Questo non dovrebbe servire più, lo tengo solo in caso lo svg-loader non si comporti bene
 <template>
   <div class="SvgTest">
     <svg
@@ -33,3 +34,4 @@ export default {
   name: "SvgTest"
 };
 </script>
+-->
