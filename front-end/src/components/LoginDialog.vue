@@ -9,6 +9,8 @@
   >
     <p><strong id="form-confirm-label">Log in</strong></p>
     <b-button @click="login">Log in with Google</b-button>
+    <b-button @click="close">Annulla</b-button>
+
   </div>
 </template>
 
@@ -19,6 +21,9 @@ export default {
     login() {
       this.$store.dispatch("login");
       this.$store.dispatch("displayLoginDialog", false);
+    },
+    close(){
+      this.$store.dispatch("displayLoginDialog", false);      
     }
   }
 };

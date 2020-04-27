@@ -1,27 +1,12 @@
 <template>
   <div id="app">
-    <div id="navigation">
-      <Topbar />
-    </div>
     <router-view />
-
-    <b-overlay :show="$store.state.loginDialog" no-wrap>
-      <template v-slot:overlay>
-        <LoginDialog />
-      </template>
-    </b-overlay>
   </div>
 </template>
 
 <script>
-import LoginDialog from "@/components/LoginDialog.vue";
-import Topbar from "@/components/Topbar.vue";
 export default {
-  name: "App",
-  components: {
-    Topbar,
-    LoginDialog
-  }
+  name: "App"
 };
 </script>
 
