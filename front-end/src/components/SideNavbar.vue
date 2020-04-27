@@ -22,7 +22,7 @@
       <li class="SideNavItem">
         <a href="#" class="SideNavLink">
           <SvgTest class="centopercento paperino" />
-          <span class="LinkText">Paper.</span>
+          <span class="LinkText">Paperino</span>
         </a>
       </li>
     </ul>
@@ -42,11 +42,19 @@ export default {
 
 <style scoped>
 .SideNav {
-  font-size: 16px;
-  width: 5rem;
-  height: 100vh;
+  --text-primary: black;
+  --text-secondary: skyblue;
+  --bg-primary: pink;
+  --bg-secondary: purple;
+  --transition-speed: 600ms;
   position: fixed;
-  background: pink;
+  background-color: var(--bg-primary);
+  transition: width 600ms ease;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-size: 16px;
 }
 
 .SideNavList {
@@ -56,6 +64,8 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100%;
+  width: 100%;
 }
 
 .SideNavItem {
@@ -68,22 +78,35 @@ export default {
 
 .SideNavLink {
   display: flex;
-  height: 5rem;
-  text-decoration: none;
   align-items: center;
+  height: 5rem;
+  color: var(--text-primary);
+  text-decoration: none;
   filter: grayscale(100%) opacity(0.7);
-  transition: 600ms
+  transition: var(--transition-speed);
 }
+
 .SideNavLink:hover {
   filter: grayscale(0%) opacity(1);
-  background: purple;
-  color: skyblue;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+}
+
+.LinkText {
+  display: none;
+  margin-left: 1rem;
+}
+
+.SideNavLink svg {
+  width: 2rem;
+  min-width: 2rem;
+  margin: 0 1.5rem;
 }
 
 .centopercento {
   width: 100%;
   height: 100%;
-}
+} /*dovrebbe essere inutile, width è data dalla regola .SideNavLink svg*/
 
 .luigi .path1 {
   fill: blue;
@@ -111,5 +134,25 @@ export default {
 }
 .paperino .path2 {
   fill: yellow;
+}
+
+.path1,
+.path2 {
+  transition: var(--transition-speed);
+}
+
+/* Large screens */
+.SideNav {
+  top: 0;
+  width: 5rem;
+  height: 100vh;
+}
+
+.SideNav:hover {
+  width: 16rem;
+}
+
+.SideNav:hover .LinkText {
+  display: inline;
 }
 </style>
