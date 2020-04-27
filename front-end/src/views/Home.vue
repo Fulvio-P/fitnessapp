@@ -12,7 +12,6 @@
         <LoginDialog />
       </template>
     </b-overlay>
-    
   </div>
 </template>
 
@@ -22,7 +21,6 @@ import Carousel from "@/components/Carousel.vue";
 import LandBottom from "@/components/LandBottom.vue";
 import Footer from "@/components/LandingFooter.vue";
 import LoginDialog from "@/components/LoginDialog.vue";
-
 
 export default {
   name: "Home",

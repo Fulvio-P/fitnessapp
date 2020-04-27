@@ -10,6 +10,7 @@
         Fugit tenetur corporis eius quaerat impedit, unde numquam nobis enim
         commodi!
       </p>
+      <b-button router-link to="/"> BACK HOME </b-button>
     </div>
   </div>
 </template>
