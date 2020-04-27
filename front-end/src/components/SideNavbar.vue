@@ -22,7 +22,7 @@
       <li class="SideNavItem">
         <a href="#" class="SideNavLink">
           <SvgTest class="centopercento paperino" />
-          <span class="LinkText">Paper.</span>
+          <span class="LinkText">Paperino</span>
         </a>
       </li>
     </ul>
@@ -47,6 +47,16 @@ export default {
   height: 100vh;
   position: fixed;
   background: pink;
+  transition: width 2000ms ease;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}
+.SideNav:hover {
+  width: 16rem;
+}
+.SideNav:hover .LinkText {
+  display: block;
 }
 
 .SideNavList {
@@ -56,6 +66,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100%;
 }
 
 .SideNavItem {
@@ -72,12 +83,23 @@ export default {
   text-decoration: none;
   align-items: center;
   filter: grayscale(100%) opacity(0.7);
-  transition: 600ms
+  transition: 600ms;
 }
 .SideNavLink:hover {
   filter: grayscale(0%) opacity(1);
   background: purple;
   color: skyblue;
+}
+
+.LinkText {
+  display: none;
+  margin-left: 1rem;
+}
+.LinkText SvgTest {
+  margin-left: 0;
+  margin-right: 1.5rem;
+  width: 2rem;
+  min-width: 2rem;
 }
 
 .centopercento {
