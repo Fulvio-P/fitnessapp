@@ -1,18 +1,35 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div>
+    <div id="navigation">
+      <Topbar />
+    </div>
+    <Carousel />
+    <LandBottom />
+    <Footer />
+
+    <b-overlay :show="$store.state.loginDialog" no-wrap>
+      <template v-slot:overlay>
+        <LoginDialog />
+      </template>
+    </b-overlay>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import Topbar from "@/components/Topbar.vue";
+import Carousel from "@/components/Carousel.vue";
+import LandBottom from "@/components/LandBottom.vue";
+import Footer from "@/components/LandingFooter.vue";
+import LoginDialog from "@/components/LoginDialog.vue";
 
 export default {
   name: "Home",
   components: {
-    HelloWorld
+    Topbar,
+    Carousel,
+    LandBottom,
+    Footer,
+    LoginDialog
   }
 };
 </script>
