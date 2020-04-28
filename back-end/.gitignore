@@ -1,4 +1,4 @@
 node_modules
 .env
 provapostgres-go.sh
-
+fitnessapp-pg-go.sh
