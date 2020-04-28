@@ -1,0 +1,6 @@
+Ringraziamenti:
+    https://github.com/docker-library/docs/blob/master/postgres/README.md
+    https://www.saltycrane.com/blog/2019/01/how-run-postgresql-docker-mac-local-development/
+
+Comando per lanciare l'immagine:
+    $ docker run -d --name <nome> -v <dir host>:/var/lib/postgresql/data -p <porta host>:5432 [-e POSTGRES_USER=<username>] -e POSTGRES_PASSWORD=<password> [-e POSTGRES_DB=<nome db>] postgres
