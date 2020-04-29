@@ -8,12 +8,15 @@
 import WeightChart from "@/components/WeightChart.vue";
 
 var chartdata = {
-    labels: ['January', 'February'],
     datasets: [
         {
-            label: 'Data One',
+            label: 'Peso',
             backgroundColor: '#f87979',
-            data: [40, 20]
+            data: [
+                {x: new Date("2020-03-27"), y:40},
+                {x: new Date("2020-03-28"), y:20},
+                {x: new Date("2020-03-29"), y:30},
+            ]
         }
     ]
 };
