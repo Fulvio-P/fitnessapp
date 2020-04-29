@@ -34,7 +34,6 @@ async function getId(username) {
     if (queryRes.rows.length<1) {
         throw new Error("getId "+username+": L'utente non esiste");
     }
-    //console.log(queryRes.rows);
     return queryRes.rows[0].id;
 }
 
@@ -59,12 +58,31 @@ async function setPeso(username, data, peso) {
     return "setPeso "+id+": "+res.rows+"(update)";
 }
 
+//aggiunge/modifica una misura di calorie di un utente in una data
+async function setCalorie(username, data, calin, calout) {
+    var id;
+    try {
+        id = await getId(username);
+    } catch (err) {
+        return "setCalorie: "+err.message;
+    }
+    var queryRes = await pool.query("SELECT * FROM misuraCalorie WHERE id=$1 AND data=$2", 
+                                    [id, data]);
+    if (queryRes.rows.length<1) {
+        let res = await pool.query("INSERT INTO misuraCalorie VALUES ($1,$2,$3,$4)", 
+                                   [id, data, calin, calout]);
+        return "setCalorie "+id+": "+res.rows+"(insert)";
+    }
+    let res =  await pool.query("UPDATE misuraCalorie SET calin=$3, calout=$4 "+
+                                                  "WHERE id=$1 AND data=$2",
+                                [id, data, calin, calout]);
+    return "setCalorie "+id+": "+res.rows+"(update)";
+}
+
 /*
 Inizializza le tabelle di un DB di test.
 Ovviamente una funzione del genere non può esistere in produzione, ma in qualche modo
-devo partire, e in più mi alleno con la libreria di postgres.
-Questo DB avrà due tabelle molto semplici, per il solo gusto di averne due.
-Vedremo poi quante e quali tabelle ci servono.
+devo partire.
 */
 async function initDB() {
     console.log("N.B: Avere risposte vuote per insert/update è buon segno!");
@@ -79,14 +97,26 @@ async function initDB() {
                         "peso NUMERIC NOT NULL, "+
                         "PRIMARY KEY (id, data));"    //solo una misurazione al giorno per utente
     );
+    await pool.query("CREATE TABLE misuraCalorie ("+
+                        "id integer NOT NULL REFERENCES utente(id), "+
+                        "data DATE NOT NULL DEFAULT CURRENT_DATE, "+
+                        "calin NUMERIC NOT NULL DEFAULT 0, "+
+                        "calout NUMERIC NOT NULL DEFAULT 0, "+
+                        "PRIMARY KEY (id, data));"
+    );
     await newUser("AkihikoSanada", "polydeuces");
     await newUser("ChieSatonaka", "tomoe");
     await newUser("EdelgardVonHresvelg", "blackeagle");
     console.log(await setPeso("AkihikoSanada", new Date("2020-04-25"), 80));
     console.log(await setPeso("AkihikoSanada", new Date("2020-04-26"), 70));
     console.log(await setPeso("AkihikoSanada", new Date("2020-04-27"), 75));
-    console.log(await setPeso("EdelgardVonHresvelg", new Date("2020-04-27"), 60));
+    console.log(await setPeso("EdelgardVonHresvelg", new Date("2020-04-27"), 60.005));
     console.log(await setPeso("LukeTriton", new Date("2020-04-27"), 50));   //no utente
+    console.log(await setCalorie("ChieSatonaka", new Date("2020-04-25"), 100, 100));
+    console.log(await setCalorie("ChieSatonaka", new Date("2020-04-26"), 50, 0));
+    console.log(await setCalorie("ChieSatonaka", new Date("2020-04-27"), 0, 60));
+    console.log(await setCalorie("EdelgardVonHresvelg", new Date("2020-04-27"), 150.25, 200));
+    console.log(await setCalorie("JunpeiIori", new Date("2020-04-27"), 0, 0));   //no utente
 }
 
 //cancella le tabelle del DB, per permettermi di ricominciare da capo
@@ -94,6 +124,11 @@ async function initDB() {
 async function destroyDB() {
     try {
         await pool.query("DROP TABLE misuraPeso;");
+    } catch (err) {
+        ;
+    }
+    try {
+        await pool.query("DROP TABLE misuraCalorie;");
     } catch (err) {
         ;
     }
