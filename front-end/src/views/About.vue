@@ -10,6 +10,7 @@
         Fugit tenetur corporis eius quaerat impedit, unde numquam nobis enim
         commodi!
       </p>
+      <ChartsPage />
       <b-button router-link to="/"> BACK HOME </b-button>
     </div>
   </div>
@@ -17,10 +18,12 @@
 
 <script>
 import SideNav from "@/components/SideNavbar.vue";
+import ChartsPage from "@/components/ChartsPage.vue";
 export default {
   name: "About",
   components: {
-    SideNav
+    SideNav,
+    ChartsPage
   }
 };
 </script>
