@@ -45,7 +45,7 @@
               no-resize
               ></b-form-textarea>
             </b-form-group>
-            <b-button type="submit" variant="primary">Invia</b-button>
+            <b-button type="submit" class="footer-form-btn">Invia</b-button>
           </b-form>
         </b-col>
       </b-row>
@@ -63,8 +63,18 @@ export default {
 </script>
 
 <style scoped>
+
+a{
+  text-decoration: none;
+  color: #ECEFF4; /* nord 6 */
+}
+.footer-form-btn{
+  background: #3B4252; /* nord 1 */
+}
+
 .footer {
-  background: #ffff00;
+  background: #2E3440; /* nord 0 */
+  color: #ECEFF4; /* nord 6 */
 }
 
 .footer .footer-content .footer-section {
@@ -72,7 +82,8 @@ export default {
 }
 
 .footer .footer-bottom {
-  background: #ffffff;
+  background: #3B4252; /* nord 1 */
+  color: #4C566A; /* nord 3 */
   height: 50px;
   width: 100%;
   text-align: center;
