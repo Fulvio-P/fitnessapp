@@ -27,6 +27,14 @@ async function newUser(username, password) {
     }
 }
 
+async function getUsernameIfExists(id) {
+    var queryRes = await pool.query("SELECT * FROM utente WHERE id=$1", [id]);
+    if (queryRes.rows.length<1) {
+        return null;
+    }
+    return queryRes.rows[0].username;
+}
+
 async function getId(username) {
     var queryRes = await pool.query("SELECT * FROM utente WHERE username=$1", [username]);
     if (queryRes.rows.length<1) {
@@ -36,6 +44,7 @@ async function getId(username) {
 }
 
 //aggiunge/modifica una misura di peso di un utente in una data
+//TODO mettere id come parametro, non username
 async function setPeso(username, data, peso) {
     var id;
     try {
@@ -57,6 +66,7 @@ async function setPeso(username, data, peso) {
 }
 
 //aggiunge/modifica una misura di calorie di un utente in una data
+//TODO mettere id come parametro, non username
 async function setCalorie(username, data, calin, calout) {
     var id;
     try {
@@ -77,11 +87,20 @@ async function setCalorie(username, data, calin, calout) {
     return "setCalorie "+id+": "+res.rows+"(update)";
 }
 
+async function getMisurePeso(id) {
+    if (!(await getUsernameIfExists(id))) {
+        return null;
+    }
+    var queryRes = await pool.query("SELECT data as data, peso as peso FROM misuraPeso WHERE id=$1", [id]);
+    return queryRes.rows;
+}
+
 module.exports = {
     getId,
     newUser,
     setCalorie,
-    setPeso
+    setPeso,
+    getMisurePeso,
 }
 
 //shell();

@@ -20,14 +20,14 @@ async function initDB() {
     await pool.query("CREATE TABLE misuraPeso ("+
                         "id integer NOT NULL REFERENCES utente(id), "+
                         "data DATE NOT NULL DEFAULT CURRENT_DATE, "+    //DATE è solo giorno, senza ora, e con questo DEFAULT possiamo prendere in automatico la data corrente.
-                        "peso NUMERIC NOT NULL, "+
+                        "peso REAL NOT NULL, "+   //ha una precisione limitata (6 cifre decimali), ma non va convertito ogni volta da stringa a float
                         "PRIMARY KEY (id, data));"    //solo una misurazione al giorno per utente
     );
     await pool.query("CREATE TABLE misuraCalorie ("+
                         "id integer NOT NULL REFERENCES utente(id), "+
                         "data DATE NOT NULL DEFAULT CURRENT_DATE, "+
-                        "calin NUMERIC NOT NULL DEFAULT 0, "+
-                        "calout NUMERIC NOT NULL DEFAULT 0, "+
+                        "calin REAL NOT NULL DEFAULT 0, "+
+                        "calout REAL NOT NULL DEFAULT 0, "+
                         "PRIMARY KEY (id, data));"
     );
     await index.newUser("AkihikoSanada", "polydeuces");   //un utente completo, il protagonista dei test che andrò a fare sul frontend
