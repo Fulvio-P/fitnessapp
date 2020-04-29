@@ -37,15 +37,19 @@
       </b-row>
       <b-row>
         <b-col sm>
-          <h1>Registrati ORA! TI PREGO, HO UNA FAMIGLIA DA SFAMARE!</h1>
+          <h1>Registrati ORA!</h1>
           <p>
             FitnessApp è la cosa più bella del mondo: iscrivendoti con la tua
             email potrai tenere traccia delle calorie e del peso, funzioni più
-            avanzate sono disponibili se colleghi altri account.
+            avanzate sono disponibili se colleghi altri account. Lorem ipsum
+            dolor sit amet, consectetur adipisicing elit. Saepe porro eius
+            fugiat rerum possimus nesciunt, aut, totam error, odit debitis
+            officia. Et delectus quod mollitia laudantium ullam, nobis
+            accusamus? Corrupti.
           </p>
         </b-col>
         <b-col>
-          <h1>FORM DI REGISTRAZIONE</h1>
+          <RegistrationForm />
         </b-col>
       </b-row>
     </b-container>
@@ -53,7 +57,17 @@
 </template>
 
 <script>
+import RegistrationForm from "@/components/RegistrationForm.vue";
 export default {
-  name: "LandBottom"
+  name: "LandBottom",
+  components: {
+    RegistrationForm
+  }
 };
 </script>
+
+<style scoped>
+.landing-bottom {
+  padding: 5rem;
+}
+</style>
