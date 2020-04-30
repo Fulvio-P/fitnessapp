@@ -1,6 +1,7 @@
 <!--Funzioni utili che gestiscono comportamenti comuni dei nostri grafici-->
 
 <script>
+const axios = require("axios").default;
 export default {
     methods: {
         //sintassi abbreviata per "xAxisTimeSetup: function () {...}"
@@ -19,6 +20,19 @@ export default {
                     suggestedMax: suggmax
                 }
             }];
+        },
+        pullDataFromOurServer(url, xprop, yprop, thenRender) {
+            axios.get(url)
+                .then(resp => {
+                    var serverData = resp.data.dataPoints
+                    var chartDataset = this.chartdata.datasets[0];
+                    chartDataset.data = [];
+                    serverData.forEach(v => chartDataset.data.push({
+                        x: v[xprop],
+                        y: v[yprop]
+                    }));
+                    if (thenRender) this.renderChart(this.chartdata, this.options);
+                });
         }
     }
 }

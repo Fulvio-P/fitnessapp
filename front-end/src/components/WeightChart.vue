@@ -10,10 +10,13 @@ import chartUtils from "@/components/chartUtils.vue";
 export default {
     extends: Line,
     mixins: [chartUtils],
-    props: ["chartdata", "options"],
+    props: ["chartdata", "options", "suggymin", "suggymax", "dataurl", "xprop", "yprop"],
     mounted() {
         this.xAxisTimeSetup();
-        this.yAxisSetSuggestedLimits(0, 80);
+        this.yAxisSetSuggestedLimits(this.suggymin, this.suggymax);
+        if (this.dataurl) {
+            this.pullDataFromOurServer(this.dataurl, this.xprop, this.yprop, true);
+        }
         this.renderChart(this.chartdata, this.options)
     },
 }
