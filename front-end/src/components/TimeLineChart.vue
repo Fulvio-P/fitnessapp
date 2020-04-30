@@ -5,20 +5,13 @@ https://vue-chartjs.org/guide/#vue-single-file-components
 
 <script>
 import { Line } from 'vue-chartjs';
-import chartUtils from "@/components/chartUtils.js";
+import timeChartCommons from "@/components/timeChartCommons.js";
 
 export default {
     extends: Line,
-    mixins: [chartUtils],
-    props: ["chartdata", "options", "suggymin", "suggymax", "dataurl", "xprop", "yprop"],
-    mounted() {
-        this.xAxisTimeSetup();
-        this.yAxisSetSuggestedLimits(this.suggymin, this.suggymax);
-        if (this.dataurl) {
-            this.pullDataFromOurServer(this.dataurl, this.xprop, this.yprop, true);
-        }
-        this.renderChart(this.chartdata, this.options)
-    },
+    mixins: [timeChartCommons],
+    //le proprietà sono in chartUtils
+    //mounted è in timeChartCommons
 }
 </script>
 

@@ -1,16 +1,11 @@
 //Funzioni utili che gestiscono comportamenti comuni dei nostri grafici
 
 const axios = require("axios").default;
+
 export default {
+    //le proprietà le metto qui perché uso le stesse in entrambi i tipi di grafici
+    props: ["chartdata", "options", "suggymin", "suggymax", "dataurl", "xprop", "yprop"],
     methods: {
-        //sintassi abbreviata per "xAxisTimeSetup: function () {...}"
-        xAxisTimeSetup() {
-            this.options.scales = this.options.scales || {};
-            this.options.scales.xAxes = this.options.scales.xAxes || [{
-                type: "time",
-                time: {unit: 'day'},
-            }];
-        },
         yAxisSetSuggestedLimits(suggmin, suggmax) {
             this.options.scales = this.options.scales || {};
             this.options.scales.yAxes = this.options.scales.yAxes || [{
