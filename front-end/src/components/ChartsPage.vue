@@ -27,11 +27,7 @@ var chartdata = {
         {
             label: 'Peso',
             backgroundColor: '#f87979',
-            data: [
-                {x: new Date("2020-03-27"), y:40},
-                {x: new Date("2020-03-28"), y:20},
-                {x: new Date("2020-03-29"), y:30},
-            ]
+            data: []
         }
     ]
 };
