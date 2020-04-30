@@ -1,6 +1,5 @@
-<!--Funzioni utili che gestiscono comportamenti comuni dei nostri grafici-->
+//Funzioni utili che gestiscono comportamenti comuni dei nostri grafici
 
-<script>
 const axios = require("axios").default;
 export default {
     methods: {
@@ -36,4 +35,3 @@ export default {
         }
     }
 }
-</script>

@@ -5,7 +5,7 @@ https://vue-chartjs.org/guide/#vue-single-file-components
 
 <script>
 import { Line } from 'vue-chartjs';
-import chartUtils from "@/components/chartUtils.vue";
+import chartUtils from "@/components/chartUtils.js";
 
 export default {
     extends: Line,
