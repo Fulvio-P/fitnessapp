@@ -76,8 +76,8 @@ a {
   color: #eceff4; /* nord 6 */
 }
 
-.footer .footer-content .footer-section {
-  padding: 25px;
+.footer-section {
+  padding: 3rem;
 }
 
 .footer .footer-bottom {

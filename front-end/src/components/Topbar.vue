@@ -54,7 +54,7 @@ export default {
 </script>
 
 <style scoped>
-  .topbar{
-    background: #2e3440; /* nord 0 */
-  }
+.topbar {
+  background: #2e3440; /* nord 0 */
+}
 </style>
