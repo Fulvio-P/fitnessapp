@@ -8,11 +8,11 @@ const app = express();
 
 //middleware
 app.use(bodyParser.json());
-app.use(cors);
+app.use(cors());
 
 //routes
 const weight = require("./routes/api/weight");
-app.use("/api/weight", weight);
+app.use("/api/weight/", weight);
 
 //starting server
 const port = process.env.PORT || 5000;
