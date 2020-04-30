@@ -41,11 +41,50 @@ export default {
 </script>
 
 <style scoped>
+/* Large screens */
+@media only screen and (min-width: 600px) {
+  .SideNav {
+    top: 0;
+    width: 5rem;
+    height: 100vh;
+  }
+
+  .SideNav:hover {
+    width: 16rem;
+  }
+
+  .SideNav:hover .LinkText {
+    display: inline;
+  }
+
+  .SideNavList {
+    flex-direction: column;
+  }
+}
+
+/* Small screens */
+/* ATTENZIONE : sugli schermi piccoli dobbiamo limitare 
+il numero di item se ne mettiamo di più*/
+@media only screen and (max-width: 600px) {
+  .SideNav {
+    bottom: 0;
+    height: 5rem;
+    width: 100%;
+  }
+  .SideNavList {
+    flex-direction: row;
+  }
+
+  .SideNavLink {
+    justify-content: center;
+  }
+}
+
 .SideNav {
-  --text-primary: black;
-  --text-secondary: skyblue;
-  --bg-primary: pink;
-  --bg-secondary: purple;
+  --text-primary: #eceff4; /* nord 6 */
+  --text-secondary: #88c0d0; /* nord 8 */
+  --bg-primary: #3b4252; /* nord 1 */
+  --bg-secondary: #434c5e; /* nord 2 */
   --transition-speed: 600ms;
   position: fixed;
   background-color: var(--bg-primary);
@@ -62,7 +101,6 @@ export default {
   padding: 0;
   margin: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
   height: 100%;
   width: 100%;
@@ -108,6 +146,7 @@ export default {
   height: 100%;
 } /*dovrebbe essere inutile, width è data dalla regola .SideNavLink svg*/
 
+/* Colori icone */
 .luigi .path1 {
   fill: blue;
 }
@@ -139,20 +178,5 @@ export default {
 .path1,
 .path2 {
   transition: var(--transition-speed);
-}
-
-/* Large screens */
-.SideNav {
-  top: 0;
-  width: 5rem;
-  height: 100vh;
-}
-
-.SideNav:hover {
-  width: 16rem;
-}
-
-.SideNav:hover .LinkText {
-  display: inline;
 }
 </style>

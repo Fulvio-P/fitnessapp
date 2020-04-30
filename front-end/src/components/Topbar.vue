@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <b-navbar toggleable="lg" type="dark" variant="info">
+  <div class="topbar">
+    <b-navbar toggleable="lg" type="dark" variant="dark">
       <b-navbar-brand router-link to="/">Fitness App</b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -52,3 +52,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.topbar {
+  background: #2e3440; /* nord 0 */
+}
+</style>

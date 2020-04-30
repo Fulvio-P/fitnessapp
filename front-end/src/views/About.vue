@@ -27,7 +27,6 @@ export default {
 
 <style scoped>
 .body {
-  color: rebeccapurple;
   margin: 0;
   padding: 0;
   margin-left: 5rem;
