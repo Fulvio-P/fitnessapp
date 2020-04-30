@@ -1,6 +1,6 @@
 <template>
     <div>
-        <WeightChart
+        <TimeLineChart
             ref="weightchart"
             :chartdata="chartdata"
             :options="options"
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import WeightChart from "@/components/WeightChart.vue";
+import TimeLineChart from "@/components/TimeLineChart.vue";
 
 var chartdata = {
     datasets: [
@@ -33,7 +33,7 @@ var options = {
 export default {
   name: "ChartsPage",
   components: {
-      WeightChart
+      TimeLineChart
   },
   data: () => ({chartdata, options}),   //le parentesi tonde servono a far interpretare le graffe come Object, e non come blocco di istruzioni
   computed: {
