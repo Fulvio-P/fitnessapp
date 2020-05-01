@@ -55,6 +55,7 @@ export default {
   overflow-x: hidden;
   overflow-y: auto;
   font-size: 16px;
+  z-index: 100;   /*gli elementi con valori alti vengono mostrati "in primo piano"*/
 }
 
 .SideNavList {
