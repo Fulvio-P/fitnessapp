@@ -19,3 +19,5 @@ router.get("/:id", async (req, res) => {
     };
     return res.status(200).send(JSON.stringify(toSend));
 });
+
+module.exports = router;
