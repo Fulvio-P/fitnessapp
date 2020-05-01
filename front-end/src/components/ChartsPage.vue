@@ -5,50 +5,60 @@ vedere chartUtils.js (e il resto dei file relativi ai grafici).
 
 <template>
     <div>
-        <TimeLineChart
-            ref="weightchart"
-            :chartdata="weightdata"
-            :options="weightoptions"
-            :suggymin="0"
-            :suggymax="80"
-            :dataurls="[{
-                url: 'http://localhost:5000/api/weight/'+loggedId,
-                onDatasets: [{
-                    index: 0,
-                    xprop: 'data',
-                    yprop: 'peso',
-                }]
-            }]"
-        />
-        <CalorieChart
-            ref="calchart"
-            :chartdata="caldata"
-            :options="caloptions"
-            :suggymin="0"
-            :suggymax="80"
-            :stacked="true"
-            :dataurls="[{
-                url: 'http://localhost:5000/api/calories/'+loggedId,
-                onDatasets: [
-                    {
-                        index: 0,
-                        xprop: 'data',
-                        yprop: 'calin',
-                    },
-                    {
-                        index: 1,
-                        xprop: 'data',
-                        yprop: 'calout',
-                        applyToAllData: v=>v.y*=-1,
-                    },
-                    {
-                        index: 2,
-                        xprop: 'data',
-                        yprop: 'bilancio',
-                    },
-                ]
-            }]"
-        />
+        <b-container fluid>
+            <b-row>
+                <b-col sm>
+                    <TimeLineChart
+                        ref="weightchart"
+                        class="chart"
+                        :chartdata="weightdata"
+                        :options="weightoptions"
+                        :suggymin="0"
+                        :suggymax="80"
+                        :dataurls="[{
+                            url: 'http://localhost:5000/api/weight/'+loggedId,
+                            onDatasets: [{
+                                index: 0,
+                                xprop: 'data',
+                                yprop: 'peso',
+                            }]
+                        }]"
+                    />
+                </b-col>
+                <b-col sm>
+                    <CalorieChart
+                        ref="calchart"
+                        class="chart"
+                        :chartdata="caldata"
+                        :options="caloptions"
+                        :suggymin="0"
+                        :suggymax="80"
+                        :stacked="true"
+                        :dataurls="[{
+                            url: 'http://localhost:5000/api/calories/'+loggedId,
+                            onDatasets: [
+                                {
+                                    index: 0,
+                                    xprop: 'data',
+                                    yprop: 'calin',
+                                },
+                                {
+                                    index: 1,
+                                    xprop: 'data',
+                                    yprop: 'calout',
+                                    applyToAllData: v=>v.y*=-1,
+                                },
+                                {
+                                    index: 2,
+                                    xprop: 'data',
+                                    yprop: 'bilancio',
+                                },
+                            ]
+                        }]"
+                    />
+                </b-col>
+            </b-row>
+        </b-container>
         <b-button @click="calchart.mostraBilancio();">Mostra Bilancio</b-button>
         <b-button @click="calchart.mostraInOut();">Mostra totale ingerite e bruciate</b-button>
     </div>
@@ -119,3 +129,6 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+</style>
