@@ -72,7 +72,7 @@ var weightdata = {
     datasets: [
         {
             label: 'Peso',
-            backgroundColor: '#f87979',
+            backgroundColor: '#88c0d0',   //nord8
             data: [],
         }
     ]
@@ -82,19 +82,19 @@ var caldata = {
     datasets: [
         {
             label: "Calorie Ingerite",
-            backgroundColor: "red",
+            backgroundColor: "#d08770",   //nord12
             data: [],
             hidden: true,
         },
         {
             label: "Calorie Bruciate",
-            backgroundColor: "green",
+            backgroundColor: "#a3be8c",   //nord14
             data: [],
             hidden: true,
         },
         {
             label: 'Bilancio Calorie',
-            backgroundColor: 'blue',
+            backgroundColor: '#b48ead',    //nord15
             data: [],
             hidden: false,
         },
