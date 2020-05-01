@@ -1,4 +1,10 @@
 <!--
+Questo grafico ha comportamenti speciali che esulano da quello di un normale grafico,
+quindi ha una componente tutta sua che aggiunge un paio di metodi
+che verranno usati come event handler e nuove operazioni di inizializzazione.
+-->
+
+<!--
 NON mettere <template> nei grafici, per indicazione della documentazione:
 https://vue-chartjs.org/guide/#vue-single-file-components
 -->
@@ -8,10 +14,13 @@ import TimeBarChart from '@/components/TimeBarChart.vue';
 
 export default {
     extends: TimeBarChart,
+    //Queste operazioni vengono eseguite in aggiunta a quelle
+    //definite nei mounted delle suoer-componenti.
     mounted() {
         this.mostraBilancio();
         this.options.legend = {display: false};
     },
+    //direi che i metodi si spiegano da soli
     methods: {
         mostraBilancio() {
             this.chartdata.datasets[0].hidden=true;

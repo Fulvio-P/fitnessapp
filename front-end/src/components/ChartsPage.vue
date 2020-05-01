@@ -1,3 +1,8 @@
+<!--
+Per una documentazione sul significato di tutte le proprietà delle componenti *Chart,
+vedere chartUtils.js (e il resto dei file relativi ai grafici).
+-->
+
 <template>
     <div>
         <TimeLineChart
@@ -75,14 +80,12 @@ var caldata = {
             label: "Calorie Bruciate",
             backgroundColor: "green",
             data: [],
-            type: 'bar',
             hidden: true,
         },
         {
             label: 'Bilancio Calorie',
             backgroundColor: 'blue',
             data: [],
-            type: 'bar',
             hidden: false,
         },
     ]

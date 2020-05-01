@@ -1,4 +1,9 @@
 <!--
+Nulla da documentare, non facciamo altro che "concretizzare" il grafico assegnandogli un tipo.
+Tutta la logica è già stata definita altrove.
+-->
+
+<!--
 NON mettere <template> nei grafici, per indicazione della documentazione:
 https://vue-chartjs.org/guide/#vue-single-file-components
 -->
