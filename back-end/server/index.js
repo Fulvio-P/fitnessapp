@@ -14,6 +14,9 @@ app.use(cors());
 const weight = require("./routes/api/weight");
 app.use("/api/weight/", weight);
 
+const calories = require("./routes/api/calories");
+app.use("/api/calories", calories);
+
 //starting server
 const port = process.env.PORT || 5000;
-app.listen(port, () => { console.log(`Sever started on port ${port}`)});
+app.listen(port, () => { console.log(`Server started on port ${port}`)});

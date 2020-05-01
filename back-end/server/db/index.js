@@ -91,7 +91,17 @@ async function getMisurePeso(id) {
     if (!(await getUsernameIfExists(id))) {
         return null;
     }
-    var queryRes = await pool.query("SELECT data as data, peso as peso FROM misuraPeso WHERE id=$1", [id]);
+    var queryRes = await pool.query("SELECT data as data, peso as peso "+
+                                    "FROM misuraPeso WHERE id=$1", [id]);
+    return queryRes.rows;
+}
+
+async function getMisureCalorie(id) {
+    if (!(await getUsernameIfExists(id))) {
+        return null;
+    }
+    var queryRes = await pool.query("SELECT data as data, calin as calin, calout as calout, "+
+                                    "(calin-calout) as bilancio FROM misuraCalorie WHERE id=$1", [id]);
     return queryRes.rows;
 }
 
@@ -101,6 +111,7 @@ module.exports = {
     setCalorie,
     setPeso,
     getMisurePeso,
+    getMisureCalorie,
 }
 
 //shell();
