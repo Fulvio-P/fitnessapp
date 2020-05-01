@@ -6,8 +6,11 @@ export default {
         timeChartSetup() {
             this.xAxisTimeSetup();
             this.yAxisSetSuggestedLimits(this.suggymin, this.suggymax);
-            if (this.dataurl) {
-                this.pullDataFromOurServer(this.dataurl, this.xprop, this.yprop, true);
+            if (this.dataurls) {
+                this.pullAllData(this.dataurls, true);
+            }
+            if (this.stacked==true) {
+                this.activateStacking();
             }
             this.renderChart(this.chartdata, this.options)
         },
