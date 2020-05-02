@@ -10,6 +10,7 @@ https://node-postgres.com/features/connecting
 https://node-postgres.com/features/queries
 https://node-postgres.com/features/pooling
 */
+
 const { Pool } = require("pg");
 const pool = new Pool();
 
@@ -18,122 +19,99 @@ require("dotenv").config();
 //crea un nuovo utente nel DB di test
 async function newUser(username, password) {
     try {
-        var res = await pool.query("INSERT INTO accesso(username, password) VALUES ($1, $2);",
+        var res = await pool.query("INSERT INTO utente(username, password) VALUES ($1, $2);",
                                     [username, password]);
-        console.log("insert "+username+" in accesso: "+res.rows);
-        res = await pool.query("INSERT INTO nutrizione(username) VALUES ($1);", [username]);
-        console.log("insert "+username+" in nutrizione: "+res.rows);
+        console.log("insert "+username+" in utente: "+res.rows);
     } catch(err) {
         console.error("newUser("+username+","+password+"): "+err.stack);
     }
 }
 
-//imposta i valori di nutrizione di un utente se la sua password è corretta
-async function setNutrition(username, password, zuccheri, proteine, grassi) {
-    var queryRes = await pool.query("SELECT * FROM accesso WHERE username=$1", [username]);
+async function getUsernameIfExists(id) {
+    var queryRes = await pool.query("SELECT * FROM utente WHERE id=$1", [id]);
     if (queryRes.rows.length<1) {
-        return "setNutrition "+username+": L'utente non esiste";
+        return null;
     }
-    if (queryRes.rows[0].password!=password) {
-        return "setNutrition "+username+": Password sbagliata";
-    }
-    queryRes = await pool.query("SELECT * FROM nutrizione WHERE username=$1", [username]);
-    if (queryRes.length<1) {
-        let res = await pool.query("INSERT INTO nutrizione VALUES ($1,$2,$3,$4)", 
-                        [username, zuccheri, proteine, grassi]);
-        return "setNutrition "+username+": "+res.rows+"(insert)";
-    }
-    let res =  await pool.query("UPDATE nutrizione SET username=$1, "+
-                                                        "carboidrati=$2, "+
-                                                        "proteine=$3, "+
-                                                        "grassi=$4"+
-                                                "WHERE username=$1",
-                                [username, zuccheri, proteine, grassi]);
-    return "setNutrition "+username+": "+res.rows+"(update)";
+    return queryRes.rows[0].username;
 }
 
-/*
-Inizializza le tabelle di un DB di test.
-Ovviamente una funzione del genere non può esistere in produzione, ma in qualche modo
-devo partire, e in più mi alleno con la libreria di postgres.
-Questo DB avrà due tabelle molto semplici, per il solo gusto di averne due.
-Vedremo poi quante e quali tabelle ci servono.
-*/
-async function initDB() {
-    console.log("N.B: Avere risposte vuote per insert/update è buon segno!");
-    await pool.query("CREATE TABLE accesso ("+
-                        "username VARCHAR(50) PRIMARY KEY, "+
-                        "password VARCHAR(50) NOT NULL);"
-    );
-    await pool.query("CREATE TABLE nutrizione ("+
-                        "username VARCHAR(50) PRIMARY KEY REFERENCES accesso(username), "+
-                        "carboidrati NUMERIC NOT NULL DEFAULT 0, "+
-                        "proteine NUMERIC NOT NULL DEFAULT 0, "+
-                        "grassi NUMERIC NOT NULL DEFAULT 0);"
-    );
-    await newUser("AkihikoSanada", "polydeuces");
-    await newUser("ChieSatonaka", "tomoe");
-    await newUser("EdelgardVonHresvelg", "blackeagle");
-    console.log(await setNutrition("AkihikoSanada", "polydeuces", 10, 1000, 5));   //ok
-    console.log(await setNutrition("ChieSatonaka", "tomoe", 20, 20, 20));    //ok
-    console.log(await setNutrition("EdelgardVonHresvelg", "blackeagle", 100, 10, 5));   //ok
-    console.log(await setNutrition("ChieSatonaka", "jiraiya", 10000, 0, 10000));   //no password
-    console.log(await setNutrition("LukeTriton", "puzzles<3", 10, 10, 10));   //no utente
+async function getId(username) {
+    var queryRes = await pool.query("SELECT * FROM utente WHERE username=$1", [username]);
+    if (queryRes.rows.length<1) {
+        throw new Error("getId "+username+": L'utente non esiste");
+    }
+    return queryRes.rows[0].id;
 }
 
-//cancella le tabelle del DB, per permettermi di ricominciare da capo
-//ancora, è una funzione irrealistica che mi serve per giocare un po'
-async function destroyDB() {
+//aggiunge/modifica una misura di peso di un utente in una data
+//TODO mettere id come parametro, non username
+async function setPeso(username, data, peso) {
+    var id;
     try {
-        await pool.query("DROP TABLE nutrizione;");
+        id = await getId(username);
     } catch (err) {
-        ;
+        return "setPeso: "+err.message;
     }
+    var queryRes = await pool.query("SELECT * FROM misuraPeso WHERE id=$1 AND data=$2", 
+                                    [id, data]);
+    if (queryRes.rows.length<1) {
+        let res = await pool.query("INSERT INTO misuraPeso VALUES ($1,$2,$3)", 
+                                   [id, data, peso]);
+        return "setPeso "+id+": "+res.rows+"(insert)";
+    }
+    let res =  await pool.query("UPDATE misuraPeso SET peso=$3 "+
+                                                  "WHERE id=$1 AND data=$2",
+                                [id, data, peso]);
+    return "setPeso "+id+": "+res.rows+"(update)";
+}
+
+//aggiunge/modifica una misura di calorie di un utente in una data
+//TODO mettere id come parametro, non username
+async function setCalorie(username, data, calin, calout) {
+    var id;
     try {
-        await pool.query("DROP TABLE accesso;");
+        id = await getId(username);
     } catch (err) {
-        ;
+        return "setCalorie: "+err.message;
     }
+    var queryRes = await pool.query("SELECT * FROM misuraCalorie WHERE id=$1 AND data=$2", 
+                                    [id, data]);
+    if (queryRes.rows.length<1) {
+        let res = await pool.query("INSERT INTO misuraCalorie VALUES ($1,$2,$3,$4)", 
+                                   [id, data, calin, calout]);
+        return "setCalorie "+id+": "+res.rows+"(insert)";
+    }
+    let res =  await pool.query("UPDATE misuraCalorie SET calin=$3, calout=$4 "+
+                                                  "WHERE id=$1 AND data=$2",
+                                [id, data, calin, calout]);
+    return "setCalorie "+id+": "+res.rows+"(update)";
 }
 
-//mi permette di scrivere interattivamente tutte le query che voglio
-const readline = require('readline');
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
-function questionPromise(rl) {
-    return new Promise((resolve, reject) => {
-        rl.question("PG> ", ans=>{
-            if (ans=="quit") {
-                resolve(true);
-            }
-            else if (ans=="") {
-                resolve(false);
-            }
-            else {
-                pool
-                    .query(ans)
-                    .then(res=>{console.log(res.rows);resolve(false);})
-                    .catch(err=>{console.error("shell query "+ans+": "+err.stack);resolve(false);})
-            }
-        });
-    });
-}
-async function shell() {
-    await destroyDB();   //resetta in caso il server sia crashato l'ultima volta
-    try {
-        await initDB();
-    } catch(err) {
-        console.error("crashato initDB:\n"+err.message);
-        return;
+async function getMisurePeso(id) {
+    if (!(await getUsernameIfExists(id))) {
+        return null;
     }
-    var stop=false;
-    while(!stop) {
-        stop = await questionPromise(rl);
-    }
-    await destroyDB();
-    rl.close();
+    var queryRes = await pool.query("SELECT data as data, peso as peso "+
+                                    "FROM misuraPeso WHERE id=$1", [id]);
+    return queryRes.rows;
 }
 
-shell();
+async function getMisureCalorie(id) {
+    if (!(await getUsernameIfExists(id))) {
+        return null;
+    }
+    var queryRes = await pool.query("SELECT data as data, calin as calin, calout as calout, "+
+                                    "(calin-calout) as bilancio FROM misuraCalorie WHERE id=$1", [id]);
+    return queryRes.rows;
+}
+
+module.exports = {
+    getId,
+    newUser,
+    setCalorie,
+    setPeso,
+    getMisurePeso,
+    getMisureCalorie,
+}
+
+//shell();
