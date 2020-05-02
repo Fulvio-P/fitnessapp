@@ -9,8 +9,10 @@
   >
     <p><strong id="form-confirm-label">Log in</strong></p>
     <p>
-      [TEMP] Attenzione: Cliccando questo bottone eseguirai il login come AkihikoSanada.<br/>
-      <b>Non sei Akihiko?</b> Attaccati, ho altri test da fare prima di mettermi a scrivere front- e back-end per il login generico.
+      [TEMP] Attenzione: Cliccando questo bottone eseguirai il login come
+      AkihikoSanada.<br />
+      <b>Non sei Akihiko?</b> Attaccati, ho altri test da fare prima di mettermi
+      a scrivere front- e back-end per il login generico.
     </p>
     <b-button @click="login">Log in with Google</b-button>
     <b-button @click="close">Annulla</b-button>

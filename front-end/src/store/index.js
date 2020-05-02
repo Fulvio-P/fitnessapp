@@ -14,8 +14,7 @@ export default new Vuex.Store({
       state.loggedId = id;
       if (id) {
         state.isUserLoggedIn = true;
-      }
-      else {
+      } else {
         state.isUserLoggedIn = false;
       }
     },
@@ -24,7 +23,8 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    login({ commit }) {          //TODO fare versione con id parametrico una volta pronto il login fatto bene
+    login({ commit }) {
+      //TODO fare versione con id parametrico una volta pronto il login fatto bene
       commit("setLoggedId", 1);
     },
     logout({ commit }) {
