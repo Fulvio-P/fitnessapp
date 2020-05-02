@@ -13,7 +13,7 @@ vedere chartUtils.js (e il resto dei file relativi ai grafici).
                         class="chart"
                         :chartdata="weightdata"
                         :options="weightoptions"
-                        :suggymin="0"
+                        :suggymin="40"
                         :suggymax="80"
                         :dataurls="[{
                             url: 'http://localhost:5000/api/weight/'+loggedId,
@@ -31,8 +31,8 @@ vedere chartUtils.js (e il resto dei file relativi ai grafici).
                         class="chart"
                         :chartdata="caldata"
                         :options="caloptions"
-                        :suggymin="0"
-                        :suggymax="80"
+                        :suggymin="-100"
+                        :suggymax="100"
                         :stacked="true"
                         :dataurls="[{
                             url: 'http://localhost:5000/api/calories/'+loggedId,
@@ -56,11 +56,18 @@ vedere chartUtils.js (e il resto dei file relativi ai grafici).
                             ]
                         }]"
                     />
+                    Modalità: 
+                    <b-button
+                        @click="calchart.mostraBilancio();"
+                        v-bind:class="bilancioCondition"
+                    >Bilancio</b-button>
+                    <b-button
+                        @click="calchart.mostraInOut();"
+                        v-bind:class="inOutCondition"
+                    >Ingerite e Bruciate</b-button>
                 </b-col>
             </b-row>
         </b-container>
-        <b-button @click="calchart.mostraBilancio();">Mostra Bilancio</b-button>
-        <b-button @click="calchart.mostraInOut();">Mostra totale ingerite e bruciate</b-button>
     </div>
 </template>
 
@@ -72,8 +79,11 @@ var weightdata = {
     datasets: [
         {
             label: 'Peso',
-            backgroundColor: '#88c0d0',   //nord8
+            borderColor: '#88c0d0',   //nord8
+            backgroundColor: '#88c0d080',   //nord8 ma trasparente
             data: [],
+            pointRadius: 5,
+            pointHoverRadius: 7,
         }
     ]
 };
@@ -81,20 +91,26 @@ var weightdata = {
 var caldata = {
     datasets: [
         {
-            label: "Calorie Ingerite",
-            backgroundColor: "#d08770",   //nord12
+            label: "Ingerite",
+            borderColor: "#d08770",   //nord12
+            backgroundColor: "#d08770c0",   //nord12 ma trasparente
+            borderWidth: 2,
             data: [],
             hidden: true,
         },
         {
-            label: "Calorie Bruciate",
-            backgroundColor: "#a3be8c",   //nord14
+            label: "Bruciate",
+            borderColor: "#a3be8c",   //nord14
+            backgroundColor: "#a3be8cc0",   //nord14 ma trasparente
+            borderWidth: 2,
             data: [],
             hidden: true,
         },
         {
-            label: 'Bilancio Calorie',
-            backgroundColor: '#b48ead',    //nord15
+            label: 'Bilancio',
+            borderColor: "#b48ead",   //nord15
+            backgroundColor: "#b48eadc0",   //nord15 ma trasparente
+            borderWidth: 2,
             data: [],
             hidden: false,
         },
@@ -103,13 +119,24 @@ var caldata = {
 
 var weightoptions = {
     responsive: true,
-    maintainAspectRatio: false
+    maintainAspectRatio: false,
+    title: {
+        display: true,
+        text: "Peso"
+    },
+    legend: {
+        display: false
+    }
 }
 
 var caloptions = {
     responsive: true,
-    maintainAspectRatio: false
-}   //oggetti diversi per evitare che si facciano side-effect a vicenda
+    maintainAspectRatio: false,
+    title: {
+        display: true,
+        text: "Calorie"
+    },
+}
 
 export default {
   name: "ChartsPage",
@@ -125,10 +152,21 @@ export default {
       },
       calchart() {
           return this.$refs.calchart;
+      },
+      //monitoriamo quale sia la modalità del grafico calorie in base allo stato del dataset "bilancio"
+      bilancioCondition() {
+          return {selectedmode: !caldata.datasets[2].hidden}
+      },
+      inOutCondition() {
+          return {selectedmode: caldata.datasets[2].hidden}
       }
   },
 };
 </script>
 
 <style scoped>
+.selectedmode {
+    background-color: #ebcb8b;   /*nord13*/
+    color: #2e3440;   /*nord0*/
+}
 </style>

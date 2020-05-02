@@ -18,7 +18,6 @@ export default {
     //definite nei mounted delle suoer-componenti.
     mounted() {
         this.mostraBilancio();
-        this.options.legend = {display: false};
     },
     //direi che i metodi si spiegano da soli
     methods: {

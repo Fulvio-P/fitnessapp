@@ -44,6 +44,7 @@ export default {
             }
         },
         /**
+         * Restituisce una Promise che rappresenta l'operazione di:
          * Seguendo le indicazioni dell'array di Object dataurls, scarica tutti i dati necessari
          * dal nostro server e li mette nei dataset opportuni.
          * Ciascun elemento di dataurls deve contenere le proprietà:
@@ -58,17 +59,15 @@ export default {
          *  - applyToAllData (opzionale): una funzione che descrive un'azione da operare
          *                                su tutti i dati
          */
-        pullAllData(dataurls, thenRender) {
+        pullAllData(dataurls) {
             //prima costruisco un array di Promise...
             var promises = [];
             for (let i=0; i<dataurls.length; i++) {
                 let record = dataurls[i];
                 promises.push(this.pullDataFromOurServer(record.url, record.onDatasets));
             }
-            //...poi aspetto che tutte finiscano e rirenderizzo il grafico se richiesto
-            Promise.all(promises).then(()=>{
-                if (thenRender) this.renderChart(this.chartdata, this.options);
-            })
+            //...e restituisco la Promise collettiva
+            return Promise.all(promises)
         },
         /**
          * Restituisce una Promise che si risolve quando i dati sono stati scaricati dalla url
