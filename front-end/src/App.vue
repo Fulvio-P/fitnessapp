@@ -1,12 +1,18 @@
 <template>
   <div id="app">
+    <ShySideNavbar :avoidroutes="['/']" />
     <router-view />
   </div>
 </template>
 
 <script>
+import ShySideNavbar from "@/components/ShySideNavbar";
+
 export default {
-  name: "App"
+  name: "App",
+  components: {
+    ShySideNavbar
+  }
 };
 </script>
 

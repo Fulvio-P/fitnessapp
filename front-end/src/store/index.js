@@ -5,15 +5,18 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    loggedId: null,
     isUserLoggedIn: false,
     loginDialog: false
   },
   mutations: {
-    login(state) {
-      state.isUserLoggedIn = true;
-    },
-    logout(state) {
-      state.isUserLoggedIn = false;
+    setLoggedId(state, id) {
+      state.loggedId = id;
+      if (id) {
+        state.isUserLoggedIn = true;
+      } else {
+        state.isUserLoggedIn = false;
+      }
     },
     displayLoginDialog(state, payload) {
       state.loginDialog = payload;
@@ -21,10 +24,11 @@ export default new Vuex.Store({
   },
   actions: {
     login({ commit }) {
-      commit("login");
+      //TODO fare versione con id parametrico una volta pronto il login fatto bene
+      commit("setLoggedId", 1);
     },
     logout({ commit }) {
-      commit("logout");
+      commit("setLoggedId", null);
     },
     displayLoginDialog({ commit }, payload) {
       commit("displayLoginDialog", payload);

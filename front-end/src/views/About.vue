@@ -1,6 +1,5 @@
 <template>
   <div class="about">
-    <SideNav />
     <div class="body">
       <h1>This is an about page</h1>
       <p>Usiamo questa pagina per i test</p>
@@ -10,6 +9,7 @@
         Fugit tenetur corporis eius quaerat impedit, unde numquam nobis enim
         commodi!
       </p>
+      <ChartsPage />
       <b-button router-link to="/"> BACK HOME </b-button>
       <div>
         <h1>Test Form</h1>
@@ -25,14 +25,14 @@
 import WeightForm from "@/components/WeightForm.vue";
 import FoodForm from "@/components/FoodForm";
 import ActivitiesForm from "@/components/ActivitiesForm.vue";
-import SideNav from "@/components/SideNavbar.vue";
+import ChartsPage from "@/components/ChartsPage.vue";
 export default {
   name: "About",
   components: {
-    SideNav,
     WeightForm,
     FoodForm,
-    ActivitiesForm
+    ActivitiesForm,
+    ChartsPage
   }
 };
 </script>
