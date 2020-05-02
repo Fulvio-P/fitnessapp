@@ -11,16 +11,28 @@
         commodi!
       </p>
       <b-button router-link to="/"> BACK HOME </b-button>
+      <div>
+        <h1>Test Form</h1>
+        <WeightForm/>
+        <FoodForm/>
+        <ActivitiesForm/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import WeightForm from "@/components/WeightForm.vue";
+import FoodForm from "@/components/FoodForm";
+import ActivitiesForm from "@/components/ActivitiesForm.vue";
 import SideNav from "@/components/SideNavbar.vue";
 export default {
   name: "About",
   components: {
-    SideNav
+    SideNav,
+    WeightForm,
+    FoodForm,
+    ActivitiesForm
   }
 };
 </script>
