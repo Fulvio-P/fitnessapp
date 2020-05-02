@@ -1,3 +1,8 @@
+<!--
+Una variante della SideNav che non compare in alcuna delle route
+che vengono elencate nell'array avoidroutes.
+-->
+
 <template>
   <div>
     <SideNav v-show="isCurrentRouteOk" />
@@ -12,7 +17,7 @@ export default {
   extends: SideNav,
   computed: {
     isCurrentRouteOk() {
-      return this.avoidroutes.every(r => r != this.$route.path);
+      return this.avoidroutes.every(r => r != this.$route.path);   //programmazione funzionale <3
     }
   },
   components: {
