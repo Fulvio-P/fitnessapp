@@ -1,7 +1,8 @@
  //imports
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require("cors");
+const cors = require('cors');
+
 
 //initializing server
 const app = express();
