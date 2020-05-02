@@ -1,6 +1,5 @@
 <template>
   <div class="about">
-    <SideNav />
     <div class="body">
       <h1>This is an about page</h1>
       <p>Usiamo questa pagina per i test</p>
@@ -17,12 +16,10 @@
 </template>
 
 <script>
-import SideNav from "@/components/SideNavbar.vue";
 import ChartsPage from "@/components/ChartsPage.vue";
 export default {
   name: "About",
   components: {
-    SideNav,
     ChartsPage
   }
 };
