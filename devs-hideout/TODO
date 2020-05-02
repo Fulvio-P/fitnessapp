@@ -1,14 +1,12 @@
 Cose da fare:
--Sistemare la sidebar in modo che sia visualizzata su tutte le pagine tranne la landnig
--Finire di fare i grafici (assegnato: Francesco)
--Fare la pagina dei form (assegnato: Fulvio)
+-Fare pagina form e mettere pagine grafici e form nella sidebar (assegnato: Francesco)
+-Implementare il sistema di login (assegnato: Fulvio)
 
 Priorità minore:
 -Integrazione GoogleFit
 
 Cose da fare per flexare:
--Implementare il sistema di login
+-Evidenziare icona della sidebar per vista attuale
 -Aggiungere spinner durante i caricamenti
 -Aggiungere la linea obbiettivo sui grafici
--Evidenziare icona della sidebar per vista attuale
 -Aggiungere un sistema di follower
