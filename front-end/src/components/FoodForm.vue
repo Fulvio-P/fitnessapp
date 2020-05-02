@@ -1,6 +1,6 @@
 <template>
     <div class="food-form">
-        <b-form>
+        <b-form @submit="sendFood">
 
             <!-- Cibo mangiato -->
             <b-form-input
@@ -38,6 +38,8 @@
 
 
 <script>
+import axios from 'axios'
+
 export default {
     name:"FoodForm",
     data(){
@@ -46,6 +48,15 @@ export default {
             foodQuantity: undefined,
             foodEnergy: undefined
         }
-    }
+    },
+    methods: {
+        sendFood(){
+            axios.post("http://localhost:5000/food",{
+                foodItem: this.foodItem,
+                foodQuantity: this.foodQuantity,
+                foodEnergy: this.foodEnergy
+            })
+        }
+    },
 }
 </script>

@@ -1,12 +1,14 @@
  //imports
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 //initializing server
 const app = express();
 
 //middleware
 app.use(bodyParser.json());
+app.use(cors());
 
 
 //starting server
@@ -15,6 +17,10 @@ app.listen(port, () => { console.log(`Sever started on port ${port}`)});
 
 
 //handling requests
+app.get("/", (req, res)=>{
+    res.send("pippo");
+})
+
 app.post("/weight" , (req, res) => {
     console.log(req);
 })

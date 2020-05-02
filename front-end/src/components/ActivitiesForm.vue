@@ -1,6 +1,6 @@
 <template>
     <div class="activities-form">
-        <b-form>
+        <b-form @submit="sendActivity">
 
             <!-- Cibo mangiato -->
             <b-form-input
@@ -35,6 +35,8 @@
 
 
 <script>
+import axios from 'axios'
+
 export default {
     name:"ActivitiesForm",
     data(){
@@ -43,6 +45,15 @@ export default {
             activityTime: undefined,
             activityEnergy: undefined
         }
-    }
+    },
+    methods: {
+        sendActivity(){
+            axios.post("http://localhost:5000/activities", {
+                activityItem: this.activityItem,
+                activityTime: this.activityTime,
+                activityEnergy: this.activityEnergy
+            })
+        }
+    },
 }
 </script>
