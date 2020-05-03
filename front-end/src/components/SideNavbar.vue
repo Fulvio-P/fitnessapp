@@ -2,22 +2,22 @@
   <nav class="SideNav">
     <ul class="SideNavList">
       <li class="SideNavItem">
-        <router-link to="/charts" class="SideNavLink">
+        <ActivatingRouterLink to="/charts" class="SideNavLink">
           <BIconGraphUp class="centopercento" />
           <span class="LinkText">Grafici</span>
-        </router-link>
+        </ActivatingRouterLink>
       </li>
       <li class="SideNavItem">
-        <router-link to="/forms" class="SideNavLink">
+        <ActivatingRouterLink to="/forms" class="SideNavLink">
           <BIconPencilSquare class="centopercento" />
           <span class="LinkText">Registra</span>
-        </router-link>
+        </ActivatingRouterLink>
       </li>
       <li class="SideNavItem">
-        <router-link to="/" class="SideNavLink">
+        <ActivatingRouterLink to="/" class="SideNavLink">
           <BIconHouse class="centopercento" />
           <span class="LinkText">Home</span>
-        </router-link>
+        </ActivatingRouterLink>
       </li>
     </ul>
   </nav>
@@ -27,13 +27,15 @@
 //import SvgTest from "@/components/SvgTest.vue";
 //import SvgTest from "../assets/icons/user-profile.svg";
 import { BIconGraphUp, BIconPencilSquare, BIconHouse } from "bootstrap-vue";
+import ActivatingRouterLink from "@/components/ActivatingRouterLink.vue";
 export default {
   name: "SideNav",
   components: {
     //SvgTest,
     BIconGraphUp,
     BIconPencilSquare,
-    BIconHouse
+    BIconHouse,
+    ActivatingRouterLink,
   }
 };
 </script>
@@ -123,10 +125,16 @@ il numero di item se ne mettiamo di più*/
   transition: var(--transition-speed);
 }
 
-.SideNavLink:hover {
+.SideNavLink:hover:not(.active) {
   filter: grayscale(0%) opacity(1);
   background: var(--bg-secondary);
   color: var(--text-secondary);
+}
+
+.SideNavLink.active {
+  background: var(--nord8);
+  color: var(--nord2);
+  filter: grayscale(0%) opacity(1);
 }
 
 .LinkText {
