@@ -9,8 +9,8 @@ const index = require("./index");
 const { Pool } = require("pg");
 const pool = new Pool();
 
-//Crea le tabelle del DB e le riempie coi dati di qualche utente di test.
-async function initDB() {
+//Crea le tabelle del DB, se testUsers == true le popola con dati di alcuni utenti
+async function initDB(testUsers) {
 
     //Tabella utente TODO: modificare in modo che accetta le cose !
     console.log("N.B.: Avere risposte vuote per insert/update è buon segno!");
@@ -42,25 +42,27 @@ async function initDB() {
 
     
     
-    //user di default
-    await index.newUser("AkihikoSanada", "polydeuces");   //un utente completo, il protagonista dei test che andrò a fare sul frontend
-    await index.newUser("CassiusBright", "estelle1184");  //ha misure di peso, non di calorie
-    await index.newUser("ChieSatonaka", "tomoe");        //ha misure di calorie, non di peso
-    await index.newUser("EdelgardVonHresvelg", "blackeagle");    //ha una misura di entrambi, e dimostra che il tipo NUMERIC accetta anche i decimali
-    console.log(await index.setPeso("AkihikoSanada", new Date("2020-04-25"), 80));
-    console.log(await index.setPeso("AkihikoSanada", new Date("2020-04-26"), 70));
-    console.log(await index.setPeso("AkihikoSanada", new Date("2020-04-27"), 75));
-    console.log(await index.setPeso("CassiusBright", new Date("2020-04-25"), 80));
-    console.log(await index.setPeso("CassiusBright", new Date("2020-04-26"), 70));
-    console.log(await index.setPeso("CassiusBright", new Date("2020-04-27"), 75));
-    console.log(await index.setPeso("EdelgardVonHresvelg", new Date("2020-04-27"), 60.005));
-    console.log(await index.setCalorie("AkihikoSanada", new Date("2020-04-25"), 100, 100));
-    console.log(await index.setCalorie("AkihikoSanada", new Date("2020-04-26"), 50, 0));
-    console.log(await index.setCalorie("AkihikoSanada", new Date("2020-04-27"), 0, 60));
-    console.log(await index.setCalorie("ChieSatonaka", new Date("2020-04-25"), 100, 100));
-    console.log(await index.setCalorie("ChieSatonaka", new Date("2020-04-26"), 50, 0));
-    console.log(await index.setCalorie("ChieSatonaka", new Date("2020-04-27"), 0, 60));
-    console.log(await index.setCalorie("EdelgardVonHresvelg", new Date("2020-04-27"), 150.25, 200));
+    if(testUsers){
+        //user di default
+        await index.newUser("AkihikoSanada", "polydeuces");   //un utente completo, il protagonista dei test che andrò a fare sul frontend
+        await index.newUser("CassiusBright", "estelle1184");  //ha misure di peso, non di calorie
+        await index.newUser("ChieSatonaka", "tomoe");        //ha misure di calorie, non di peso
+        await index.newUser("EdelgardVonHresvelg", "blackeagle");    //ha una misura di entrambi, e dimostra che il tipo NUMERIC accetta anche i decimali
+        console.log(await index.setPeso("AkihikoSanada", new Date("2020-04-25"), 80));
+        console.log(await index.setPeso("AkihikoSanada", new Date("2020-04-26"), 70));
+        console.log(await index.setPeso("AkihikoSanada", new Date("2020-04-27"), 75));
+        console.log(await index.setPeso("CassiusBright", new Date("2020-04-25"), 80));
+        console.log(await index.setPeso("CassiusBright", new Date("2020-04-26"), 70));
+        console.log(await index.setPeso("CassiusBright", new Date("2020-04-27"), 75));
+        console.log(await index.setPeso("EdelgardVonHresvelg", new Date("2020-04-27"), 60.005));
+        console.log(await index.setCalorie("AkihikoSanada", new Date("2020-04-25"), 100, 100));
+        console.log(await index.setCalorie("AkihikoSanada", new Date("2020-04-26"), 50, 0));
+        console.log(await index.setCalorie("AkihikoSanada", new Date("2020-04-27"), 0, 60));
+        console.log(await index.setCalorie("ChieSatonaka", new Date("2020-04-25"), 100, 100));
+        console.log(await index.setCalorie("ChieSatonaka", new Date("2020-04-26"), 50, 0));
+        console.log(await index.setCalorie("ChieSatonaka", new Date("2020-04-27"), 0, 60));
+        console.log(await index.setCalorie("EdelgardVonHresvelg", new Date("2020-04-27"), 150.25, 200));
+    }
 }
 
 //cancella le tabelle del DB, per permettere di ricominciare da capo se necessario
@@ -147,31 +149,34 @@ async function shell() {
 }
 
 async function main() {
-    console.log("Cosa vuoi?\n1: Shell\n200: Crea\n30000: Distruggi\n40000: Reset\n50000: Reset->Shell->Distruggi");
+    console.log("Cosa vuoi?\nS: Shell\nC: Crea\nCT: Crea con user di test\nD: Distruggi\nR: Reset\nX: Reset->Shell->Distruggi");
     rl.question("PG> ", async (ans) => {
         const n = parseInt(ans);
         switch (n) {
-            case 1:
+            case S:
                 await shell();
                 break;
-            case 200:
-                await initDB();
+            case C:
+                await initDB(false);
                 break;
-            case 30000:
+            case CT:
+                await initDB(true);
+                break;
+            case D:
                 await destroyDB();
                 break;
-            case 40000:
+            case R:
                 await destroyDB();
                 await initDB();
                 break;
-            case 50000:
+            case X:
                 await destroyDB();
                 await initDB();
                 await shell();
                 await destroyDB();
                 break;
             default:
-                console.log("Numero non riconosciuto");
+                console.log("Comando non riconosciuto");
                 break;
         }
     });
