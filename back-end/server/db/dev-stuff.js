@@ -151,25 +151,24 @@ async function shell() {
 async function main() {
     console.log("Cosa vuoi?\nS: Shell\nC: Crea\nCT: Crea con user di test\nD: Distruggi\nR: Reset\nX: Reset->Shell->Distruggi");
     rl.question("PG> ", async (ans) => {
-        const n = parseInt(ans);
-        switch (n) {
-            case S:
+        switch (ans) {
+            case 'S':
                 await shell();
                 break;
-            case C:
+            case 'C':
                 await initDB(false);
                 break;
-            case CT:
+            case 'CT':
                 await initDB(true);
                 break;
-            case D:
+            case 'D':
                 await destroyDB();
                 break;
-            case R:
+            case 'R':
                 await destroyDB();
                 await initDB();
                 break;
-            case X:
+            case 'X':
                 await destroyDB();
                 await initDB();
                 await shell();
