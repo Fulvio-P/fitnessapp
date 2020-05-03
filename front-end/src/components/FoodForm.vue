@@ -46,12 +46,14 @@ export default {
     };
   },
   methods: {
-    sendFood() {
+    sendFood(ev) {
+      ev.preventDefault();
       axios.post("http://localhost:5000/food", {
         foodItem: this.foodItem,
         foodQuantity: this.foodQuantity,
         foodEnergy: this.foodEnergy
       });
+      ev.target.reset();
     }
   }
 };

@@ -43,12 +43,14 @@ export default {
     };
   },
   methods: {
-    sendActivity() {
+    sendActivity(ev) {
+      ev.preventDefault();
       axios.post("http://localhost:5000/activities", {
         activityItem: this.activityItem,
         activityTime: this.activityTime,
         activityEnergy: this.activityEnergy
       });
+      ev.target.reset();
     }
   }
 };
