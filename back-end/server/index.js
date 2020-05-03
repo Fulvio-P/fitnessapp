@@ -18,8 +18,8 @@ app.use("/api/weight/", weight);
 const calories = require("./routes/calories");
 app.use("/api/calories", calories);
 
-const register = require("./routes/register");
-app.use("/routes/register", register);
+const auth = require("./routes/auth");
+app.use("/routes/user", auth);
 
 //starting server
 const port = process.env.PORT || 5000;
