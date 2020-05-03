@@ -27,6 +27,7 @@ async function newUser(username, password) {
     }
 }
 
+//ritorna username se l'utente esuste altrimenti null
 async function getUsernameIfExists(id) {
     var queryRes = await pool.query("SELECT * FROM utente WHERE id=$1", [id]);
     if (queryRes.rows.length<1) {
@@ -35,6 +36,7 @@ async function getUsernameIfExists(id) {
     return queryRes.rows[0].username;
 }
 
+//ritorna l'id se lutente esiste alrimenti null
 async function getId(username) {
     var queryRes = await pool.query("SELECT * FROM utente WHERE username=$1", [username]);
     if (queryRes.rows.length<1) {
