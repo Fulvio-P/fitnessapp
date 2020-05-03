@@ -7,7 +7,7 @@ const router = express.Router();
 //POST api/user/register: riceve dati e crea un utente nel database se non esiste già
 router.post('/register', async (req, res) => {
 
-    /*estraggo dati dalla richiesta*/
+    /* Estraggo dati dalla richiesta */
     let email = req.body.email;
     let username = req.body.username;
     let password = req.body.password;
@@ -35,7 +35,7 @@ router.post('/register', async (req, res) => {
     
 
 
-    
+
     /* Provo ad aggiungere l'utente al database */
     try {
         await db.addUser(email, username, hashedPassword)
@@ -44,7 +44,53 @@ router.post('/register', async (req, res) => {
         res.status(500).send("Errore inserimento nel database: "+err)
     }
 
-})
+});
+
+
+
+
+
+//POST api/user/login : riceve i dati e ritorna un token se corretti
+router.post('/login', async (req, res) => {
+
+    /* Estraggo i dati dalla richesta */
+    let email = req.body.email;
+    let password = req.body.password;
+    
+
+
+
+
+
+    /* Controllo che l'utente esista nel database */
+    let user;
+    try {
+        user = await db.getUserByEmail(email);
+        if(!user) return res.status(403).send("Utente non registrato");
+    } catch (err) {
+        res.status(500).send("Errore controllo registrazione: "+err);
+    }
+
+
+
+
+
+    /* Cotrollo password */
+    let passMatch = bcrypt.compareSync(password, user.password);
+    if(!passMatch){
+        return res.status(403).send("Credenziali errate");
+    }
+
+
+
+
+
+    /* Invio risposta al front-end */
+    res.status(200).send({
+        "id": user.id
+    });
+
+});
 
 
 module.exports = router;
