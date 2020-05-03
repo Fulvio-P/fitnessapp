@@ -65,7 +65,7 @@ export default {
     
     registerNewUser(){
       axios
-      .post("http://localhost:5000/register", {
+      .post("http://localhost:5000/api/user/register", {
         email: this.email,
         username: this.username,
         password: this.password

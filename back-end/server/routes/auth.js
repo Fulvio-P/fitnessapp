@@ -1,5 +1,6 @@
 const express = require('express');
 const db = require("../db/index");
+const bcrypt = require('bcryptjs');
 const router = express.Router();
 
 
@@ -11,7 +12,6 @@ router.post('/register', async (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
 
-    /* INSERIRE HASHING PASSWORD*/
 
     
     
@@ -24,14 +24,23 @@ router.post('/register', async (req, res) => {
         res.status(500).send("Il controllo utente già registrato ha dato errore: "+err);
     } 
 
+
+
+
+
+
+    /* Hashing della password */
+    let salt = bcrypt.genSaltSync(10);
+    let hashedPassword = bcrypt.hashSync(password, salt);
+
     
     
     
     
     /* Provo ad aggiungere l'utente al database */
     try {
-        await db.addUser(email, username, password)
-        res.status(200).send("Registrato utente: "+username);
+        await db.addUser(email, username, hashedPassword)
+        res.status(200).send("Registrato utente: "+username+"\nhash: "+ hashedPassword);
     } catch (err) {
         res.status(500).send("Errore inserimento nel database: "+err)
     }
