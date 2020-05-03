@@ -18,6 +18,9 @@ app.use("/api/weight/", weight);
 const calories = require("./routes/api/calories");
 app.use("/api/calories", calories);
 
+const register = require("./routes/register");
+app.use("/routes/register", register);
+
 //starting server
 const port = process.env.PORT || 5000;
 app.listen(port, () => { console.log(`Server started on port ${port}`)});
