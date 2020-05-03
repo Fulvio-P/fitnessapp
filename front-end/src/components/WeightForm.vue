@@ -44,13 +44,15 @@ export default {
     };
   },
   methods: {
-    sendWeight() {
+    sendWeight(ev) {
+      ev.preventDefault();
       axios
         .post("http://localhost:5000/weight", {
           weight: this.weight
         })
         .then(res => console.log(res))
         .catch(err => console.error(err));
+      ev.target.reset();
     }
   }
 };
