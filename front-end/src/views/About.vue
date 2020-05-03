@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <div class="body">
+    <div class="body sidebar-margin">
       <h1>This is an about page</h1>
       <p>Usiamo questa pagina per i test</p>
       <p>
@@ -11,36 +11,21 @@
       </p>
       <ChartsPage />
       <b-button router-link to="/"> BACK HOME </b-button>
-      <div>
-        <h1>Test Form</h1>
-        <WeightForm/>
-        <FoodForm/>
-        <ActivitiesForm/>
-      </div>
+      <FormsPage />
     </div>
   </div>
 </template>
 
 <script>
-import WeightForm from "@/components/WeightForm.vue";
-import FoodForm from "@/components/FoodForm";
-import ActivitiesForm from "@/components/ActivitiesForm.vue";
+import FormsPage from "@/components/FormsPage.vue";
 import ChartsPage from "@/components/ChartsPage.vue";
 export default {
   name: "About",
   components: {
-    WeightForm,
-    FoodForm,
-    ActivitiesForm,
+    FormsPage,
     ChartsPage
   }
 };
 </script>
 
-<style scoped>
-.body {
-  margin: 0;
-  padding: 0;
-  margin-left: 5rem;
-}
-</style>
+<style scoped></style>

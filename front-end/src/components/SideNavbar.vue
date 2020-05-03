@@ -2,28 +2,22 @@
   <nav class="SideNav">
     <ul class="SideNavList">
       <li class="SideNavItem">
-        <a href="#" class="SideNavLink">
-          <SvgTest class="centopercento luigi" />
-          <span class="LinkText">Luigi</span>
-        </a>
+        <ActivatingRouterLink to="/charts" class="SideNavLink">
+          <BIconGraphUp class="centopercento" />
+          <span class="LinkText">Grafici</span>
+        </ActivatingRouterLink>
       </li>
       <li class="SideNavItem">
-        <a href="#" class="SideNavLink">
-          <SvgTest class="centopercento mario" />
-          <span class="LinkText">Mario</span>
-        </a>
+        <ActivatingRouterLink to="/forms" class="SideNavLink">
+          <BIconPencilSquare class="centopercento" />
+          <span class="LinkText">Registra</span>
+        </ActivatingRouterLink>
       </li>
       <li class="SideNavItem">
-        <a href="#" class="SideNavLink">
-          <SvgTest class="centopercento pippo" />
-          <span class="LinkText">Pippo</span>
-        </a>
-      </li>
-      <li class="SideNavItem">
-        <a href="#" class="SideNavLink">
-          <SvgTest class="centopercento paperino" />
-          <span class="LinkText">Paperino</span>
-        </a>
+        <ActivatingRouterLink to="/" class="SideNavLink">
+          <BIconHouse class="centopercento" />
+          <span class="LinkText">Home</span>
+        </ActivatingRouterLink>
       </li>
     </ul>
   </nav>
@@ -31,11 +25,17 @@
 
 <script>
 //import SvgTest from "@/components/SvgTest.vue";
-import SvgTest from "../assets/icons/user-profile.svg";
+//import SvgTest from "../assets/icons/user-profile.svg";
+import { BIconGraphUp, BIconPencilSquare, BIconHouse } from "bootstrap-vue";
+import ActivatingRouterLink from "@/components/ActivatingRouterLink.vue";
 export default {
   name: "SideNav",
   components: {
-    SvgTest
+    //SvgTest,
+    BIconGraphUp,
+    BIconPencilSquare,
+    BIconHouse,
+    ActivatingRouterLink
   }
 };
 </script>
@@ -125,10 +125,16 @@ il numero di item se ne mettiamo di più*/
   transition: var(--transition-speed);
 }
 
-.SideNavLink:hover {
+.SideNavLink:hover:not(.active) {
   filter: grayscale(0%) opacity(1);
   background: var(--bg-secondary);
   color: var(--text-secondary);
+}
+
+.SideNavLink.active {
+  background: var(--nord8);
+  color: var(--nord2);
+  filter: grayscale(0%) opacity(1);
 }
 
 .LinkText {
