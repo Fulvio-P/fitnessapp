@@ -35,7 +35,7 @@ export default {
     BIconGraphUp,
     BIconPencilSquare,
     BIconHouse,
-    ActivatingRouterLink,
+    ActivatingRouterLink
   }
 };
 </script>
