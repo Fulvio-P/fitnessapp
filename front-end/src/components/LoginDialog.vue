@@ -69,7 +69,7 @@ export default {
       }).catch(()=>{
         alert("Errore");
       }).finally(()=>{
-        alert("Finally");
+        alert("Sono un alert nella finally");
       });
       return false;
     },
