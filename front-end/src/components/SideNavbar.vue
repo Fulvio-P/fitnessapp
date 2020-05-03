@@ -2,27 +2,21 @@
   <nav class="SideNav">
     <ul class="SideNavList">
       <li class="SideNavItem">
-        <a href="#" class="SideNavLink">
-          <SvgTest class="centopercento luigi" />
-          <span class="LinkText">Luigi</span>
-        </a>
+        <router-link to="/charts" class="SideNavLink">
+          <BIconGraphUp class="centopercento" />
+          <span class="LinkText">Grafici</span>
+        </router-link>
       </li>
       <li class="SideNavItem">
         <a href="#" class="SideNavLink">
-          <SvgTest class="centopercento mario" />
-          <span class="LinkText">Mario</span>
+          <BIconPencilSquare class="centopercento" />
+          <span class="LinkText">Registra</span>
         </a>
       </li>
       <li class="SideNavItem">
         <a href="#" class="SideNavLink">
           <SvgTest class="centopercento pippo" />
           <span class="LinkText">Pippo</span>
-        </a>
-      </li>
-      <li class="SideNavItem">
-        <a href="#" class="SideNavLink">
-          <SvgTest class="centopercento paperino" />
-          <span class="LinkText">Paperino</span>
         </a>
       </li>
     </ul>
@@ -32,10 +26,13 @@
 <script>
 //import SvgTest from "@/components/SvgTest.vue";
 import SvgTest from "../assets/icons/user-profile.svg";
+import { BIconGraphUp, BIconPencilSquare } from "bootstrap-vue";
 export default {
   name: "SideNav",
   components: {
-    SvgTest
+    SvgTest,
+    BIconGraphUp,
+    BIconPencilSquare
   }
 };
 </script>

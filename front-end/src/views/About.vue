@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <div class="body">
+    <div class="body sidebar-margin">
       <h1>This is an about page</h1>
       <p>Usiamo questa pagina per i test</p>
       <p>
@@ -29,9 +29,5 @@ export default {
 </script>
 
 <style scoped>
-.body {
-  margin: 0;
-  padding: 0;
-  margin-left: 5rem;
-}
+
 </style>

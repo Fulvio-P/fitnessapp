@@ -36,12 +36,19 @@ export default {
   --nord14: #a3be8c;
   --nord15: #b48ead;
 }
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #eceff4; /* nord 6 */
   color: #2e3440; /* nord 0 */
+}
+
+.sidebar-margin {
+  margin: 0;
+  padding: 0;
+  margin-left: 5rem;
 }
 
 /*
