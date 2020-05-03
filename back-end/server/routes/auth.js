@@ -50,7 +50,7 @@ router.post('/register', async (req, res) => {
 
 
 
-//POST api/user/login : riceve i dati e ritorna un token se corretti
+//POST api/user/login : riceve i dati e ritorna un id se corretti
 router.post('/login', async (req, res) => {
 
     /* Estraggo i dati dalla richesta */
