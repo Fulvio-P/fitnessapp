@@ -8,16 +8,16 @@
         </router-link>
       </li>
       <li class="SideNavItem">
-        <a href="#" class="SideNavLink">
+        <router-link to="/forms" class="SideNavLink">
           <BIconPencilSquare class="centopercento" />
           <span class="LinkText">Registra</span>
-        </a>
+        </router-link>
       </li>
       <li class="SideNavItem">
-        <a href="#" class="SideNavLink">
-          <SvgTest class="centopercento pippo" />
-          <span class="LinkText">Pippo</span>
-        </a>
+        <router-link to="/" class="SideNavLink">
+          <BIconHouse class="centopercento" />
+          <span class="LinkText">Home</span>
+        </router-link>
       </li>
     </ul>
   </nav>
@@ -25,14 +25,15 @@
 
 <script>
 //import SvgTest from "@/components/SvgTest.vue";
-import SvgTest from "../assets/icons/user-profile.svg";
-import { BIconGraphUp, BIconPencilSquare } from "bootstrap-vue";
+//import SvgTest from "../assets/icons/user-profile.svg";
+import { BIconGraphUp, BIconPencilSquare, BIconHouse } from "bootstrap-vue";
 export default {
   name: "SideNav",
   components: {
-    SvgTest,
+    //SvgTest,
     BIconGraphUp,
-    BIconPencilSquare
+    BIconPencilSquare,
+    BIconHouse
   }
 };
 </script>
