@@ -17,10 +17,10 @@ const pool = new Pool();
 require("dotenv").config();
 
 //crea un nuovo utente nel DB di test
-async function newUser(username, password) {
+async function newUser(email, username, password) {
     try {
-        var res = await pool.query("INSERT INTO utente(username, password) VALUES ($1, $2);",
-                                    [username, password]);
+        var res = await pool.query("INSERT INTO utente(email, username, password) VALUES ($1, $2, $3);",
+                                    [email, username, password]);
         console.log("insert "+username+" in utente: "+res.rows);
     } catch(err) {
         console.error("newUser("+username+","+password+"): "+err.stack);

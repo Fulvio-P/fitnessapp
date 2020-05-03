@@ -16,7 +16,7 @@ async function initDB(testUsers) {
     console.log("N.B.: Avere risposte vuote per insert/update è buon segno!");
     await pool.query("CREATE TABLE utente ("+
                         "id SERIAL PRIMARY KEY, "+
-                        "email VARCHAR(50) UNIQUE NOT NULL"+
+                        "email VARCHAR(50) UNIQUE NOT NULL,"+
                         "username VARCHAR(50) NOT NULL, "+
                         "password VARCHAR(50) NOT NULL);"
     );
@@ -45,10 +45,10 @@ async function initDB(testUsers) {
     
     if(testUsers){
         //user di default
-        await index.newUser("AkihikoSanada", "polydeuces");   //un utente completo, il protagonista dei test che andrò a fare sul frontend
-        await index.newUser("CassiusBright", "estelle1184");  //ha misure di peso, non di calorie
-        await index.newUser("ChieSatonaka", "tomoe");        //ha misure di calorie, non di peso
-        await index.newUser("EdelgardVonHresvelg", "blackeagle");    //ha una misura di entrambi, e dimostra che il tipo NUMERIC accetta anche i decimali
+        await index.newUser("akihiko@gekkouan.edu","AkihikoSanada", "polydeuces");   //un utente completo, il protagonista dei test che andrò a fare sul frontend
+        await index.newUser("cassius@firemail.com","CassiusBright", "estelle1184");  //ha misure di peso, non di calorie
+        await index.newUser("chie@yasogami.edu","ChieSatonaka", "tomoe");        //ha misure di calorie, non di peso
+        await index.newUser("vonHresvelg@blackeagles.org","EdelgardVonHresvelg", "blackeagle");    //ha una misura di entrambi, e dimostra che il tipo NUMERIC accetta anche i decimali
         console.log(await index.setPeso("AkihikoSanada", new Date("2020-04-25"), 80));
         console.log(await index.setPeso("AkihikoSanada", new Date("2020-04-26"), 70));
         console.log(await index.setPeso("AkihikoSanada", new Date("2020-04-27"), 75));
