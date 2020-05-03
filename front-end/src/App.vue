@@ -48,7 +48,7 @@ export default {
 .sidebar-margin {
   margin: 0;
   padding: 0;
-  margin-left: 5rem;
+  margin-left: 5.5rem;
 }
 
 /*
