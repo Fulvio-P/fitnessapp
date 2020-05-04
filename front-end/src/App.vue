@@ -41,8 +41,8 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #eceff4; /* nord 6 */
-  color: #2e3440; /* nord 0 */
+  background: var(--nord6);
+  color: var(--nord0);
 }
 
 .sidebar-margin {
