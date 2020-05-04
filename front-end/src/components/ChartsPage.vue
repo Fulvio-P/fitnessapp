@@ -93,12 +93,16 @@ Sintassi usata per recuperare le variabili CSS in JS:
 getComputedStyle(document.documentElement).getPropertyValue('--my-variable-name');
 */
 
+function getCSSVar(varname) {
+  return getComputedStyle(document.documentElement).getPropertyValue(varname).trim();
+}
+
 var weightdata = {
   datasets: [
     {
       label: "Peso",
-      borderColor: "#88c0d0", //nord8
-      backgroundColor: "#88c0d080", //nord8 ma trasparente
+      borderColor: getCSSVar("--nord8"), //nord8
+      backgroundColor: getCSSVar("--nord8")+"80", //nord8 ma trasparente
       data: [],
       pointRadius: 5,
       pointHoverRadius: 7
@@ -110,24 +114,24 @@ var caldata = {
   datasets: [
     {
       label: "Ingerite",
-      borderColor: "#d08770", //nord12
-      backgroundColor: "#d08770c0", //nord12 ma trasparente
+      borderColor: getCSSVar("--nord12"), //nord12
+      backgroundColor: getCSSVar("--nord12")+"c0", //nord12 ma trasparente
       borderWidth: 2,
       data: [],
       hidden: true
     },
     {
       label: "Bruciate",
-      borderColor: "#a3be8c", //nord14
-      backgroundColor: "#a3be8cc0", //nord14 ma trasparente
+      borderColor: getCSSVar("--nord14"), //nord14
+      backgroundColor: getCSSVar("--nord14")+"c0", //nord14 ma trasparente
       borderWidth: 2,
       data: [],
       hidden: true
     },
     {
       label: "Bilancio",
-      borderColor: "#b48ead", //nord15
-      backgroundColor: "#b48eadc0", //nord15 ma trasparente
+      borderColor: getCSSVar("--nord15"), //nord15
+      backgroundColor: getCSSVar("--nord15")+"c0", //nord15 ma trasparente
       borderWidth: 2,
       data: [],
       hidden: false
