@@ -2,6 +2,8 @@ const express = require('express');
 const db = require("../db/index");
 const bcrypt = require('bcryptjs');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
+const jwtSecret = process.env.JWT_SECRET;
 
 
 //POST api/user/register: riceve dati e crea un utente nel database se non esiste già
@@ -85,10 +87,19 @@ router.post('/login', async (req, res) => {
 
 
 
+    /* Creazione del token */
+    const token = jwt.sign(user,jwtSecret,{
+        expiresIn: "5h"
+    })
+    authData="Bearer "+token
+    //a quanto pare questo è il modo giusto di inviare token
+
+
+
+
+
     /* Invio risposta al front-end */
-    res.status(200).send({
-        "id": user.id
-    });
+    res.status(200).set('Authentication',authData).send(user);
 
 });
 
