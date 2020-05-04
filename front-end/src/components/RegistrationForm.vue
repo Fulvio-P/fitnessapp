@@ -53,6 +53,6 @@ export default {
 
 <style scoped>
 .form-btn {
-  background: #2e3440;
+  background: var(--nord0);
 }
 </style>

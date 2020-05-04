@@ -87,8 +87,8 @@ var weightdata = {
   datasets: [
     {
       label: "Peso",
-      borderColor: "#88c0d0", //nord8
-      backgroundColor: "#88c0d080", //nord8 ma trasparente
+      borderColor: getComputedStyle(document.documentElement).getPropertyValue("--nord8"), //nord8
+      backgroundColor: getComputedStyle(document.documentElement).getPropertyValue("--nord8")+"80", //nord8 ma trasparente
       data: [],
       pointRadius: 5,
       pointHoverRadius: 7
@@ -100,24 +100,24 @@ var caldata = {
   datasets: [
     {
       label: "Ingerite",
-      borderColor: "#d08770", //nord12
-      backgroundColor: "#d08770c0", //nord12 ma trasparente
+      borderColor: getComputedStyle(document.documentElement).getPropertyValue("--nord12"), //nord12
+      backgroundColor: getComputedStyle(document.documentElement).getPropertyValue("--nord12")+"c0", //nord12 ma trasparente
       borderWidth: 2,
       data: [],
       hidden: true
     },
     {
       label: "Bruciate",
-      borderColor: "#a3be8c", //nord14
-      backgroundColor: "#a3be8cc0", //nord14 ma trasparente
+      borderColor: getComputedStyle(document.documentElement).getPropertyValue("--nord14"), //nord14
+      backgroundColor: getComputedStyle(document.documentElement).getPropertyValue("--nord14")+"c0", //nord14 ma trasparente
       borderWidth: 2,
       data: [],
       hidden: true
     },
     {
       label: "Bilancio",
-      borderColor: "#b48ead", //nord15
-      backgroundColor: "#b48eadc0", //nord15 ma trasparente
+      borderColor: getComputedStyle(document.documentElement).getPropertyValue("--nord15"), //nord15
+      backgroundColor: getComputedStyle(document.documentElement).getPropertyValue("--nord15")+"c0", //nord15 ma trasparente
       borderWidth: 2,
       data: [],
       hidden: false
@@ -174,7 +174,7 @@ export default {
 
 <style scoped>
 .selectedmode {
-  background-color: #ebcb8b; /*nord13*/
-  color: #2e3440; /*nord0*/
+  background-color: var(--nord13);
+  color: var(--nord0);
 }
 </style>

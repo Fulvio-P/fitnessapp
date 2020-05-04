@@ -65,15 +65,15 @@ export default {
 <style scoped>
 a {
   text-decoration: none;
-  color: #eceff4; /* nord 6 */
+  color: var(--nord6);
 }
 .footer-form-btn {
-  background: #3b4252; /* nord 1 */
+  background: var(--nord1);
 }
 
 .footer {
-  background: #2e3440; /* nord 0 */
-  color: #eceff4; /* nord 6 */
+  background: var(--nord0);
+  color: var(--nord6);
 }
 
 .footer-section {
@@ -81,8 +81,8 @@ a {
 }
 
 .footer .footer-bottom {
-  background: #3b4252; /* nord 1 */
-  color: #4c566a; /* nord 3 */
+  background: var(--nord1);
+  color: var(--nord3);
   height: 50px;
   width: 100%;
   text-align: center;

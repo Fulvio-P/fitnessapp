@@ -81,10 +81,10 @@ il numero di item se ne mettiamo di più*/
 }
 
 .SideNav {
-  --text-primary: #eceff4; /* nord 6 */
-  --text-secondary: #88c0d0; /* nord 8 */
-  --bg-primary: #3b4252; /* nord 1 */
-  --bg-secondary: #434c5e; /* nord 2 */
+  --text-primary: var(--nord6);
+  --text-secondary: var(--nord8);
+  --bg-primary: var(--nord1);
+  --bg-secondary: var(--nord2);
   --transition-speed: 600ms;
   position: fixed;
   background-color: var(--bg-primary);
@@ -152,38 +152,4 @@ il numero di item se ne mettiamo di più*/
   width: 100%;
   height: 100%;
 } /*dovrebbe essere inutile, width è data dalla regola .SideNavLink svg*/
-
-/* Colori icone */
-.luigi .path1 {
-  fill: blue;
-}
-.luigi .path2 {
-  fill: green;
-}
-
-.mario .path1 {
-  fill: blue;
-}
-.mario .path2 {
-  fill: red;
-}
-
-.pippo .path1 {
-  fill: black;
-}
-.pippo .path2 {
-  fill: green;
-}
-
-.paperino .path1 {
-  fill: blue;
-}
-.paperino .path2 {
-  fill: yellow;
-}
-
-.path1,
-.path2 {
-  transition: var(--transition-speed);
-}
 </style>

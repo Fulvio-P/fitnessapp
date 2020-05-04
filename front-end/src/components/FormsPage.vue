@@ -41,9 +41,8 @@ export default {
 /* nav, nav-link e active  sono classi possedute dalle b-tabs di default */
 
 .formspage .nav .nav-link.active {
-  background-color: var(
-    --nord10
-  ) !important; /*non ho idea di cosa sia !important, ma senza non applica i colori, percui :/ */
+  /*non ho idea di cosa sia !important, ma senza non applica i colori, percui :/ */
+  background-color: var(--nord10) !important;
   color: var(--nord6) !important;
 }
 .formspage .nav .nav-link:not(.active) {
