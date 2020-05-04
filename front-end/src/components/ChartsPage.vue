@@ -83,12 +83,22 @@ vedere chartUtils.js (e il resto dei file relativi ai grafici).
 import TimeLineChart from "@/components/TimeLineChart.vue";
 import CalorieChart from "@/components/CalorieChart.vue";
 
+/*
+Non so se sia un problema di ChartsJS o di tutto JavaScript,
+ma se uso le variabili CSS qui il colore si rompe quando si fa hovering
+sul grafico.
+Quindi non metto le variabili CSS qui.
+
+Sintassi usata per recuperare le variabili CSS in JS:
+getComputedStyle(document.documentElement).getPropertyValue('--my-variable-name');
+*/
+
 var weightdata = {
   datasets: [
     {
       label: "Peso",
-      borderColor: getComputedStyle(document.documentElement).getPropertyValue("--nord8"), //nord8
-      backgroundColor: getComputedStyle(document.documentElement).getPropertyValue("--nord8")+"80", //nord8 ma trasparente
+      borderColor: "#88c0d0", //nord8
+      backgroundColor: "#88c0d080", //nord8 ma trasparente
       data: [],
       pointRadius: 5,
       pointHoverRadius: 7
@@ -100,24 +110,24 @@ var caldata = {
   datasets: [
     {
       label: "Ingerite",
-      borderColor: getComputedStyle(document.documentElement).getPropertyValue("--nord12"), //nord12
-      backgroundColor: getComputedStyle(document.documentElement).getPropertyValue("--nord12")+"c0", //nord12 ma trasparente
+      borderColor: "#d08770", //nord12
+      backgroundColor: "#d08770c0", //nord12 ma trasparente
       borderWidth: 2,
       data: [],
       hidden: true
     },
     {
       label: "Bruciate",
-      borderColor: getComputedStyle(document.documentElement).getPropertyValue("--nord14"), //nord14
-      backgroundColor: getComputedStyle(document.documentElement).getPropertyValue("--nord14")+"c0", //nord14 ma trasparente
+      borderColor: "#a3be8c", //nord14
+      backgroundColor: "#a3be8cc0", //nord14 ma trasparente
       borderWidth: 2,
       data: [],
       hidden: true
     },
     {
       label: "Bilancio",
-      borderColor: getComputedStyle(document.documentElement).getPropertyValue("--nord15"), //nord15
-      backgroundColor: getComputedStyle(document.documentElement).getPropertyValue("--nord15")+"c0", //nord15 ma trasparente
+      borderColor: "#b48ead", //nord15
+      backgroundColor: "#b48eadc0", //nord15 ma trasparente
       borderWidth: 2,
       data: [],
       hidden: false
