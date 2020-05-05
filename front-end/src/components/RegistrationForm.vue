@@ -1,18 +1,6 @@
 <template>
   <div>
-    <b-form>
-      <b-form-group
-        id="registration-group-1"
-        label="Indirizzo e-mail"
-        label-for="registration-email"
-      >
-        <b-form-input
-          id="registration-email"
-          type="email"
-          required
-          placeholder="Inserisci la tua mail"
-        ></b-form-input>
-      </b-form-group>
+    <b-form @submit="registerNewUser">
 
       <b-form-group
         id="registration-group-2"
@@ -21,6 +9,7 @@
       >
         <b-form-input
           id="registration-username"
+          v-model="username"
           required
           placeholder="Inserisci il tuo nome"
         ></b-form-input>
@@ -33,6 +22,7 @@
       >
         <b-form-input
           id="registration-password"
+          v-model="password"
           type="password"
           required
         ></b-form-input>
@@ -46,8 +36,30 @@
 </template>
 
 <script>
+
+import axios from 'axios'
+
 export default {
-  name: "RegistrationForm"
+  name: "RegistrationForm",
+  data() {
+    return {
+      username: undefined,
+      password: undefined
+    }
+  },
+  methods: {
+    
+    registerNewUser(ev){
+      ev.preventDefault();
+      axios
+      .post("http://localhost:5000/api/user/register", {
+        username: this.username,
+        password: this.password
+      });
+      ev.target.reset();
+    }
+
+  },
 };
 </script>
 

@@ -16,17 +16,62 @@ const pool = new Pool();
 
 require("dotenv").config();
 
+
+//aggiunge un nuovo utente al database
+async function addUser(username, password) {
+    await pool.query("INSERT INTO utente(username, password) VALUES ($1, $2);",[username, password]);
+}
+
+//ritorna i dati di un utente dato il suo id
+async function getUserById(id) {
+    var queryRes = await pool.query("SELECT * FROM utente WHERE id=$1", [id]);
+    if (queryRes.rows.length<1) {
+        return undefined;
+    }
+    return queryRes.rows[0];
+}
+
+//ritorna i dati di un utente dato il suo id
+async function getUserByName(username) {
+    var queryRes = await pool.query("SELECT * FROM utente WHERE username=$1", [username]);
+    if (queryRes.rows.length<1) {
+        return undefined;
+    }
+    return queryRes.rows[0];
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* FUNZIONI USATE PER I TEST */
+
 //crea un nuovo utente nel DB di test
-async function newUser(username, password) {
+async function newUser(email, username, password) {
     try {
-        var res = await pool.query("INSERT INTO utente(username, password) VALUES ($1, $2);",
-                                    [username, password]);
+        var res = await pool.query("INSERT INTO utente(email, username, password) VALUES ($1, $2, $3);",
+                                    [email, username, password]);
         console.log("insert "+username+" in utente: "+res.rows);
     } catch(err) {
         console.error("newUser("+username+","+password+"): "+err.stack);
     }
 }
 
+//ritorna username se l'utente esuste altrimenti null
 async function getUsernameIfExists(id) {
     var queryRes = await pool.query("SELECT * FROM utente WHERE id=$1", [id]);
     if (queryRes.rows.length<1) {
@@ -35,6 +80,7 @@ async function getUsernameIfExists(id) {
     return queryRes.rows[0].username;
 }
 
+//ritorna l'id se lutente esiste alrimenti null
 async function getId(username) {
     var queryRes = await pool.query("SELECT * FROM utente WHERE username=$1", [username]);
     if (queryRes.rows.length<1) {
@@ -106,6 +152,13 @@ async function getMisureCalorie(id) {
 }
 
 module.exports = {
+
+    //Funzioni definitive
+    addUser,
+    getUserByName,
+    getUserById,
+    
+    //Funzioni test
     getId,
     newUser,
     setCalorie,

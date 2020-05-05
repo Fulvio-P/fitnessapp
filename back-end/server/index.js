@@ -12,11 +12,14 @@ app.use(bodyParser.json());
 app.use(cors());
 
 //routes
-const weight = require("./routes/api/weight");
+const weight = require("./routes/weight");
 app.use("/api/weight/", weight);
 
-const calories = require("./routes/api/calories");
+const calories = require("./routes/calories");
 app.use("/api/calories", calories);
+
+const auth = require("./routes/auth");
+app.use("/api/user", auth);
 
 //starting server
 const port = process.env.PORT || 5000;
