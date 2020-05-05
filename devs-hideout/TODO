@@ -1,6 +1,17 @@
 Cose da fare:
--Fare form di login per bene (assegnato: Francesco)
--Implementare il sistema di login (assegnato: Fulvio)
+-Fare login bene (Fulvio)
+  - registrazione fa login (backend)
+  - Gestire errori login nel frontend
+  - Resettare correttamente i form
+  - mettere token in storage e usarlo (come header Authentication)
+  - gestire fallimento autenticazione (redirect login)
+-Ristrutturazione API: (Francesco)
+  - controllare il token nel backend (check e ???)
+  - usarle token in TUTTE le chiamate opportune
+  - GET, POST e DELETE per peso, cibo e allenamenti (mantenere tabella calorie)
+-Più informazioni
+  - aggiungere tabella info addizionali
+  - fare form per queste informazioni (pagina impostazioni profilo)
 
 Priorità minore:
 -Integrazione GoogleFit
@@ -9,3 +20,5 @@ Cose da fare per flexare:
 -Aggiungere spinner durante i caricamenti
 -Aggiungere la linea obbiettivo sui grafici
 -Aggiungere un sistema di follower
+-cambio username/password
+-mirage?
