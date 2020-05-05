@@ -63,13 +63,15 @@ export default {
   },
   methods: {
     
-    registerNewUser(){
+    registerNewUser(ev){
+      ev.preventDefault();
       axios
       .post("http://localhost:5000/api/user/register", {
         email: this.email,
         username: this.username,
         password: this.password
-      })
+      });
+      ev.target.reset();
     }
 
   },
