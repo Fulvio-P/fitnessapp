@@ -6,8 +6,16 @@ Potrebbe (Dovrebbe) anche essere rimosso dalla versione finale.
 */
 
 const index = require("./index");
+const bcrypt = require('bcryptjs');
 const { Pool } = require("pg");
 const pool = new Pool();
+
+async function addTestUser(email, username, password) {
+    /* Hashing della password */
+    let salt = bcrypt.genSaltSync(10);
+    let hashedPassword = bcrypt.hashSync(password, salt);
+    await index.addUser(email, username, hashedPassword);
+}
 
 //Crea le tabelle del DB, se testUsers == true le popola con dati di alcuni utenti
 async function initDB(testUsers) {
@@ -45,10 +53,10 @@ async function initDB(testUsers) {
     
     if(testUsers){
         //user di default
-        await index.newUser("akihiko@gekkouan.edu","AkihikoSanada", "polydeuces");   //un utente completo, il protagonista dei test che andrò a fare sul frontend
-        await index.newUser("cassius@firemail.com","CassiusBright", "estelle1184");  //ha misure di peso, non di calorie
-        await index.newUser("chie@yasogami.edu","ChieSatonaka", "tomoe");        //ha misure di calorie, non di peso
-        await index.newUser("vonHresvelg@blackeagles.org","EdelgardVonHresvelg", "blackeagle");    //ha una misura di entrambi, e dimostra che il tipo NUMERIC accetta anche i decimali
+        await addTestUser("akihiko@gekkoukan.edu","AkihikoSanada", "polydeuces");   //un utente completo, il protagonista dei test che andrò a fare sul frontend
+        await addTestUser("cassius@bracerguild.lb","CassiusBright", "estelle1184");  //ha misure di peso, non di calorie
+        await addTestUser("chie@yasogami.edu","ChieSatonaka", "tomoe");        //ha misure di calorie, non di peso
+        await addTestUser("vonHresvelg@blackeagles.gov.ad","EdelgardVonHresvelg", "blackeagle");    //ha una misura di entrambi, e dimostra che il tipo NUMERIC accetta anche i decimali
         console.log(await index.setPeso("AkihikoSanada", new Date("2020-04-25"), 80));
         console.log(await index.setPeso("AkihikoSanada", new Date("2020-04-26"), 70));
         console.log(await index.setPeso("AkihikoSanada", new Date("2020-04-27"), 75));
