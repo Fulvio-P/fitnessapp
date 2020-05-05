@@ -18,8 +18,8 @@ require("dotenv").config();
 
 
 //aggiunge un nuovo utente al database
-async function addUser(email, username, password) {
-    await pool.query("INSERT INTO utente(email, username, password) VALUES ($1, $2, $3);",[email, username, password]);
+async function addUser(username, password) {
+    await pool.query("INSERT INTO utente(username, password) VALUES ($1, $2);",[username, password]);
 }
 
 //ritorna i dati di un utente dato il suo id
@@ -32,8 +32,8 @@ async function getUserById(id) {
 }
 
 //ritorna i dati di un utente dato il suo id
-async function getUserByEmail(email) {
-    var queryRes = await pool.query("SELECT * FROM utente WHERE email=$1", [email]);
+async function getUserByName(username) {
+    var queryRes = await pool.query("SELECT * FROM utente WHERE username=$1", [username]);
     if (queryRes.rows.length<1) {
         return undefined;
     }
@@ -155,7 +155,7 @@ module.exports = {
 
     //Funzioni definitive
     addUser,
-    getUserByEmail,
+    getUserByName,
     getUserById,
     
     //Funzioni test
