@@ -10,11 +10,11 @@ const bcrypt = require('bcryptjs');
 const { Pool } = require("pg");
 const pool = new Pool();
 
-async function addTestUser(email, username, password) {
+async function addTestUser(username, password) {
     /* Hashing della password */
     let salt = bcrypt.genSaltSync(10);
     let hashedPassword = bcrypt.hashSync(password, salt);
-    await index.addUser(email, username, hashedPassword);
+    await index.addUser(username, hashedPassword);
 }
 
 //Crea le tabelle del DB, se testUsers == true le popola con dati di alcuni utenti
