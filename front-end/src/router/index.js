@@ -1,38 +1,71 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import Login from "../views/Login.vue";
+import store from '../store';
 
 Vue.use(VueRouter);
 
+
+/* recupero info autenticazione */
+const ifNotAuthenticated = (to, from, next) => {
+  if(!store.getters.isAuthenticated){
+    next();
+    return;
+  }
+  next('/');
+}
+const ifAuthenticated = (to, from, next) => {
+  if(store.getters.isAuthenticated){
+    next();
+    return;
+  }
+  next('/');
+}
+
+
+
+
+
+
 const routes = [
-  {
-    path: "/",
-    name: "Home",
-    component: Home
-  },
+  
+  /* Path di test */
   {
     path: "/about",
     name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+    component: () => import("../views/About.vue")
   },
   {
     path: "/profile",
     name: "Profile",
     component: () => import("../views/Profile.vue")
   },
+
+  /* Path buoni */
+  {
+    path: "/",
+    name: "Home",
+    component: Home
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+    beforeEnter: ifNotAuthenticated
+
+  },
   {
     path: "/charts",
     name: "Charts",
-    component: () => import("../views/Charts.vue")
+    component: () => import("../views/Charts.vue"),
+    beforeEnter: ifAuthenticated,
   },
   {
     path: "/forms",
     name: "Forms",
-    component: () => import("../views/Forms.vue")
+    component: () => import("../views/Forms.vue"),
+    beforeEnter: ifAuthenticated,
   }
 ];
 

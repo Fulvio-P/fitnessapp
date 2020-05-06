@@ -41,11 +41,11 @@
       </b-form>
     </p>
     <hr />
-    <b-button @click="testLogin"
+    <b-button disabled @click="testLogin"
       >[TESTING ONLY] Login diretto come AkihikoSanada</b-button
     >
     <br />
-    <b-button @click="close">Annulla</b-button>
+    <b-button router-link to='/'>Torna alla home</b-button>
   </div>
 </template>
 
@@ -75,9 +75,11 @@ export default {
       this.$store.dispatch("login");
       this.$store.dispatch("displayLoginDialog", false);
     },
-    close() {
+
+    //overlay disabilitato
+    /* close() {
       this.$store.dispatch("displayLoginDialog", false);
-    }
+    } */
   }
 };
 </script>

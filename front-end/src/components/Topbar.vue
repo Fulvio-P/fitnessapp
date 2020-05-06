@@ -12,12 +12,12 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <b-nav-item
+            router-link to='/login'
             v-if="!$store.state.isUserLoggedIn"
-            @click="displayOverlay()"
             >Log in</b-nav-item
           >
 
-          <!-- Questo pulsante deve essere sostituito con la foto del profilo e il nome una volta implementato il login -->
+          <!-- Questo pulsante deve essere eliminato -->
           <b-nav-item
             v-if="$store.state.isUserLoggedIn"
             router-link
@@ -47,9 +47,11 @@ export default {
         this.$router.push('/');
       })
     },
-    displayOverlay() {
+
+    //overlay disattivato per il momento
+    /* displayOverlay() {
       this.$store.dispatch("displayLoginDialog", true);
-    }
+    } */
   }
 };
 </script>
