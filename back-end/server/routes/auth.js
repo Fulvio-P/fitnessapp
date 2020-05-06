@@ -90,15 +90,15 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign(user,jwtSecret,{
         expiresIn: "5h"
     })
-    authData="Bearer "+token
-    //a quanto pare questo è il modo giusto di inviare token
 
 
 
 
 
     /* Invio risposta al front-end */
-    res.status(200).set('Authentication',authData).send(user);
+    res.status(200).send({
+        'token':token
+    });
 
 });
 
