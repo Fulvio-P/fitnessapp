@@ -25,7 +25,7 @@ router.get("/", async (req, res) => {
         username: req.user.username,
         dataPoints: rows,
     };
-    return res.status(200).send(JSON.stringify(toSend));
+    return res.status(200).json(toSend);
 });
 
 module.exports = router;
