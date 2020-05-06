@@ -10,7 +10,7 @@ che vengono elencate nell'array avoidroutes.
 </template>
 
 <script>
-import Login from '../views/Login.vue'
+
 import SideNav from "@/components/SideNavbar.vue"; //il nome del file è diverso dal nome della componente
 export default {
   name: "ShySideNavbar",
@@ -18,7 +18,7 @@ export default {
   extends: SideNav,
   computed: {
     isCurrentRouteOk() {
-      return this.avoidroutes.every(r => r != Login.$route.path || r != this.$route.path); //programmazione funzionale <3
+      return this.avoidroutes.every(r=> r != this.$route.path); //programmazione funzionale <3
     }
   },
   components: {
