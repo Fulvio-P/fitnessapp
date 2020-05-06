@@ -9,7 +9,7 @@
   >
     <p><strong id="form-confirm-label">Log in</strong></p>
     <p class="login-form">
-      <b-form @submit="loginSubmit">
+      <b-form @submit.prevent="loginSubmit">
         <b-form-group
           label="Username"
           label-for="login-username"
@@ -61,8 +61,7 @@ export default {
     };
   },
   methods: {
-    loginSubmit(ev) {
-      ev.preventDefault();
+    loginSubmit() {
       alert(
         `Hai scritto: ${this.loginUsername} - ${this.loginPassword}.\nInvio al server...`
       );
