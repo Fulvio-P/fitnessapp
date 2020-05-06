@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import axios from 'axios'
-const loginURL = 'http://localhost:5000/api/user/login'
+import axios from 'axios';
+const loginURL = 'http://localhost:5000/api/user/login';
 
 Vue.use(Vuex);
 
@@ -82,17 +82,23 @@ export default new Vuex.Store({
 
         //gestisco la risposta positiva
         .then(resp => {
+          //salvo il token
           const token = resp.data.token;
-          localStorage.setItem('user-token', token)
+          localStorage.setItem('user-token', token);
+          //imposto il token come header di default
+          axios.defaults.headers.common['Authorization'] = token;
           commit('AUTH_SUCCESS', token);
           dispatch('USER_REQUEST');
-          resolve(resp)
+          resolve(resp);
         })
         
         //gestisco risposte negative
         .catch(err => {
           commit('AUTH_ERROR', err);
+          //rimuovo il token dal local storage
           localStorage.removeItem('user-token');
+          //rimuovo il token dall'header
+          delete axios.defaults.headers.common['Authorization'];
           reject(err)
         })
 
