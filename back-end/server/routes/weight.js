@@ -5,17 +5,21 @@ const jwtSecret = process.env.JWT_SECRET;
 
 const router = express.Router();
 
-router.get("/:token", async (req, res) => {
-    var decoded;
+router.get("/", async (req, res) => {
+    var token, decoded;
     try {
-        decoded = jwt.verify(req.params.token, jwtSecret);
+        const authHeader = req.headers.authorization || "";   //in questo modo anche se Authorization non viene fornito affatto l'esecuzione può comunque andare avanti e darci un messaggio d'errore di jwt
+        token = authHeader.split(" ")[1];  //formato header = "Bearer TOKEN"
+        decoded = jwt.verify(token, jwtSecret);
     }
     catch (err) {
         if (err.name=="TokenExpiredError") {
-            res.status(400).send("Token Expired");
+            return res.status(401).send("Token Expired");
         }
         else {
-            res.status(400).send("Wrong Token");
+            console.error(`jwt ${err.name}: ${err.message}`);   //non sono sicuro che vogliamo rimandare al client il messaggio d'errore di jwt
+            return res.status(401).send("Wrong Token or No token");
+            
         }
     }
     try {
