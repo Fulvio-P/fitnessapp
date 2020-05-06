@@ -20,7 +20,7 @@ const ifAuthenticated = (to, from, next) => {
     next();
     return;
   }
-  next('/');
+  next('/login');
 }
 
 
