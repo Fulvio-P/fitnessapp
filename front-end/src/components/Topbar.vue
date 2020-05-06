@@ -29,8 +29,6 @@
           <b-nav-item
             v-if="$store.state.isUserLoggedIn"
             @click="logout"
-            router-link
-            to="/"
             >Log out</b-nav-item
           >
         </b-navbar-nav>
@@ -44,7 +42,10 @@ export default {
   name: "Topbar",
   methods: {
     logout() {
-      this.$store.dispatch("logout");
+      this.$store.dispatch("AUTH_LOGOUT")
+      .then(()=>{
+        this.$router.push('/');
+      })
     },
     displayOverlay() {
       this.$store.dispatch("displayLoginDialog", true);

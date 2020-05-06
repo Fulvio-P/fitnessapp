@@ -16,7 +16,7 @@
           class="text-left"
           ><b-form-input
             id="login-username"
-            v-model="loginUsername"
+            v-model="username"
             required
             placeholder="Inserisci username..."
           ></b-form-input
@@ -29,7 +29,7 @@
           ><b-form-input
             id="login-password"
             type="password"
-            v-model="loginPassword"
+            v-model="password"
             required
             placeholder="Inserisci password..."
           ></b-form-input
@@ -50,37 +50,27 @@
 </template>
 
 <script>
-import axios from "axios";
+
 
 export default {
   name: "LoginDialog",
   data() {
     return {
-      loginUsername: undefined,
-      loginPassword: undefined
+      username: undefined,
+      password: undefined
     };
   },
   methods: {
+    
     loginSubmit() {
-      alert(
-        `Hai scritto: ${this.loginUsername} - ${this.loginPassword}.\nInvio al server...`
-      );
-      axios
-        .post("http://localhost:5000/api/user/login", {
-          username: this.loginUsername,
-          password: this.loginPassword
-        })
-        .then(resp => {
-          alert(`[PLACEHOLDER]\nE il server ha risposto...\n${resp}`);
-        })
-        .catch(() => {
-          alert("Errore");
-        })
-        .finally(() => {
-          alert("Sono un alert nella finally");
-        });
-      return false;
+      //recupero username e password dal form
+      const {username, password} = this;
+      //avvio autenticazione (gestita da vuex)
+      this.$store.dispatch('AUTH_REQUEST', {username, password})
+      //se tutto va bene redirect sulla pagina dei chart
+      .then(()=> {this.$router.push('/charts')})
     },
+
     testLogin() {
       this.$store.dispatch("login");
       this.$store.dispatch("displayLoginDialog", false);
