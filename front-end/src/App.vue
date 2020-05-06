@@ -6,12 +6,27 @@
 </template>
 
 <script>
+import axios from 'axios';
 import ShySideNavbar from "@/components/ShySideNavbar";
 
 export default {
   name: "App",
   components: {
     ShySideNavbar
+  },
+  /* Da quando la pagina viene creata tutte le rispote che axios
+  intecetta se sono errori di non autorizzazione fanno logout e
+  lo ridirigono alla pagina di login */
+  created: () => {
+    axios.interceptors.response.use(undefined, (err) => {
+      return new Promise(()=>{
+        if(err.status === 401 && err.config && !err.config.__isRetryRequest){
+          this.$store.dispatch('AUTH_LOGOUT');
+          this.$router.push('/login');
+        }
+        throw err;
+      })
+    })    
   }
 };
 </script>
