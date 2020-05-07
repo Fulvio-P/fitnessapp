@@ -72,11 +72,30 @@ router.put("/:data", async (req, res) => {
         }
     }
     //se la query è andata bene...
-    if (edited==undefined) {
+    if (!edited) {
         //allora non è stata modificata alcuna riga, quindi non è mai esistita una misura con quegli id e data
         return res.status(404).send("Questa misura non esiste affatto. Nessuna modifica.");
     }
     return res.status(200).send(edited);
+});
+
+//elimina una misura di peso dell'utente in una data arbitraria.
+//stesso formato per la data.
+router.delete("/:data", async (req, res) => {
+    var deleted;
+    try {
+        deleted = await db.deleteMisuraPeso(req.user.id, new Date(req.params.data));
+    } catch (err) {
+        //dovrebbe essere impossibile rompere vincoli con questa operazione
+        console.error(`postgres error no. ${err.code}: ${err.message}`);
+        return res.status(500).send("Internal Database Error");
+    }
+    //se la query è andata bene...
+    if (!deleted) {
+        //allora non è stata eliminata alcuna riga, quindi non è mai esistita una misura con quegli id e data
+        return res.status(404).send("Questa misura non esisteva neanche prima. Nessuna modifica.");
+    }
+    return res.status(200).send(deleted);
 });
 
 module.exports = router;

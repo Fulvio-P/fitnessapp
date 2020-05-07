@@ -89,6 +89,19 @@ async function editMisuraPeso(id, data, peso) {
     return res.rows[0];
 }
 
+//elimina la misura peso dell'utente indicato alla data indicata.
+//restituisce la riga eliminata (senza id)
+//oppure undefined se non è stata eliminata alcuna riga
+async function deleteMisuraPeso(id, data) {
+    var res = await pool.query(
+        "DELETE FROM misurapeso "+
+        "WHERE id=$1 AND data=$2 "+
+        "RETURNING data as data, peso as peso",
+        [id, data]
+    );
+    return res.rows[0];
+}
+
 
 
 
@@ -199,6 +212,7 @@ module.exports = {
     getOneMisuraPeso,
     addMisuraPeso,
     editMisuraPeso,
+    deleteMisuraPeso,
     
     //Funzioni test
     getId,
