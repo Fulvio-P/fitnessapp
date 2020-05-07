@@ -72,6 +72,11 @@ export default {
       this.$store.dispatch('AUTH_REQUEST', {username, password})
       //se tutto va bene redirect sulla pagina dei chart
       .then(()=> {this.$router.push('/charts')})
+      //se qualcosa va male i campi sono resettati
+      .catch(()=>{
+        this.username = '';
+        this.password = '';
+      })
     },
 
     //da eliminare
