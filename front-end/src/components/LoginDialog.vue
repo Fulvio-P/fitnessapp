@@ -35,19 +35,18 @@
           ></b-form-input
         ></b-form-group>
 
+        <div v-if="this.$store.state.status === 'error'" class="log-err">
+          Credenziali di accesso errate 
+        </div>
+        <br/>
+
         <b-button class="form-btn" type="submit">
           Login
         </b-button>
       </b-form>
     </p>
-    <div v-if="this.$store.state.status === 'error'" class="log-err">
-      Credenziali di accesso errate
-    </div>
+    
     <hr />
-    <b-button disabled @click="testLogin"
-      >[TESTING ONLY] Login diretto come AkihikoSanada</b-button
-    >
-    <br />
     <b-button router-link to='/'>Torna alla home</b-button>
   </div>
 </template>
