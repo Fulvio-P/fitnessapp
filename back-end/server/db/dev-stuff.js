@@ -36,7 +36,6 @@ async function initDB(testUsers) {
                         "PRIMARY KEY (id, data));"    //solo una misurazione al giorno per utente
     );
 
-
     //Tabella calorie
     await pool.query("CREATE TABLE misuraCalorie ("+
                         "id integer NOT NULL REFERENCES utente(id), "+
@@ -44,6 +43,30 @@ async function initDB(testUsers) {
                         "calin REAL NOT NULL DEFAULT 0, "+
                         "calout REAL NOT NULL DEFAULT 0, "+
                         "PRIMARY KEY (id, data));"
+    );
+
+    //Tabella cibo
+    await pool.query(
+        "CREATE TABLE cibo ("+
+            "id integer NOT NULL REFERENCES utente(id), "+
+            "created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, "+
+            "nome VARCHAR(50) NOT NULL, "+
+            "quantita VARCHAR(15), "+   //per poter mettere anche un'eventuale unità di misura
+            "calin REAL NOT NULL DEFAULT 0, "+
+            "PRIMARY KEY (id, created)"+
+        ");"
+    );
+
+    //Tabella attività
+    await pool.query(
+        "CREATE TABLE attivita ("+
+            "id integer NOT NULL REFERENCES utente(id), "+
+            "created TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP, "+
+            "nome VARCHAR(50) NOT NULL, "+
+            "durata INTERVAL, "+
+            "calout REAL NOT NULL DEFAULT 0, "+
+            "PRIMARY KEY (id, created)"+
+        ");"
     );
 
 
@@ -84,6 +107,16 @@ async function destroyDB() {
         await pool.query("DROP TABLE misuraCalorie;");
     } catch (err) {
         console.error("errore destroyDB(misuraCalorie): "+err.message);
+    }
+    try {
+        await pool.query("DROP TABLE cibo;");
+    } catch (err) {
+        console.error("errore destroyDB(cibo): "+err.message);
+    }
+    try {
+        await pool.query("DROP TABLE attivita;");
+    } catch (err) {
+        console.error("errore destroyDB(attivita): "+err.message);
     }
     try {
         await pool.query("DROP TABLE utente;");
@@ -157,7 +190,7 @@ async function shell() {
 }
 
 async function main() {
-    console.log("Cosa vuoi?\nS: Shell\nC: Crea\nCT: Crea con user di test\nD: Distruggi\nR: Reset\nX: Reset->Shell->Distruggi");
+    console.log("Cosa vuoi?\nS: Shell\nC: Crea\nCT: Crea con user di test\nD: Distruggi\nR: Reset\nRT: Reset con user di test\nX: Reset->Shell->Distruggi");
     rl.question("PG> ", async (ans) => {
         switch (ans) {
             case 'S':
@@ -176,9 +209,13 @@ async function main() {
                 await destroyDB();
                 await initDB();
                 break;
+            case 'RT':
+                await destroyDB();
+                await initDB(true);
+                break;
             case 'X':
                 await destroyDB();
-                await initDB();
+                await initDB(true);
                 await shell();
                 await destroyDB();
                 break;
