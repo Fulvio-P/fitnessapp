@@ -40,6 +40,9 @@
         </b-button>
       </b-form>
     </p>
+    <div v-if="this.$store.state.status === 'error'" class="log-err">
+      Credenziali di accesso errate
+    </div>
     <hr />
     <b-button disabled @click="testLogin"
       >[TESTING ONLY] Login diretto come AkihikoSanada</b-button
@@ -84,3 +87,11 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+
+  .log-err{
+    color: var(--nord11);
+  }
+
+</style>
