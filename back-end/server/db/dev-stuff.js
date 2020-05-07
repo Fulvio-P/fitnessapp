@@ -133,7 +133,7 @@ function questionPromise(rl) {
                 pool
                     .query(ans)
                     .then(res=>{console.log(res.rows);resolve(false);})
-                    .catch(err=>{console.error("shell query "+ans+": "+err.stack);resolve(false);})
+                    .catch(err=>{console.error("shell query "+ans+": [code "+err.code+"] "+err.stack);resolve(false);})
             }
         });
     });
