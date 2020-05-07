@@ -2,10 +2,9 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
-import store from '../store';
+import store from "../store";
 
 Vue.use(VueRouter);
-
 
 /*
   recupero info autenticazione :
@@ -15,27 +14,21 @@ Vue.use(VueRouter);
   utente non autenticato lo buttano su login 
 */
 const ifNotAuthenticated = (to, from, next) => {
-  if(!store.getters.isAuthenticated){
+  if (!store.getters.isAuthenticated) {
     next();
     return;
   }
-  next('/charts');
-}
+  next("/charts");
+};
 const ifAuthenticated = (to, from, next) => {
-  if(store.getters.isAuthenticated){
+  if (store.getters.isAuthenticated) {
     next();
     return;
   }
-  next('/login');
-}
-
-
-
-
-
+  next("/login");
+};
 
 const routes = [
-  
   /* Path di test */
   {
     path: "/about",
@@ -56,23 +49,22 @@ const routes = [
     beforeEnter: ifNotAuthenticated
   },
   {
-    path: '/login',
-    name: 'Login',
+    path: "/login",
+    name: "Login",
     component: Login,
     beforeEnter: ifNotAuthenticated
-
   },
   {
     path: "/charts",
     name: "Charts",
     component: () => import("../views/Charts.vue"),
-    beforeEnter: ifAuthenticated,
+    beforeEnter: ifAuthenticated
   },
   {
     path: "/forms",
     name: "Forms",
     component: () => import("../views/Forms.vue"),
-    beforeEnter: ifAuthenticated,
+    beforeEnter: ifAuthenticated
   }
 ];
 

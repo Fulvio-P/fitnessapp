@@ -9,13 +9,11 @@ import axios from "axios";
 
 Vue.config.productionTip = false;
 
-
 //se si ha un token questo va in automatico negli header
-const token = localStorage.getItem('user-token');
-if(token){
-  axios.defaults.headers.common['Authorization'] = token;
+const token = localStorage.getItem("user-token");
+if (token) {
+  axios.defaults.headers.common["Authorization"] = token;
 }
-
 
 new Vue({
   router,

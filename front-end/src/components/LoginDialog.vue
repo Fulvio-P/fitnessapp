@@ -40,49 +40,45 @@
         </b-button>
       </b-form>
     </p>
-    
+
     <hr />
-    <b-button router-link to='/'>Torna alla home</b-button>
+    <b-button router-link to="/">Torna alla home</b-button>
   </div>
 </template>
 
 <script>
-
-
 export default {
   name: "LoginDialog",
   data() {
     return {
-      username: '',
-      password: ''
+      username: "",
+      password: ""
     };
   },
   methods: {
-    
     loginSubmit() {
       //recupero username e password dal form
-      const {username, password} = this;
+      const { username, password } = this;
       //avvio autenticazione (gestita da vuex)
-      this.$store.dispatch('AUTH_REQUEST', {username, password})
-      //se tutto va bene redirect sulla pagina dei chart
-      .then(()=> {this.$router.push('/charts')})
-      //se qualcosa va male i campi sono resettati
-      .catch(()=>{
-        this.username = '';
-        this.password = '';
-        alert(this.$store.state.status);
-      })
-    },
+      this.$store
+        .dispatch("AUTH_REQUEST", { username, password })
+        //se tutto va bene redirect sulla pagina dei chart
+        .then(() => {
+          this.$router.push("/charts");
+        })
+        //se qualcosa va male i campi sono resettati
+        .catch(() => {
+          this.username = "";
+          this.password = "";
+          alert(this.$store.state.status);
+        });
+    }
   }
 };
 </script>
 
 <style scoped>
-
-  
-
-  .log-err{
-    color: var(--nord11);
-  }
-
+.log-err {
+  color: var(--nord11);
+}
 </style>

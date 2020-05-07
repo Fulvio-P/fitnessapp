@@ -13,7 +13,8 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <b-nav-item
-            router-link to='/login'
+            router-link
+            to="/login"
             v-if="!$store.state.isUserLoggedIn"
             >Log in</b-nav-item
           >
@@ -27,9 +28,7 @@
           > -->
 
           <!-- Questo pulsante va spostato come item della sidebar della pagina del profilo oppure come dropdown del pulsate profilo -->
-          <b-nav-item
-            v-if="$store.state.isUserLoggedIn"
-            @click="logout"
+          <b-nav-item v-if="$store.state.isUserLoggedIn" @click="logout"
             >Log out</b-nav-item
           >
         </b-navbar-nav>
@@ -43,11 +42,10 @@ export default {
   name: "Topbar",
   methods: {
     logout() {
-      this.$store.dispatch("AUTH_LOGOUT")
-      .then(()=>{
-        this.$router.push('/');
-      })
-    },
+      this.$store.dispatch("AUTH_LOGOUT").then(() => {
+        this.$router.push("/");
+      });
+    }
 
     //overlay disattivato per il momento
     /* displayOverlay() {
