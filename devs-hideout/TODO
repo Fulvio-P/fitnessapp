@@ -6,6 +6,7 @@ Cose da fare:
   - mettere token in storage e usarlo (come header Authentication)
   - gestire fallimento autenticazione (redirect login)
 -Ristrutturazione API: (Francesco)
+  - Capire come si comportano gli INTERVAL
   - controllare il token nel backend (verify (e decode))
     ( https://github.com/auth0/node-jsonwebtoken#jwtverifytoken-secretorpublickey-options-callback )
   - usare il token in TUTTE le chiamate opportune
