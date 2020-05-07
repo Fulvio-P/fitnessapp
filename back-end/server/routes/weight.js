@@ -51,4 +51,32 @@ router.post("/", async (req, res) => {
     res.status(201).json(newrow);
 });
 
+//modifica la misura peso dell'utente in una data arbitraria,
+//dà errore se non c'è.
+//ci aspettiamo che la data sia in un formato parsabile dall'oggetto Date,
+//preferibilmente YYYY-MM-DD.
+router.put("/:data", async (req, res) => {
+    var edited;
+    try {
+        edited = await db.editMisuraPeso(req.user.id, new Date(req.params.data), req.body.weight);
+    } catch (err) {
+        console.error(`postgres error no. ${err.code}: ${err.message}`);
+        switch (err.code) {
+            case "23505": //violaz. UNIQUE / PRIMARY KEY, impossibile perché questa chiamata non modifica id o data.
+            case "23503": //violaz. FOREIGN KEY, impossibile perché idem
+                return res.status(500).send("Non dovresti vedere questo messaggio. Quale magia nera hai fatto per farlo apparire? Me la insegni?");
+            case "23502": //violaz. NOT NULL
+                return res.status(400).send("Peso non specificato");
+            default:
+                return res.status(500).send("Internal Database Error");
+        }
+    }
+    //se la query è andata bene...
+    if (edited==undefined) {
+        //allora non è stata modificata alcuna riga, quindi non è mai esistita una misura con quegli id e data
+        return res.status(404).send("Questa misura non esiste affatto. Nessuna modifica.");
+    }
+    return res.status(200).send(edited);
+});
+
 module.exports = router;

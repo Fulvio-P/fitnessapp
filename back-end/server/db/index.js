@@ -69,7 +69,22 @@ async function addMisuraPeso(id, peso) {
     var res = await pool.query(
         "INSERT INTO misurapeso(id, peso) "+
         "VALUES ($1, $2)"+
-        "RETURNING data as data, peso as peso", [id, peso]
+        "RETURNING data as data, peso as peso",
+        [id, peso]
+    );
+    return res.rows[0];
+}
+
+//modifica la misura peso dell'utente indicato alla data indicata.
+//restituisce la nuova riga (senza id)
+//oppure undefined se non è stata modificata alcuna riga
+async function editMisuraPeso(id, data, peso) {
+    var res = await pool.query(
+        "UPDATE misurapeso "+
+        "SET peso=$3 "+
+        "WHERE id=$1 AND data=$2 "+
+        "RETURNING data as data, peso as peso;",
+        [id, data, peso]
     );
     return res.rows[0];
 }
@@ -183,6 +198,7 @@ module.exports = {
     getAllMisurePeso,
     getOneMisuraPeso,
     addMisuraPeso,
+    editMisuraPeso,
     
     //Funzioni test
     getId,
