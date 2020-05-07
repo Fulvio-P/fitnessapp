@@ -28,11 +28,6 @@
         ></b-form-input>
       </b-form-group>
 
-      <div v-if="this.$store.state.status === 'reg-error'" class="reg-err">
-          {{error}}
-        </div>
-        <br/>
-
       <b-button class="form-btn" type="submit">
         Registrati
       </b-button>
@@ -46,9 +41,8 @@ export default {
   name: "RegistrationForm",
   data() {
     return {
-      username: undefined,
-      password: undefined,
-      error: '',
+      username: '',
+      password: '',
     }
   },
   methods: {
@@ -58,13 +52,15 @@ export default {
       const {username, password} = this;
       //avvio registrazione (gestita da vuex)
       this.$store.dispatch('REGISTER_REQUEST', {username, password})
-      //se tutto va bene redirect sulla pagina dei chart
-      .then(()=> {this.$router.push('/charts')})
+      
+      //se tutto va bene provo ridirico al login
+      .then(()=> {this.$router.push('/login')})
+      
       //se qualcosa va male i campi sono resettati
-      .catch((err)=>{
+      .catch(()=>{
         this.username = '';
         this.password = '';
-        this.error = err;
+        alert(this.$store.state.status);
       })
     }
 

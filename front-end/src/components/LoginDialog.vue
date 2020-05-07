@@ -35,11 +35,6 @@
           ></b-form-input
         ></b-form-group>
 
-        <div v-if="this.$store.state.status === 'error'" class="log-err">
-          Credenziali di accesso errate 
-        </div>
-        <br/>
-
         <b-button class="form-btn" type="submit">
           Login
         </b-button>
@@ -58,8 +53,8 @@ export default {
   name: "LoginDialog",
   data() {
     return {
-      username: undefined,
-      password: undefined
+      username: '',
+      password: ''
     };
   },
   methods: {
@@ -75,6 +70,7 @@ export default {
       .catch(()=>{
         this.username = '';
         this.password = '';
+        alert(this.$store.state.status);
       })
     },
   }

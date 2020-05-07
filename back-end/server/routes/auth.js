@@ -40,7 +40,7 @@ router.post('/register', async (req, res) => {
     /* Provo ad aggiungere l'utente al database */
     try {
         await db.addUser(username, hashedPassword)
-        res.status(200).send("Registrato utente: "+username+"\nhash: "+ hashedPassword);
+        res.status(200).send("Success");
     } catch (err) {
         res.status(500).send("Errore inserimento nel database: "+err)
     }

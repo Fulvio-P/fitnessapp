@@ -14,7 +14,7 @@ export default new Vuex.Store({
 
     //stati usati per il login vero
     token: localStorage.getItem('user-token') || '', //JWT conservato anche se localstorage non disponibile
-    status: '', //status del login: loading|success|error
+    status: '', //status del login o registrazione
   },
 
   getters:{
@@ -35,11 +35,6 @@ export default new Vuex.Store({
       state.status = 'success';
       state.token = token;
     },
-
-    //segna errore del login
-    AUTH_ERROR(state){
-      state.status = 'error';
-    },
     /* Fine mutazioni del login vero */
 
     /* Mutazione del logout */
@@ -55,16 +50,25 @@ export default new Vuex.Store({
     },
 
     //segna successo della registrazione
-    REGISTER_SUCCESS(state, token){
+    REGISTER_SUCCESS(state){
       state.status = 'reg-success';
-      state.token = token;
-    },
-
-    //segna errore della registrazione
-    REGISTER_ERROR(state){
-      state.status = 'reg-error';
     },
     /* Fine mutazioni registrazione */
+
+    /* Mutazione errori */
+    //segna errore
+    REQUEST_ERROR(state,error){
+      if (error.response) {
+        // Request made and server responded
+        state.status = error.response.data;
+      } else if (error.request) {
+        // The request was made but no response was received
+        state.status = error.request;
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        state.status = error.message;
+      }
+    },
 
 
 
@@ -92,7 +96,7 @@ export default new Vuex.Store({
         
         //gestisco risposte negative
         .catch(err => {
-          commit('AUTH_ERROR', err);
+          commit('REQUEST_ERROR', err);
           //rimuovo il token dal local storage
           localStorage.removeItem('user-token');
           //rimuovo il token dall'header
@@ -121,23 +125,18 @@ export default new Vuex.Store({
 
         //gestisco successo registrazione
         .then(resp => {
-          //salvo il token
-          const token = resp.data.token;
-          localStorage.setItem('user-token', token);
-          //imposto il token come header di default
-          axios.defaults.headers.common['Authorization'] = token;
-          commit('REGISTER_SUCCESS', token);
+          commit('REGISTER_SUCCESS');
           resolve(resp);
         })
 
         //gestisco risposte negative
-        .catch(err => {
-          commit('REQUEST_ERROR', err);
+        .catch(error => {
+          commit('REQUEST_ERROR', error);
           //rimuovo il token dal local storage per sicurezza
           localStorage.removeItem('user-token');
           //rimuovo il token dall'header per sicurezza
           delete axios.defaults.headers.common['Authorization'];
-          reject(err)
+          reject(error)
         })
         
       })
