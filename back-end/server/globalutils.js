@@ -15,9 +15,9 @@ const jwtSecret = process.env.JWT_SECRET;
  */
 function verifyJWT(req, res, next) {
     var token, decoded;
+    const authHeader = req.headers.authorization || "";   //in questo modo anche se Authorization non viene fornito affatto l'esecuzione può comunque andare avanti e darci un messaggio d'errore di jwt
+    token = authHeader.split(" ")[1];  //formato header = "Bearer TOKEN"
     try {
-        const authHeader = req.headers.authorization || "";   //in questo modo anche se Authorization non viene fornito affatto l'esecuzione può comunque andare avanti e darci un messaggio d'errore di jwt
-        token = authHeader.split(" ")[1];  //formato header = "Bearer TOKEN"
         decoded = jwt.verify(token, jwtSecret);
     }
     catch (err) {
