@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-form @submit="registerNewUser">
+    <b-form @submit.prevent="registerNewUser">
 
       <b-form-group
         id="registration-group-2"
@@ -28,6 +28,11 @@
         ></b-form-input>
       </b-form-group>
 
+      <div v-if="this.$store.state.status === 'reg-error'" class="reg-err">
+          {{error}}
+        </div>
+        <br/>
+
       <b-button class="form-btn" type="submit">
         Registrati
       </b-button>
@@ -37,26 +42,30 @@
 
 <script>
 
-import axios from 'axios'
-
 export default {
   name: "RegistrationForm",
   data() {
     return {
       username: undefined,
-      password: undefined
+      password: undefined,
+      error: '',
     }
   },
   methods: {
     
-    registerNewUser(ev){
-      ev.preventDefault();
-      axios
-      .post("http://localhost:5000/api/user/register", {
-        username: this.username,
-        password: this.password
-      });
-      ev.target.reset();
+    registerNewUser(){
+      //recupero username e password dal form
+      const {username, password} = this;
+      //avvio registrazione (gestita da vuex)
+      this.$store.dispatch('REGISTER_REQUEST', {username, password})
+      //se tutto va bene redirect sulla pagina dei chart
+      .then(()=> {this.$router.push('/charts')})
+      //se qualcosa va male i campi sono resettati
+      .catch((err)=>{
+        this.username = '';
+        this.password = '';
+        this.error = err;
+      })
     }
 
   },
