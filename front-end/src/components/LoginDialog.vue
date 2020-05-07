@@ -77,22 +77,13 @@ export default {
         this.password = '';
       })
     },
-
-    //da eliminare
-    /* testLogin() {
-      this.$store.dispatch("login");
-      this.$store.dispatch("displayLoginDialog", false);
-    }, */
-
-    //overlay disabilitato
-    /* close() {
-      this.$store.dispatch("displayLoginDialog", false);
-    } */
   }
 };
 </script>
 
 <style scoped>
+
+  
 
   .log-err{
     color: var(--nord11);

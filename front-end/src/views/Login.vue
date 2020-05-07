@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="login-page">
         <LoginDialog />
     </div>
 </template>
@@ -16,3 +16,9 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+    .login-page{
+        height: 100vh;
+    }
+</style>
