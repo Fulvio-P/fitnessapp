@@ -71,10 +71,11 @@ export default {
       .then(()=> {this.$router.push('/charts')})
     },
 
-    testLogin() {
+    //da eliminare
+    /* testLogin() {
       this.$store.dispatch("login");
       this.$store.dispatch("displayLoginDialog", false);
-    },
+    }, */
 
     //overlay disabilitato
     /* close() {

@@ -7,13 +7,19 @@ import store from '../store';
 Vue.use(VueRouter);
 
 
-/* recupero info autenticazione */
+/*
+  recupero info autenticazione :
+  tutte le route che hanno ifNotAuth se beccano
+  un utente autenticato lo buttano su charts
+  tutte quelle che hanno ifAuth se beccano un 
+  utente non autenticato lo buttano su login 
+*/
 const ifNotAuthenticated = (to, from, next) => {
   if(!store.getters.isAuthenticated){
     next();
     return;
   }
-  next('/');
+  next('/charts');
 }
 const ifAuthenticated = (to, from, next) => {
   if(store.getters.isAuthenticated){
@@ -46,7 +52,8 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: Home,
+    beforeEnter: ifNotAuthenticated
   },
   {
     path: '/login',

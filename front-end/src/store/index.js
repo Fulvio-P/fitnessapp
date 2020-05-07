@@ -8,9 +8,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   
   state: {
-    loggedId: null,
-    isUserLoggedIn: false,
-    loginDialog: false,
+    
+    /* loginDialog: false, */ //Overlay disabilitato
 
     //stati usati per il login vero
     token: localStorage.getItem('user-token') || '', //JWT conservato anche se localstorage non disponibile
@@ -56,6 +55,12 @@ export default new Vuex.Store({
     },
 
     /* Fine mutazioni del login vero */
+
+    /* Mutazione del logout */
+    AUTH_LOGOUT(state){
+      state.token = '';
+      state.status = '';
+    }
 
 
 

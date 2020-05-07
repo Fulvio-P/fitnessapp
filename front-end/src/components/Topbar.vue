@@ -4,6 +4,7 @@
       <b-navbar-brand router-link to="/">Fitness App</b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
+      <!-- Qeusta pagina va eliminata -->
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item router-link to="/about">About</b-nav-item>
@@ -18,12 +19,12 @@
           >
 
           <!-- Questo pulsante deve essere eliminato -->
-          <b-nav-item
+          <!-- <b-nav-item
             v-if="$store.state.isUserLoggedIn"
             router-link
             to="/profile"
             >Profile</b-nav-item
-          >
+          > -->
 
           <!-- Questo pulsante va spostato come item della sidebar della pagina del profilo oppure come dropdown del pulsate profilo -->
           <b-nav-item
