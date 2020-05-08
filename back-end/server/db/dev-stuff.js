@@ -94,14 +94,15 @@ async function initDB(testUsers) {
         console.log(await index.setCalorie("ChieSatonaka", new Date("2020-04-27"), 0, 60));
         console.log(await index.setCalorie("EdelgardVonHresvelg", new Date("2020-04-27"), 150.25, 200));
         await pool.query(
-            "INSERT INTO cibo(id, nome, quantita, calin) VALUES "+
-            "(1, 'pollo', '150 g', 300), "+
-            "(1, 'sushi', '150 g', 250), "+
-            "(1, 'uova', '2', '350), "+
-            "(1, 'fagioli', '100 g', 200), "+
-            "(3, 'carne', '999', 999), "+
-            "(4, 'gratin veloce di pesce', '1 porz', 200.5);"
+            "INSERT INTO cibo VALUES "+
+            "(1, '2020-05-01', 'pollo', '150 g', 300), "+
+            "(1, '2020-05-02', 'sushi', '150 g', 250), "+
+            "(1, '2020-05-03', 'uova', '2', '350'), "+
+            "(1, '2020-05-04', 'fagioli', '100 g', 200), "+
+            "(3, '2020-05-05', 'carne', '999', 999), "+
+            "(4, '2020-05-06', 'gratin veloce di pesce', '1 porz', 200.5);"
         );
+        console.log("Tutto OK, Ctrl+C per uscire");
     }
 }
 
