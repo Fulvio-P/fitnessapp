@@ -6,13 +6,13 @@ Cose da fare:
   - mettere token in storage e usarlo (come header Authentication)
   - gestire fallimento autenticazione (redirect login)
 -Ristrutturazione API: (Francesco)
-  - Capire come si comportano gli INTERVAL
   - controllare il token nel backend (verify (e decode))
     ( https://github.com/auth0/node-jsonwebtoken#jwtverifytoken-secretorpublickey-options-callback )
   - usare il token in TUTTE le chiamate opportune
   - GET, POST e DELETE per peso, cibo e allenamenti (mantenere tabella calorie)
   - Errori da gestire: https://github.com/auth0/node-jsonwebtoken#errors--codes
     (in particolare, TokenExpiredError)
+  - implementare per data specifica e range di date
 -Più informazioni
   - aggiungere tabella info addizionali
   - fare form per queste informazioni (pagina impostazioni profilo)
