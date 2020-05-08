@@ -14,6 +14,7 @@ Cose da fare:
     (in particolare, TokenExpiredError)
   - implementare per data specifica e range di date
   - fare o scaricare un querybuilder per poter usare i default
+  - gestire con grazia il fallimento del parsing del body JSON, se possibile
 -Più informazioni
   - aggiungere tabella info addizionali
   - fare form per queste informazioni (pagina impostazioni profilo)
