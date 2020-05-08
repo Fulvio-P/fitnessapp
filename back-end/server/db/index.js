@@ -123,13 +123,27 @@ async function getAllCibi(id) {
 
 //crea un nuovo cibo per un utente
 async function addCibo(id, nome, quantita, calin) {
-    var res = await pool.query(
-        "INSERT INTO cibo(id, nome, quantita, calin) "+
-        "VALUES ($1, $2, $3, $4) "+
-        "RETURNING created, nome, quantita, calin",
-        [id, nome, quantita, calin]
-    );
-    return res.rows[0];
+    //uso un client specifico per la transazione secondo quanto indicato dal tutorial node-postgres
+    //https://node-postgres.com/features/transactions
+    //e poi così mi sento un pochino più sicuro nel caso di più transazioni di qusto tipo fatte in concorrenza/parallelo.
+    const client = await pool.connect();
+    try {
+        await client.query("BEGIN;");
+        var res = await client.query(
+            "INSERT INTO cibo(id, nome, quantita, calin) "+
+            "VALUES ($1, $2, $3, $4) "+
+            "RETURNING created, nome, quantita, calin",
+            [id, nome, quantita, calin]
+        );
+        await addOrSubtractCalories(id, res.rows[0].created, calin, 0);  //a quanto pare (non testato a sufficienza) ci pensa node-postgres a convertire un timestamp data-ora in solo data
+        await client.query("COMMIT;");
+        return res.rows[0];
+    } catch (err) {
+        await client.query("ROLLBACK;");
+        throw err;
+    } finally {
+        client.release();
+    }
 }
 
 async function editCibo(id, ts, nome, quantita, calin) {
@@ -151,6 +165,35 @@ async function deleteCibo(id, ts) {
         "RETURNING created, nome, quantita, calin;",
         [id, ts]
     );
+    return res.rows[0];
+}
+
+
+
+
+
+/////////////////////////////    AUX    /////////////////////////////
+
+//aggiunge calinMod e caloutMod alla misura di calorie con id e data specificati
+//(usare numeri negativi per sottrarre, 0 per lasciare una componente com'è)
+//se quella misura non esiste, la crea
+//restituisce il nuovo stato della riga, se mai dovesse servire
+async function addOrSubtractCalories(id, data, calinMod, caloutMod) {
+    var res = await pool.query(
+        "UPDATE misuraCalorie "+
+        "SET calin=calin+$3, calout=calout+$4 "+   //testato sulla nostra shell che postgres (e JS, e persino python) si comporta bene con comandi del tipo "calin=calin+-100". Da umano è una sintassi strana, ma in effetti per un albero sintattico non fa una piega.
+        "WHERE id=$1 AND data=$2 "+
+        "RETURNING data, calin, calout;",
+        [id, data, calinMod, caloutMod]
+    );
+    if (res.rows.length<1) {    //allora non è stata modificata alcuna riga, quindi quella riga non esisteva: bisogna crearla
+        res = await pool.query(
+            "INSERT INTO misuraCalorie(id, data, calin, calout) "+
+            "VALUES ($1, $2, $3, $4) "+
+            "RETURNING data, calin, calout;",
+            [id, data, calinMod, caloutMod]
+        );
+    }
     return res.rows[0];
 }
 
