@@ -130,31 +130,51 @@ async function addCibo(id, nome, quantita, calin) {
             "RETURNING created, nome, quantita, calin",
             [id, nome, quantita, calin]
         );
-        await addOrSubtractCalories(id, res.rows[0].created, calin, 0);  //a quanto pare (non testato a sufficienza) ci pensa node-postgres a convertire un timestamp data-ora in solo data
+        await addOrSubtractCalories(client, id, res.rows[0].created, calin, 0);  //a quanto pare (non testato a sufficienza) ci pensa node-postgres a convertire un timestamp data-ora in solo data
         return res.rows[0];
     });
 }
 
+//modifica un cibo di un utente
 async function editCibo(id, ts, nome, quantita, calin) {
-    var res = await pool.query(
-        "UPDATE cibo "+
-        "SET nome=$3, quantita=$4, calin=$5 "+
-        "WHERE id=$1 AND created=$2 "+
-        "RETURNING created, nome, quantita, calin;",
-        [id, ts, nome, quantita, calin]
+    var vecch = await pool.query(   //non modifica nulla, non fa parte della transazione
+        "SELECT * "+
+        "FROM cibo "+
+        "WHERE id=$1 AND created=$2;",
+        [id, ts]
     );
-    return res.rows[0];
+    if (vecch.rows.length<1) {
+        return undefined;    //se non troviamo nulla è meglio che smettiamo subito prima di avere problemi indesiderati durante la transazione
+    }
+    return await doTransaction(async client => {
+        var nuov = await client.query(
+            "UPDATE cibo "+
+            "SET nome=$3, quantita=$4, calin=$5 "+
+            "WHERE id=$1 AND created=$2 "+
+            "RETURNING created, nome, quantita, calin;",
+            [id, ts, nome, quantita, calin]
+        );
+        await addOrSubtractCalories(client, id, ts, nuov.rows[0].calin-vecch.rows[0].calin, 0);
+        return nuov.rows[0];
+    });
+    
 }
 
 //elimina un cibo dati id dell'utente e timestamp di creazione
 async function deleteCibo(id, ts) {
-    var res = await pool.query(
-        "DELETE FROM cibo "+
-        "WHERE id=$1 AND created=$2 "+
-        "RETURNING created, nome, quantita, calin;",
-        [id, ts]
-    );
-    return res.rows[0];
+    return await doTransaction(async client => {
+        var res = await client.query(
+            "DELETE FROM cibo "+
+            "WHERE id=$1 AND created=$2 "+
+            "RETURNING created, nome, quantita, calin;",
+            [id, ts]
+        );
+        if (res.rows.length<1) {
+            return undefined;    //se non troviamo nulla è meglio che smettiamo subito prima di avere problemi indesiderati nella prossima istruzione
+        }
+        await addOrSubtractCalories(client, id, ts, -res.rows[0].calin, 0);
+        return res.rows[0];
+    });
 }
 
 
@@ -167,8 +187,9 @@ async function deleteCibo(id, ts) {
 //(usare numeri negativi per sottrarre, 0 per lasciare una componente com'è)
 //se quella misura non esiste, la crea
 //restituisce il nuovo stato della riga, se mai dovesse servire
-async function addOrSubtractCalories(id, data, calinMod, caloutMod) {
-    var res = await pool.query(
+//l'oggetto che fa la query è parametrizzato pr funzionare correttamente con doTransaction
+async function addOrSubtractCalories(agent, id, data, calinMod, caloutMod) {
+    var res = await agent.query(
         "UPDATE misuraCalorie "+
         "SET calin=calin+$3, calout=calout+$4 "+   //testato sulla nostra shell che postgres (e JS, e persino python) si comporta bene con comandi del tipo "calin=calin+-100". Da umano è una sintassi strana, ma in effetti per un albero sintattico non fa una piega.
         "WHERE id=$1 AND data=$2 "+
@@ -176,7 +197,7 @@ async function addOrSubtractCalories(id, data, calinMod, caloutMod) {
         [id, data, calinMod, caloutMod]
     );
     if (res.rows.length<1) {    //allora non è stata modificata alcuna riga, quindi quella riga non esisteva: bisogna crearla
-        res = await pool.query(
+        res = await agent.query(
             "INSERT INTO misuraCalorie(id, data, calin, calout) "+
             "VALUES ($1, $2, $3, $4) "+
             "RETURNING data, calin, calout;",
