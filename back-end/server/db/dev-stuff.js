@@ -49,7 +49,8 @@ async function initDB(testUsers) {
     await pool.query(
         "CREATE TABLE cibo ("+
             "id integer NOT NULL REFERENCES utente(id), "+
-            "created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, "+
+            "created TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, "+
+            //precisione al millisecondo per usare la stessa prec di JS
             "nome VARCHAR(50) NOT NULL, "+
             "quantita VARCHAR(15), "+   //per poter mettere anche un'eventuale unità di misura
             "calin REAL NOT NULL DEFAULT 0, "+
@@ -61,7 +62,7 @@ async function initDB(testUsers) {
     await pool.query(
         "CREATE TABLE attivita ("+
             "id integer NOT NULL REFERENCES utente(id), "+
-            "created TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP, "+
+            "created TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, "+
             "nome VARCHAR(50) NOT NULL, "+
             "durata INTERVAL, "+
             "calout REAL NOT NULL DEFAULT 0, "+

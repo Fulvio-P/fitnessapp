@@ -17,6 +17,8 @@ const pool = new Pool();
 require("dotenv").config();
 
 
+/////////////////////////////////////  UTENTI  /////////////////////////////////////////
+
 //aggiunge un nuovo utente al database
 async function addUser(username, password) {
     await pool.query("INSERT INTO utente(username, password) VALUES ($1, $2);",[username, password]);
@@ -40,6 +42,9 @@ async function getUserByName(username) {
     return queryRes.rows[0];
 }
 
+
+////////////////////////////////////  PESO  //////////////////////////////////////////
+
 //ritorna tutte le misure peso di un utente dato il suo id
 async function getAllMisurePeso(id) {
     if (!(await getUsernameIfExists(id))) {
@@ -62,7 +67,7 @@ async function getOneMisuraPeso(id, data) {
     return queryRes.rows[0];
 }
 
-//aggiunge una nuva misura di peso per la data odierna all'utente indicato
+//aggiunge una nuova misura di peso per la data odierna all'utente indicato
 //restituisce la riga appena creata (senza id)
 //non mi aspetto che vorremo rendere possibile aggiungere misure in altre date.
 async function addMisuraPeso(id, peso) {
@@ -102,6 +107,9 @@ async function deleteMisuraPeso(id, data) {
     return res.rows[0];
 }
 
+
+//////////////////////////////////  CIBO  /////////////////////////////////////////
+
 //ritorna tutti i cibi di un utente dato il suo id
 async function getAllCibi(id) {
     var res = await pool.query(
@@ -120,6 +128,17 @@ async function addCibo(id, nome, quantita, calin) {
         "VALUES ($1, $2, $3, $4) "+
         "RETURNING created, nome, quantita, calin",
         [id, nome, quantita, calin]
+    );
+    return res.rows[0];
+}
+
+async function editCibo(id, ts, nome, quantita, calin) {
+    var res = await pool.query(
+        "UPDATE cibo "+
+        "SET nome=$3, quantita=$4, calin=$5 "+
+        "WHERE id=$1 AND created=$2 "+
+        "RETURNING created, nome, quantita, calin;",
+        [id, ts, nome, quantita, calin]
     );
     return res.rows[0];
 }
@@ -237,6 +256,7 @@ module.exports = {
     deleteMisuraPeso,
     getAllCibi,
     addCibo,
+    editCibo,
     
     //Funzioni test
     getId,
