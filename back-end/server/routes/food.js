@@ -35,9 +35,10 @@ router.post("/", async (req, res) => {
     try {
         var added = await db.addCibo(
             req.user.id,
-            req.body.foodItem,
-            req.body.foodQuantity,
-            req.body.foodEnergy
+            req.body.data,
+            req.body.nome,
+            req.body.calin,
+            req.body.descrizione
         );
     } catch (err) {
         console.error(`postgres error no. ${err.code}: ${err.message}`);
@@ -65,9 +66,10 @@ router.put("/:ts", async (req, res) => {
         var edited = await db.editCibo(
             req.user.id,
             req.params.ts,
-            req.body.foodItem,
-            req.body.foodQuantity,
-            req.body.foodEnergy
+            req.body.data,
+            req.body.nome,
+            req.body.calin,
+            req.body.descrizione
         );
     } catch (err) {
         console.error(`postgres error no. ${err.code}: ${err.message}`);

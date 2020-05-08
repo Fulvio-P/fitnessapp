@@ -113,7 +113,7 @@ async function deleteMisuraPeso(id, data) {
 //ritorna tutti i cibi di un utente dato il suo id
 async function getAllCibi(id) {
     var res = await pool.query(
-        "SELECT created, nome, quantita, calin "+
+        "SELECT created, data, nome, calin, descrizione "+
         "FROM cibo "+
         "WHERE id=$1",
         [id]
@@ -122,21 +122,21 @@ async function getAllCibi(id) {
 }
 
 //crea un nuovo cibo per un utente
-async function addCibo(id, nome, quantita, calin) {
+async function addCibo(id, data, nome, calin, descrizione) {
     return await doTransaction(async (client) => {
         var res = await client.query(
-            "INSERT INTO cibo(id, nome, quantita, calin) "+
-            "VALUES ($1, $2, $3, $4) "+
-            "RETURNING created, nome, quantita, calin",
-            [id, nome, quantita, calin]
+            "INSERT INTO cibo(id, data, nome, calin, descrizione) "+
+            "VALUES ($1, $2, $3, $4, $5) "+
+            "RETURNING created, data, nome, calin, descrizione",
+            [id, data, nome, calin, descrizione]
         );
-        await addOrSubtractCalories(client, id, res.rows[0].created, calin, 0);  //a quanto pare (non testato a sufficienza) ci pensa node-postgres a convertire un timestamp data-ora in solo data
+        await addOrSubtractCalories(client, id, res.rows[0].data, calin, 0);
         return res.rows[0];
     });
 }
 
 //modifica un cibo di un utente
-async function editCibo(id, ts, nome, quantita, calin) {
+async function editCibo(id, ts, data, nome, calin, descrizione) {
     var vecch = await pool.query(   //non modifica nulla, non fa parte della transazione
         "SELECT * "+
         "FROM cibo "+
@@ -149,12 +149,13 @@ async function editCibo(id, ts, nome, quantita, calin) {
     return await doTransaction(async client => {
         var nuov = await client.query(
             "UPDATE cibo "+
-            "SET nome=$3, quantita=$4, calin=$5 "+
+            "SET data=$3, nome=$4, calin=$5, descrizione=$6 "+
             "WHERE id=$1 AND created=$2 "+
-            "RETURNING created, nome, quantita, calin;",
-            [id, ts, nome, quantita, calin]
+            "RETURNING created, data, nome, calin, descrizione;",
+            [id, ts, data, nome, calin, descrizione]
         );
-        await addOrSubtractCalories(client, id, ts, nuov.rows[0].calin-vecch.rows[0].calin, 0);
+        await addOrSubtractCalories(client, id, vecch.rows[0].data, -vecch.rows[0].calin, 0);
+        await addOrSubtractCalories(client, id, nuov.rows[0].data, nuov.rows[0].calin, 0);
         return nuov.rows[0];
     });
     
@@ -166,13 +167,13 @@ async function deleteCibo(id, ts) {
         var res = await client.query(
             "DELETE FROM cibo "+
             "WHERE id=$1 AND created=$2 "+
-            "RETURNING created, nome, quantita, calin;",
+            "RETURNING created, data, nome, calin, descrizione;",
             [id, ts]
         );
         if (res.rows.length<1) {
             return undefined;    //se non troviamo nulla è meglio che smettiamo subito prima di avere problemi indesiderati nella prossima istruzione
         }
-        await addOrSubtractCalories(client, id, ts, -res.rows[0].calin, 0);
+        await addOrSubtractCalories(client, id, res.rows[0].data, -res.rows[0].calin, 0);
         return res.rows[0];
     });
 }
@@ -188,6 +189,8 @@ async function deleteCibo(id, ts) {
 //se quella misura non esiste, la crea
 //restituisce il nuovo stato della riga, se mai dovesse servire
 //l'oggetto che fa la query è parametrizzato pr funzionare correttamente con doTransaction
+//se a seguito dell'operazione non ci sono più calorie ingerite né consumate,
+//la riga viene considerata inutile e cancellata.
 async function addOrSubtractCalories(agent, id, data, calinMod, caloutMod) {
     var res = await agent.query(
         "UPDATE misuraCalorie "+
@@ -202,6 +205,14 @@ async function addOrSubtractCalories(agent, id, data, calinMod, caloutMod) {
             "VALUES ($1, $2, $3, $4) "+
             "RETURNING data, calin, calout;",
             [id, data, calinMod, caloutMod]
+        );
+    }
+    if (res.rows[0].calin==0 && res.rows[0].calout==0) {   //allora è il caso di cancellare questa riga
+        res = await agent.query(
+            "DELETE FROM misuraCalorie "+
+            "WHERE id=$1 AND data=$2 "+
+            "RETURNING data, calin, calout;",
+            [id, data]
         );
     }
     return res.rows[0];

@@ -51,9 +51,10 @@ async function initDB(testUsers) {
             "id integer NOT NULL REFERENCES utente(id), "+
             "created TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, "+
             //precisione al millisecondo per usare la stessa prec di JS
+            "data DATE NOT NULL DEFAULT CURRENT_DATE, "+
             "nome VARCHAR(50) NOT NULL, "+
-            "quantita VARCHAR(15), "+   //per poter mettere anche un'eventuale unità di misura
             "calin REAL NOT NULL DEFAULT 0, "+
+            "descrizione VARCHAR(512) NOT NULL DEFAULT '', "+
             "PRIMARY KEY (id, created)"+
         ");"
     );
@@ -63,9 +64,10 @@ async function initDB(testUsers) {
         "CREATE TABLE attivita ("+
             "id integer NOT NULL REFERENCES utente(id), "+
             "created TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, "+
+            "data DATE NOT NULL DEFAULT CURRENT_DATE, "+
             "nome VARCHAR(50) NOT NULL, "+
-            "durata INTERVAL, "+
             "calout REAL NOT NULL DEFAULT 0, "+
+            "descrizione VARCHAR(512) NOT NULL DEFAULT '', "+
             "PRIMARY KEY (id, created)"+
         ");"
     );
@@ -95,13 +97,13 @@ async function initDB(testUsers) {
         console.log(await index.setCalorie("ChieSatonaka", new Date("2020-04-27"), 0, 60));
         console.log(await index.setCalorie("EdelgardVonHresvelg", new Date("2020-04-27"), 150.25, 200));
         await pool.query(
-            "INSERT INTO cibo VALUES "+
-            "(1, '2020-05-01', 'pollo', '150 g', 300), "+
-            "(1, '2020-05-02', 'sushi', '150 g', 250), "+
-            "(1, '2020-05-03', 'uova', '2', '350'), "+
-            "(1, '2020-05-04', 'fagioli', '100 g', 200), "+
-            "(3, '2020-05-05', 'carne', '999', 999), "+
-            "(4, '2020-05-06', 'gratin veloce di pesce', '1 porz', 200.5);"
+            "INSERT INTO cibo(id, created, data, nome, calin) VALUES "+
+            "(1, '2020-05-01', '2020-05-01', 'pollo', 300), "+
+            "(1, '2020-05-02', '2020-05-02', 'sushi', 250), "+
+            "(1, '2020-05-03', '2020-05-03', 'uova', '350'), "+
+            "(1, '2020-05-04', '2020-05-04', 'fagioli', 200), "+
+            "(3, '2020-05-05', '2020-05-05', 'carne', 999), "+
+            "(4, '2020-05-06', '2020-05-06', 'gratin veloce di pesce', 200.5);"
         );
         console.log("Tutto OK, Ctrl+C per uscire");
     }
