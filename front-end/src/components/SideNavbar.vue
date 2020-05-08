@@ -14,10 +14,10 @@
         </ActivatingRouterLink>
       </li>
       <li class="SideNavItem">
-        <ActivatingRouterLink to="/" class="SideNavLink">
+        <div @click="logout()" class="SideNavLink">
           <BIconHouse class="centopercento" />
           <span class="LinkText">Home</span>
-        </ActivatingRouterLink>
+        </div>
       </li>
     </ul>
   </nav>
@@ -36,6 +36,13 @@ export default {
     BIconPencilSquare,
     BIconHouse,
     ActivatingRouterLink
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("AUTH_LOGOUT").then(() => {
+        this.$router.push("/");
+      });
+    }
   }
 };
 </script>

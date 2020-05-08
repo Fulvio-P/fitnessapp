@@ -1,17 +1,32 @@
 <template>
   <div id="app">
-    <ShySideNavbar :avoidroutes="['/']" />
+    <ShySideNavbar :avoidroutes="['/', '/login']" />
     <router-view />
   </div>
 </template>
 
 <script>
+import axios from "axios";
 import ShySideNavbar from "@/components/ShySideNavbar";
 
 export default {
   name: "App",
   components: {
     ShySideNavbar
+  },
+  /* Da quando la pagina viene creata tutte le rispote che axios
+  intecetta se sono errori di non autorizzazione fanno logout e
+  lo ridirigono alla pagina di login */
+  created: () => {
+    axios.interceptors.response.use(undefined, err => {
+      return new Promise(() => {
+        if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+          this.$store.dispatch("AUTH_LOGOUT");
+          this.$router.push("/login");
+        }
+        throw err;
+      });
+    });
   }
 };
 </script>
@@ -19,22 +34,22 @@ export default {
 <style>
 :root {
   /*mi sono stufato di copincollare dal sito di nord 30 volte per scegliere il colore giusto*/
-  --nord0:#2e3440;
-  --nord1:#3b4252;
-  --nord2:#434c5e;
-  --nord3:#4c566a;
-  --nord4:#d8dee9;
-  --nord5:#e5e9f0;
-  --nord6:#eceff4;
-  --nord7:#8fbcbb;
-  --nord8:#88c0d0;
-  --nord9:#81a1c1;
-  --nord10:#5e81ac;
-  --nord11:#bf616a;
-  --nord12:#d08770;
-  --nord13:#ebcb8b;
-  --nord14:#a3be8c;
-  --nord15:#b48ead;
+  --nord0: #2e3440;
+  --nord1: #3b4252;
+  --nord2: #434c5e;
+  --nord3: #4c566a;
+  --nord4: #d8dee9;
+  --nord5: #e5e9f0;
+  --nord6: #eceff4;
+  --nord7: #8fbcbb;
+  --nord8: #88c0d0;
+  --nord9: #81a1c1;
+  --nord10: #5e81ac;
+  --nord11: #bf616a;
+  --nord12: #d08770;
+  --nord13: #ebcb8b;
+  --nord14: #a3be8c;
+  --nord15: #b48ead;
 }
 
 #app {
