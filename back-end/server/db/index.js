@@ -123,12 +123,7 @@ async function getAllCibi(id) {
 
 //crea un nuovo cibo per un utente
 async function addCibo(id, nome, quantita, calin) {
-    //uso un client specifico per la transazione secondo quanto indicato dal tutorial node-postgres
-    //https://node-postgres.com/features/transactions
-    //e poi così mi sento un pochino più sicuro nel caso di più transazioni di qusto tipo fatte in concorrenza/parallelo.
-    const client = await pool.connect();
-    try {
-        await client.query("BEGIN;");
+    return await doTransaction(async (client) => {
         var res = await client.query(
             "INSERT INTO cibo(id, nome, quantita, calin) "+
             "VALUES ($1, $2, $3, $4) "+
@@ -136,14 +131,8 @@ async function addCibo(id, nome, quantita, calin) {
             [id, nome, quantita, calin]
         );
         await addOrSubtractCalories(id, res.rows[0].created, calin, 0);  //a quanto pare (non testato a sufficienza) ci pensa node-postgres a convertire un timestamp data-ora in solo data
-        await client.query("COMMIT;");
         return res.rows[0];
-    } catch (err) {
-        await client.query("ROLLBACK;");
-        throw err;
-    } finally {
-        client.release();
-    }
+    });
 }
 
 async function editCibo(id, ts, nome, quantita, calin) {
@@ -195,6 +184,26 @@ async function addOrSubtractCalories(id, data, calinMod, caloutMod) {
         );
     }
     return res.rows[0];
+}
+
+//fa una transazione che esegue le istruzioni date, restituendo l'eventuale valore di ritorno.
+//body deve essere una funzione async che prende come argomento il client che farà la transazione.
+async function doTransaction(body) {
+    //uso un client specifico per la transazione secondo quanto indicato dal tutorial node-postgres
+    //https://node-postgres.com/features/transactions
+    //e poi così mi sento un pochino più sicuro nel caso di più transazioni di qusto tipo fatte in concorrenza/parallelo.
+    const client = await pool.connect();
+    try {
+        await client.query("BEGIN;");
+        var toReturn = await body(client);
+        await client.query("COMMIT;");
+        return toReturn;
+    } catch (err) {
+        await client.query("ROLLBACK;");
+        throw err;
+    } finally {
+        client.release();
+    }
 }
 
 
