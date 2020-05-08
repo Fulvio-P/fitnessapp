@@ -91,4 +91,23 @@ router.put("/:ts", async (req, res) => {
     return res.status(200).send(edited);
 });
 
+//elimina un cibo esistente dato il suo timestamp
+//(che magari è stato recuperato esaminando la risposta GET)
+router.delete("/:ts", async (req, res) => {
+    var deleted;
+    try {
+        deleted = await db.deleteCibo(req.user.id, req.params.ts);
+    } catch (err) {
+        //dovrebbe essere impossibile rompere vincoli con questa operazione
+        console.error(`postgres error no. ${err.code}: ${err.message}`);
+        return res.status(500).send("Internal Database Error");
+    };
+    //se la query è andata bene...
+    if (!deleted) {
+        //allora non è stata eliminata alcuna riga, quindi non è mai esistita una misura con quegli id e data
+        return res.status(404).send("Questa entry non esisteva neanche prima. Nessuna modifica.");
+    }
+    return res.status(200).send(deleted);
+});
+
 module.exports = router;

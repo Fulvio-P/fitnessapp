@@ -143,6 +143,17 @@ async function editCibo(id, ts, nome, quantita, calin) {
     return res.rows[0];
 }
 
+//elimina un cibo dati id dell'utente e timestamp di creazione
+async function deleteCibo(id, ts) {
+    var res = await pool.query(
+        "DELETE FROM cibo "+
+        "WHERE id=$1 AND created=$2 "+
+        "RETURNING created, nome, quantita, calin;",
+        [id, ts]
+    );
+    return res.rows[0];
+}
+
 
 
 
@@ -257,6 +268,7 @@ module.exports = {
     getAllCibi,
     addCibo,
     editCibo,
+    deleteCibo,
     
     //Funzioni test
     getId,
