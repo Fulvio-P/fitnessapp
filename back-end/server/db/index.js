@@ -102,6 +102,17 @@ async function deleteMisuraPeso(id, data) {
     return res.rows[0];
 }
 
+//ritorna tutti i cibi di un utente dato il suo id
+async function getAllCibi(id) {
+    var res = await pool.query(
+        "SELECT created, nome, quantita, calin "+
+        "FROM cibo "+
+        "WHERE id=$1",
+        [id]
+    );
+    return res.rows;
+}
+
 
 
 
@@ -213,6 +224,7 @@ module.exports = {
     addMisuraPeso,
     editMisuraPeso,
     deleteMisuraPeso,
+    getAllCibi,
     
     //Funzioni test
     getId,
