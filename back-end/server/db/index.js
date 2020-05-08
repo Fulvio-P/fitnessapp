@@ -113,6 +113,17 @@ async function getAllCibi(id) {
     return res.rows;
 }
 
+//crea un nuovo cibo per un utente
+async function addCibo(id, nome, quantita, calin) {
+    var res = await pool.query(
+        "INSERT INTO cibo(id, nome, quantita, calin) "+
+        "VALUES ($1, $2, $3, $4) "+
+        "RETURNING created, nome, quantita, calin",
+        [id, nome, quantita, calin]
+    );
+    return res.rows[0];
+}
+
 
 
 
@@ -225,6 +236,7 @@ module.exports = {
     editMisuraPeso,
     deleteMisuraPeso,
     getAllCibi,
+    addCibo,
     
     //Funzioni test
     getId,
