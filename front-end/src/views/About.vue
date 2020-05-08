@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <div class="body sidebar-margin">
+    <div class="body sidebar-margin padding">
       <h1>This is an about page</h1>
       <p>Usiamo questa pagina per i test</p>
       <p>

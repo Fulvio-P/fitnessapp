@@ -1,5 +1,5 @@
 <template>
-  <div class="landing-bottom">
+  <div class="landing-bottom padding">
     <b-container fluid>
       <b-row>
         <b-col sm>
@@ -65,9 +65,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.landing-bottom {
-  padding: 5rem;
-}
-</style>
