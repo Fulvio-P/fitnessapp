@@ -21,6 +21,9 @@ app.use("/api/calories", calories);
 const auth = require("./routes/auth");
 app.use("/api/user", auth);
 
+const food = require("./routes/food");
+app.use("/api/food", food);
+
 const activities = require("./routes/activities");
 app.use("/activities", activities);
 
