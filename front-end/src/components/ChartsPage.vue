@@ -94,7 +94,9 @@ getComputedStyle(document.documentElement).getPropertyValue('--my-variable-name'
 */
 
 function getCSSVar(varname) {
-  return getComputedStyle(document.documentElement).getPropertyValue(varname).trim();
+  return getComputedStyle(document.documentElement)
+    .getPropertyValue(varname)
+    .trim();
 }
 
 var weightdata = {
@@ -102,7 +104,7 @@ var weightdata = {
     {
       label: "Peso",
       borderColor: getCSSVar("--nord8"), //nord8
-      backgroundColor: getCSSVar("--nord8")+"80", //nord8 ma trasparente
+      backgroundColor: getCSSVar("--nord8") + "80", //nord8 ma trasparente
       data: [],
       pointRadius: 5,
       pointHoverRadius: 7
@@ -115,7 +117,7 @@ var caldata = {
     {
       label: "Ingerite",
       borderColor: getCSSVar("--nord12"), //nord12
-      backgroundColor: getCSSVar("--nord12")+"c0", //nord12 ma trasparente
+      backgroundColor: getCSSVar("--nord12") + "c0", //nord12 ma trasparente
       borderWidth: 2,
       data: [],
       hidden: true
@@ -123,7 +125,7 @@ var caldata = {
     {
       label: "Bruciate",
       borderColor: getCSSVar("--nord14"), //nord14
-      backgroundColor: getCSSVar("--nord14")+"c0", //nord14 ma trasparente
+      backgroundColor: getCSSVar("--nord14") + "c0", //nord14 ma trasparente
       borderWidth: 2,
       data: [],
       hidden: true
@@ -131,7 +133,7 @@ var caldata = {
     {
       label: "Bilancio",
       borderColor: getCSSVar("--nord15"), //nord15
-      backgroundColor: getCSSVar("--nord15")+"c0", //nord15 ma trasparente
+      backgroundColor: getCSSVar("--nord15") + "c0", //nord15 ma trasparente
       borderWidth: 2,
       data: [],
       hidden: false

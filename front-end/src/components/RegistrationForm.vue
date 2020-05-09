@@ -1,7 +1,6 @@
 <template>
   <div>
-    <b-form @submit="registerNewUser">
-
+    <b-form @submit.prevent="registerNewUser">
       <b-form-group
         id="registration-group-2"
         label="Username"
@@ -36,30 +35,35 @@
 </template>
 
 <script>
-
-import axios from 'axios'
-
 export default {
   name: "RegistrationForm",
   data() {
     return {
-      username: undefined,
-      password: undefined
-    }
+      username: "",
+      password: ""
+    };
   },
   methods: {
-    
-    registerNewUser(ev){
-      ev.preventDefault();
-      axios
-      .post("http://localhost:5000/api/user/register", {
-        username: this.username,
-        password: this.password
-      });
-      ev.target.reset();
-    }
+    registerNewUser() {
+      //recupero username e password dal form
+      const { username, password } = this;
+      //avvio registrazione (gestita da vuex)
+      this.$store
+        .dispatch("REGISTER_REQUEST", { username, password })
 
-  },
+        //se tutto va bene provo ridirico al login
+        .then(() => {
+          this.$router.push("/login");
+        })
+
+        //se qualcosa va male i campi sono resettati
+        .catch(() => {
+          this.username = "";
+          this.password = "";
+          alert(this.$store.state.status);
+        });
+    }
+  }
 };
 </script>
 

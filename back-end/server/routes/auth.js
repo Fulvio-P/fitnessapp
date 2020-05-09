@@ -40,7 +40,7 @@ router.post('/register', async (req, res) => {
     /* Provo ad aggiungere l'utente al database */
     try {
         await db.addUser(username, hashedPassword)
-        return res.status(200).send("Registrato utente: "+username+"\nhash: "+ hashedPassword);
+        return res.status(200).send("Success");
     } catch (err) {
         return res.status(500).send("Errore inserimento nel database: "+err)
     }
@@ -90,15 +90,15 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign(user,jwtSecret,{
         expiresIn: "5h"
     })
-    authData="Bearer "+token
-    //a quanto pare questo è il modo giusto di inviare token
 
 
 
 
 
     /* Invio risposta al front-end */
-    return res.status(200).set('Authentication',authData).send(user);
+    return res.status(200).send({
+        'token':token
+    });
 
 });
 

@@ -149,7 +149,14 @@ GOOGLE FIT
          - Lettura dati diretta
          - Lettura aggregata facendo riferimento alla DS
 
-
+FITBIT
+    Un fitness tracker che supporta OAuth.
+    Può sostituirsi a Google Fit, specialmente se vogliamo recuperare dati
+    piuttosto che inserirli.
+    
+    Tipo di risposta: JSON
+    
+    Documentazione: https://dev.fitbit.com/build/reference/web-api/
 
 
 
