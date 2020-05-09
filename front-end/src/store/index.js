@@ -12,12 +12,12 @@ export default new Vuex.Store({
 
     //stati usati per il login vero
     token: localStorage.getItem("user-token") || "", //JWT conservato anche se localstorage non disponibile
-    status: "" //status del login o registrazione
+    status: "" //status interno della applicazione per richieste di login, regitrazione e altre API
   },
 
   getters: {
     isAuthenticated: state => !!state.token,
-    authStatus: state => state.status
+    getStatus: state => state.status
   },
 
   mutations: {
