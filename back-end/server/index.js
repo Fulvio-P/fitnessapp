@@ -9,6 +9,15 @@ const app = express();
 
 //middleware
 app.use(bodyParser.json());
+//cattura errori dal bodyParser
+app.use((err, req, res, next) => {   //https://stackoverflow.com/questions/15819337/catch-express-bodyparser-error
+    if (err instanceof SyntaxError) {
+        res.status(400).send(`Invalid JSON: ${err.message}`);
+    }
+    else {
+        next();
+    }
+});
 app.use(cors());
 
 //routes
