@@ -10,7 +10,7 @@
         commodi!
       </p>
       <ChartsPage />
-      <b-button router-link to="/"> BACK HOME </b-button>
+      <br>
       <FormsPage />
     </div>
   </div>
