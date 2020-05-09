@@ -123,12 +123,13 @@ async function getAllCibi(id) {
 
 //crea un nuovo cibo per un utente
 async function addCibo(id, data, nome, calin, descrizione) {
+    const [plusInsert, plusValues, plusParams] = generateInsertOptionals(data, descrizione);
     return await doTransaction(async (client) => {
         var res = await client.query(
-            "INSERT INTO cibo(id, data, nome, calin, descrizione) "+
-            "VALUES ($1, $2, $3, $4, $5) "+
+            "INSERT INTO cibo(id, nome, calin"+plusInsert+") "+
+            "VALUES ($1, $2, $3"+plusValues+") "+
             "RETURNING created, data, nome, calin, descrizione",
-            [id, data, nome, calin, descrizione]
+            [id, nome, calin].concat(plusParams)
         );
         await addOrSubtractCalories(client, id, res.rows[0].data, calin, 0);
         return res.rows[0];
@@ -146,13 +147,14 @@ async function editCibo(id, ts, data, nome, calin, descrizione) {
     if (vecch.rows.length<1) {
         return undefined;    //se non troviamo nulla è meglio che smettiamo subito prima di avere problemi indesiderati durante la transazione
     }
+    const [plusSet, plusParams] = generateUpdateOptionals(data, descrizione);
     return await doTransaction(async client => {
         var nuov = await client.query(
             "UPDATE cibo "+
-            "SET data=$3, nome=$4, calin=$5, descrizione=$6 "+
+            "SET nome=$3, calin=$4"+plusSet+" "+
             "WHERE id=$1 AND created=$2 "+
             "RETURNING created, data, nome, calin, descrizione;",
-            [id, ts, data, nome, calin, descrizione]
+            [id, ts, nome, calin].concat(plusParams)
         );
         await addOrSubtractCalories(client, id, vecch.rows[0].data, -vecch.rows[0].calin, 0);
         await addOrSubtractCalories(client, id, nuov.rows[0].data, nuov.rows[0].calin, 0);
@@ -236,6 +238,36 @@ async function doTransaction(body) {
     } finally {
         client.release();
     }
+}
+
+//genera stringhe e array da aggiungere alle query INSERT per cibo e attività per gestire
+//correttamente i parametri opzionali (pg non ha una keyword DEFAULT da usare, purtroppo).
+//questa funzione è estremamente specifica e, allo stato attuale, NON PORTABILE
+//è una funzione solo perché viene usata IDENTICA in cibo e attività
+function generateInsertOptionals(data, descrizione) {
+    const plusInsert = (data ? ", data" : "") + (descrizione ? ", descrizione" : "");
+    const plusValues = (data||descrizione ? ", $4": "") + (data&&descrizione ? ", $5": "");
+    const plusParams = [data, descrizione].filter(i=>i);  //prende i non-undefined
+    return [plusInsert, plusValues, plusParams];
+}
+
+//genera stringhe e array da aggiungere alle query UPDATE per cibo e attività per gestire
+//correttamente i parametri opzionali (pg non ha una keyword DEFAULT da usare, purtroppo).
+//questa funzione è estremamente specifica e, allo stato attuale, NON PORTABILE
+//è una funzione solo perché viene usata IDENTICA in cibo e attività
+//se vogliamo provare a farne una versione generica, forse potremmo considerare il ciclo for...in
+//per poter passare un oggetto come parametro e iterare sulle sue proprietà...
+function generateUpdateOptionals(data, descrizione) {
+    const theArray = [[data, ", data"], [descrizione, ", descrizione"]].filter(a=>a[0]);  //prende i non-undefined
+    const plusParams = theArray.map(a=>a[0]);
+    const nomi = theArray.map(a=>a[1]);
+    const dollari = ["=$5", "=$6"];
+    // adesso facciamo praticamente lo zip di nomi e dollari
+    var plusSet = [];
+    for (let i=0; i<nomi.length; i++) {
+        plusSet[i] = nomi[i] + dollari[i];
+    }
+    return [plusSet, plusParams];
 }
 
 
