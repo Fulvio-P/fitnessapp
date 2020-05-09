@@ -21,7 +21,9 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    
     /* Mutazioni usate dal login */
+
     //segna l'inizio del login
     AUTH_REQUEST(state) {
       state.status = "loading";
@@ -32,7 +34,11 @@ export default new Vuex.Store({
       state.status = "success";
       state.token = token;
     },
-    /* Fine mutazioni del login vero */
+
+
+
+
+
 
     /* Mutazione del logout */
     AUTH_LOGOUT(state) {
@@ -40,7 +46,13 @@ export default new Vuex.Store({
       state.status = "";
     },
 
+
+
+
+
+
     /* Mutazioni registrazione */
+
     //segna l'inizio della registrazione
     REGISTER_REQUEST(state) {
       state.status = "reg-loading";
@@ -50,9 +62,30 @@ export default new Vuex.Store({
     REGISTER_SUCCESS(state) {
       state.status = "reg-success";
     },
-    /* Fine mutazioni registrazione */
+
+
+
+    
+    
+    /* Mutazioni generiche per chiamate API */
+
+    //segna l'inizion di una richesta
+    API_REQUEST(state){
+      state.status = 'api-loading';
+    },
+    
+    //segna il successo di una richiesta
+    API_SUCCESS(state){
+      state.status = 'api-success';
+    },    
+
+
+
+
+
 
     /* Mutazione errori */
+
     //segna errore
     REQUEST_ERROR(state, error) {
       if (error.response) {
@@ -66,9 +99,11 @@ export default new Vuex.Store({
         state.status = error.message;
       }
     }
+
   },
 
   actions: {
+
     /* Azione del login*/
     AUTH_REQUEST({ commit }, user) {
       return new Promise((resolve, reject) => {
@@ -99,6 +134,10 @@ export default new Vuex.Store({
       });
     },
 
+    
+    
+    
+    
     /* Azione di logout */
     AUTH_LOGOUT({ commit }) {
       return new Promise(resolve => {
@@ -108,6 +147,10 @@ export default new Vuex.Store({
       });
     },
 
+    
+    
+    
+    
     /* Azione di registrazione */
     REGISTER_REQUEST({ commit }, user) {
       return new Promise((resolve, reject) => {
@@ -131,7 +174,98 @@ export default new Vuex.Store({
             reject(error);
           });
       });
-    }
+    },
+
+    
+    
+    
+    
+    /* Azioni per tutte le altre chiamate API */
+    API_GET({commit}, url){
+      return new Promise((resolve, reject)=>{
+
+        commit('API_REQUEST');
+        axios
+          .get(url)
+
+          //gestisco il successo
+          .then(resp => {
+            commit('API_SUCCESS');
+            resolve(resp);
+          })
+
+          //gestisco errori
+          .catch(error => {
+            commit('REQUEST_ERROR');
+            reject(error);
+          })
+      })
+    },
+
+    API_POST({commit}, url, payload){
+      return new Promise((resolve, reject)=>{
+
+        commit('API_REQUEST');
+        axios
+          .post(url, payload)
+
+          //gestisco il successo
+          .then(resp => {
+            commit('API_SUCCESS');
+            resolve(resp);
+          })
+
+          //gestisco errori
+          .catch(error => {
+            commit('REQUEST_ERROR');
+            reject(error);
+          })
+      })
+    },
+
+    API_PUT({commit}, url, payload){
+      return new Promise((resolve, reject)=>{
+
+        commit('API_REQUEST');
+        axios
+          .put(url, payload)
+
+          //gestisco il successo
+          .then(resp => {
+            commit('API_SUCCESS');
+            resolve(resp);
+          })
+
+          //gestisco errori
+          .catch(error => {
+            commit('REQUEST_ERROR');
+            reject(error);
+          })
+      })
+    },
+
+    API_DELETE({commit}, url){
+      return new Promise((resolve, reject)=>{
+
+        commit('API_REQUEST');
+        axios
+          .delete(url)
+
+          //gestisco il successo
+          .then(resp => {
+            commit('API_SUCCESS');
+            resolve(resp);
+          })
+
+          //gestisco errori
+          .catch(error => {
+            commit('REQUEST_ERROR');
+            reject(error);
+          })
+      })
+    },
+
+
   },
 
   modules: {}
