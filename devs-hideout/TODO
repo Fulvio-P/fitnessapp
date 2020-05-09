@@ -6,9 +6,9 @@ Cose da fare:
   - mettere token in storage e usarlo (come header Authentication)
   - gestire fallimento autenticazione (redirect login)
 -Ristrutturazione API: (Francesco)
-  - controllare il token nel backend (check e ???)
-  - usarle token in TUTTE le chiamate opportune
-  - GET, POST e DELETE per peso, cibo e allenamenti (mantenere tabella calorie)
+  - [parte importante fatta]
+  - implementare per data specifica e range di date
+  - gestire con grazia il fallimento del parsing del body JSON, se possibile
 -Più informazioni
   - aggiungere tabella info addizionali
   - fare form per queste informazioni (pagina impostazioni profilo)

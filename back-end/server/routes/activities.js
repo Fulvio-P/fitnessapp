@@ -13,9 +13,9 @@ router.use(utils.verifyJWT);
 //get generica che viene usata in varie declinazioni dai vari dipi di route get
 async function generalGet(req, res, from, to) {
     try {
-        var rows = await db.getRangeMisurePeso(req.user.id, from, to);
-    }
-    catch (err) {
+        var rows = await db.getRangeAttivita(req.user.id, from, to);
+    } catch (err) {
+        //questa è una get, non ci sono vincoli da violare
         console.error(`postgres error no. ${err.code}: ${err.message}`);   //non sono sicuro che vogliamo rimandare al client il messaggio d'errore di postgres
         return res.status(500).send("Internal Database Error");
     }
@@ -29,24 +29,22 @@ async function generalGet(req, res, from, to) {
     return toSend;
 }
 
-//recupera la lista delle misure del peso di un utente
+//recupera la lista delle attività registrate da un utente
 router.get("/", async (req, res) => {
-    const toSend =  await generalGet(req, res, db.MINFINITY, db.INFINITY);
+    const toSend = await generalGet(req, res, db.MINFINITY, db.INFINITY);
     return res.status(200).json(toSend);
 });
 
-//recupera una misura di un giorno specifico.
-//ha un comportamento speciale se non esiste una msiurazione per quel giorno
-//perché personalmente lo ritengo più appropriato.
+//recupera le attività associate a una certa "data"
 router.get("/:data", async (req, res) => {
     const toSend = await generalGet(req, res, req.params.data, req.params.data);
     if (toSend.dataPoints.length<1) {
-        return res.status(404).send("Nessuna misura per questo giorno...")
+        return res.status(404).send("Nessuna entry per questo giorno...")
     }
     return res.status(200).json(toSend);
 });
 
-//recupera le misure in un range di date. ESTREMI INCLUSI.
+//recupera le attività la cui "data" è in un certo range. ESTREMI INCLUSI.
 router.get("/:from/:to", async (req, res) => {
     //definiamo un carattere speciale per dire infinity.
     //la scelta è stata completamente casuale e si può discutere.
@@ -56,62 +54,74 @@ router.get("/:from/:to", async (req, res) => {
     return res.status(200).json(toSend);
 });
 
-//aggiunge una nuova misura di peso alla data di oggi, dà errore se c'è già
+//crea una nuova attività per l'utente coi parametri indicati
 router.post("/", async (req, res) => {
-    var newrow;
     try {
-        newrow = await db.addMisuraPeso(req.user.id, req.body.peso);
+        var added = await db.addAttivita(
+            req.user.id,
+            req.body.data,
+            req.body.nome,
+            req.body.calout,
+            req.body.descrizione
+        );
     } catch (err) {
         console.error(`postgres error no. ${err.code}: ${err.message}`);
         switch (err.code) {
-            case "23505": //errore violazione vincolo UNIQUE / PRIMARY KEY
-                return res.status(409).send("Esiste già una misurazione per oggi, prova PUT per modificarla");
+            case "23505": //errore violazione vincolo UNIQUE / PRIMARY KEY, praticamente non dovrebbe succedere visto che il timestamp è preciso al millisecondo
+                return res.status(429).send("Sei troppo veloce! Riprova tra qualche secondo...");
             case "23503": //errore violazione vincolo FOREIGN KEY
                 return res.status(404).send("User ID does not exist");
             case "23502": //errore violazione vincolo NOT NULL
-                return res.status(400).send("Peso non specificato");
+                return res.status(400).send("Non hai specificato tutti gli argomenti obbligatori");
+            case "22001": //quando una stringa è più lunga del limite dato nella definizione VARCHAR
+                return res.status(413).send("String too long");
             default:
                 return res.status(500).send("Internal Database Error");
         }
     }
     //se va tutto bene...
-    res.status(201).json(newrow);
+    res.status(201).json(added);
 });
 
-//modifica la misura peso dell'utente in una data arbitraria,
-//dà errore se non c'è.
-//ci aspettiamo che la data sia in un formato parsabile dall'oggetto Date,
-//preferibilmente YYYY-MM-DD.
-router.put("/:data", async (req, res) => {
-    var edited;
+//modifica un'attività esistente dato il suo timestamp
+//(che magari è stato recuperato esaminando la risposta GET)
+router.put("/:ts", async (req, res) => {
     try {
-        edited = await db.editMisuraPeso(req.user.id, new Date(req.params.data), req.body.peso);
+        var edited = await db.editAttivita(
+            req.user.id,
+            req.params.ts,
+            req.body.data,
+            req.body.nome,
+            req.body.calout,
+            req.body.descrizione
+        );
     } catch (err) {
         console.error(`postgres error no. ${err.code}: ${err.message}`);
         switch (err.code) {
             case "23505": //violaz. UNIQUE / PRIMARY KEY, impossibile perché questa chiamata non modifica id o data.
             case "23503": //violaz. FOREIGN KEY, impossibile perché idem
-                return res.status(500).send("Non dovresti vedere questo messaggio. Quale magia nera hai fatto per farlo apparire? Me la insegni?");
+                return res.status(500).send("Non dovresti vedere questo messaggio. Aaahh, che imbarazzo!!");
             case "23502": //violaz. NOT NULL
-                return res.status(400).send("Peso non specificato");
+                return res.status(400).send("Non hai specificato tutti gli argomenti obbligatori");
+            case "22001": //quando una stringa è più lunga del limite dato nella definizione VARCHAR
+                return res.status(413).send("String too long");
             default:
                 return res.status(500).send("Internal Database Error");
         }
     }
     //se la query è andata bene...
     if (!edited) {
-        //allora non è stata modificata alcuna riga, quindi non è mai esistita una misura con quegli id e data
-        return res.status(404).send("Questa misura non esiste affatto. Nessuna modifica.");
+        //allora non è stata modificata alcuna riga, quindi non è mai esistita una misura con quegli id e ts
+        return res.status(404).send("Questa entry non esiste affatto. Nessuna modifica.");
     }
     return res.status(200).send(edited);
 });
 
-//elimina una misura di peso dell'utente in una data arbitraria.
-//stesso formato per la data.
-router.delete("/:data", async (req, res) => {
-    var deleted;
+//elimina un'attività esistente dato il suo timestamp
+//(che magari è stato recuperato esaminando la risposta GET)
+router.delete("/:ts", async (req, res) => {
     try {
-        deleted = await db.deleteMisuraPeso(req.user.id, new Date(req.params.data));
+        var deleted = await db.deleteAttivita(req.user.id, req.params.ts);
     } catch (err) {
         //dovrebbe essere impossibile rompere vincoli con questa operazione
         console.error(`postgres error no. ${err.code}: ${err.message}`);
@@ -120,7 +130,7 @@ router.delete("/:data", async (req, res) => {
     //se la query è andata bene...
     if (!deleted) {
         //allora non è stata eliminata alcuna riga, quindi non è mai esistita una misura con quegli id e data
-        return res.status(404).send("Questa misura non esisteva neanche prima. Nessuna modifica.");
+        return res.status(404).send("Questa entry non esisteva neanche prima. Nessuna modifica.");
     }
     return res.status(200).send(deleted);
 });

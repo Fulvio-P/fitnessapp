@@ -22,7 +22,7 @@ router.post('/register', async (req, res) => {
         let user = await db.getUserByName(username);
         if(user) return res.status(400).send("Utente già registrato");
     } catch (err) {
-        res.status(500).send("Il controllo utente già registrato ha dato errore: "+err);
+        return res.status(500).send("Il controllo utente già registrato ha dato errore: "+err);
     }
 
 
@@ -40,9 +40,9 @@ router.post('/register', async (req, res) => {
     /* Provo ad aggiungere l'utente al database */
     try {
         await db.addUser(username, hashedPassword)
-        res.status(200).send("Success");
+        return res.status(200).send("Success");
     } catch (err) {
-        res.status(500).send("Errore inserimento nel database: "+err)
+        return res.status(500).send("Errore inserimento nel database: "+err)
     }
 
 });
@@ -69,7 +69,7 @@ router.post('/login', async (req, res) => {
         user = await db.getUserByName(username);
         if(!user) return res.status(403).send("Utente non registrato");
     } catch (err) {
-        res.status(500).send("Errore controllo registrazione: "+err);
+        return res.status(500).send("Errore controllo registrazione: "+err);
     }
 
 
@@ -96,7 +96,7 @@ router.post('/login', async (req, res) => {
 
 
     /* Invio risposta al front-end */
-    res.status(200).send({
+    return res.status(200).send({
         'token':token
     });
 

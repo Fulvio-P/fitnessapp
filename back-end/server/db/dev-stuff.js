@@ -36,7 +36,6 @@ async function initDB(testUsers) {
                         "PRIMARY KEY (id, data));"    //solo una misurazione al giorno per utente
     );
 
-
     //Tabella calorie
     await pool.query("CREATE TABLE misuraCalorie ("+
                         "id integer NOT NULL REFERENCES utente(id), "+
@@ -44,6 +43,33 @@ async function initDB(testUsers) {
                         "calin REAL NOT NULL DEFAULT 0, "+
                         "calout REAL NOT NULL DEFAULT 0, "+
                         "PRIMARY KEY (id, data));"
+    );
+
+    //Tabella cibo
+    await pool.query(
+        "CREATE TABLE cibo ("+
+            "id integer NOT NULL REFERENCES utente(id), "+
+            "created TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, "+
+            //precisione al millisecondo per usare la stessa prec di JS
+            "data DATE NOT NULL DEFAULT CURRENT_DATE, "+
+            "nome VARCHAR(50) NOT NULL, "+
+            "calin REAL NOT NULL DEFAULT 0, "+
+            "descrizione VARCHAR(512) NOT NULL DEFAULT '', "+
+            "PRIMARY KEY (id, created)"+
+        ");"
+    );
+
+    //Tabella attività
+    await pool.query(
+        "CREATE TABLE attivita ("+
+            "id integer NOT NULL REFERENCES utente(id), "+
+            "created TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, "+
+            "data DATE NOT NULL DEFAULT CURRENT_DATE, "+
+            "nome VARCHAR(50) NOT NULL, "+
+            "calout REAL NOT NULL DEFAULT 0, "+
+            "descrizione VARCHAR(512) NOT NULL DEFAULT '', "+
+            "PRIMARY KEY (id, created)"+
+        ");"
     );
 
 
@@ -70,6 +96,36 @@ async function initDB(testUsers) {
         console.log(await index.setCalorie("ChieSatonaka", new Date("2020-04-26"), 50, 0));
         console.log(await index.setCalorie("ChieSatonaka", new Date("2020-04-27"), 0, 60));
         console.log(await index.setCalorie("EdelgardVonHresvelg", new Date("2020-04-27"), 150.25, 200));
+        //purtroppo non posso usare le funzioni che modificano pure le calorie
+        //perché sono troppo veloci e le entry hanno tutte lo stesso timestamp
+        await pool.query(
+            "INSERT INTO cibo(id, created, data, nome, calin) VALUES "+
+            "(1, '2020-05-01', '2020-05-01', 'pollo', 300), "+
+            "(1, '2020-05-02', '2020-05-02', 'sushi', 250), "+
+            "(1, '2020-05-03', '2020-05-03', 'uova', '350'), "+
+            "(1, '2020-05-04', '2020-05-04', 'fagioli', 200), "+
+            "(3, '2020-05-05', '2020-05-05', 'carne', 999), "+
+            "(4, '2020-05-06', '2020-05-06', 'gratin veloce di pesce', 200.5);"
+        );
+        await pool.query(
+            "INSERT INTO attivita(id, created, data, nome, calout) VALUES "+
+            "(1, '2020-05-01', '2020-05-01', 'boxe', 200), "+
+            "(1, '2020-05-02', '2020-05-02', 'tartarus',500), "+
+            "(1, '2020-05-03', '2020-05-03', 'boxe', 200), "+
+            "(1, '2020-05-04', '2020-05-04', 'tartarus', 500), "+
+            "(1, '2020-05-05', '2020-05-05', 'boxe e tartarus (contemporaneamente)', 700), "+
+            "(2, '2020-05-04', '2020-05-04', 'allenam. combatt. bastone con Estelle', 300), "+
+            "(2, '2020-05-05', '2020-05-05', 'pesca con Joshua', 50), "+
+            "(2, '2020-05-06', '2020-05-06', 'lavoro con la gilda', 400), "+
+            "(3, '2020-05-01', '2020-05-01', 'kung fu', 200), "+
+            "(3, '2020-05-04', '2020-05-04', 'esplorazione castello', 999), "+
+            "(4, '2020-05-01', '2020-05-01', 'esercitazione ascia', 200.5), "+
+            "(4, '2020-05-02', '2020-05-02', 'esercitazione comando', 200.5), "+
+            "(4, '2020-05-03', '2020-05-03', 'esercitazione armatura', 200.5), "+
+            "(4, '2020-05-04', '2020-05-04', 'allenamento con Byleth', 200.5), "+
+            "(4, '2020-05-06', '2020-05-06', 'incarico mensile', 350.75);"
+        )
+        console.log("Tutto OK, Ctrl+C per uscire");
     }
 }
 
@@ -84,6 +140,16 @@ async function destroyDB() {
         await pool.query("DROP TABLE misuraCalorie;");
     } catch (err) {
         console.error("errore destroyDB(misuraCalorie): "+err.message);
+    }
+    try {
+        await pool.query("DROP TABLE cibo;");
+    } catch (err) {
+        console.error("errore destroyDB(cibo): "+err.message);
+    }
+    try {
+        await pool.query("DROP TABLE attivita;");
+    } catch (err) {
+        console.error("errore destroyDB(attivita): "+err.message);
     }
     try {
         await pool.query("DROP TABLE utente;");
@@ -133,7 +199,7 @@ function questionPromise(rl) {
                 pool
                     .query(ans)
                     .then(res=>{console.log(res.rows);resolve(false);})
-                    .catch(err=>{console.error("shell query "+ans+": "+err.stack);resolve(false);})
+                    .catch(err=>{console.error("shell query "+ans+": [code "+err.code+"] "+err.stack);resolve(false);})
             }
         });
     });
@@ -157,7 +223,7 @@ async function shell() {
 }
 
 async function main() {
-    console.log("Cosa vuoi?\nS: Shell\nC: Crea\nCT: Crea con user di test\nD: Distruggi\nR: Reset\nX: Reset->Shell->Distruggi");
+    console.log("Cosa vuoi?\nS: Shell\nC: Crea\nCT: Crea con user di test\nD: Distruggi\nR: Reset\nRT: Reset con user di test\nX: Reset->Shell->Distruggi");
     rl.question("PG> ", async (ans) => {
         switch (ans) {
             case 'S':
@@ -176,9 +242,13 @@ async function main() {
                 await destroyDB();
                 await initDB();
                 break;
+            case 'RT':
+                await destroyDB();
+                await initDB(true);
+                break;
             case 'X':
                 await destroyDB();
-                await initDB();
+                await initDB(true);
                 await shell();
                 await destroyDB();
                 break;
