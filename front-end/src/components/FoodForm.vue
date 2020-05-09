@@ -3,39 +3,47 @@
     <b-form @submit.prevent='addFood'>
       
       <!-- Nome del cibo -->
-      <b-form-input
-        id="food-nome"
-        v-model="nome"
-        placeholder="Banana"
-        type="search"
-        required
-      ></b-form-input>
+      <b-form-group label='Nome del cibo'>
+        <b-form-input
+          id="food-nome"
+          v-model="nome"
+          placeholder="Banana"
+          type="search"
+          required
+        ></b-form-input>
+      </b-form-group>
 
       <!-- Calorie del cibo -->
-      <b-form-input
-        id="food-calin"
-        v-model="calin"
-        placeholder="60"
-        type="number"
-        required
-      ></b-form-input>
+      <b-form-group label='Importo enegetico (kcal)'>
+        <b-form-input
+          id="food-calin"
+          v-model="calin"
+          placeholder="60"
+          type="number"
+          required
+        ></b-form-input>
+      </b-form-group>
 
       <!-- Selettore del giorno -->
-      <b-form-datepicker
-        id="food-data"
-        v-model="data"
-        required
-        value-as-date
-      ></b-form-datepicker>
+      <b-form-group label='Giorno associato al record'>
+        <b-form-datepicker
+          id="food-data"
+          v-model="data"
+          required
+          value-as-date
+        ></b-form-datepicker>
+      </b-form-group>
 
       <!-- Descrizione agginutiva -->
-      <b-form-textarea
-        id="food-descrizione"
-        v-model="descrizione"
-        placeholder="Aggiungi dettagli"
-        rows="3"
-        no-resize
+      <b-form-group label='Informazioni aggiuntive'>
+        <b-form-textarea
+          id="food-descrizione"
+          v-model="descrizione"
+          placeholder="Aggiungi dettagli"
+          rows="3"
+          no-resize
         ></b-form-textarea>
+      </b-form-group>
 
       <b-button type="submit">Regitra calorie</b-button>
     </b-form>

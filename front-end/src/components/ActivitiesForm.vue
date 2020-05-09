@@ -3,39 +3,47 @@
     <b-form @submit.prevent='addActivity'>
       
       <!-- Nome dell' attività -->
-      <b-form-input
-        id="activity-nome"
-        v-model="nome"
-        placeholder="Corsa"
-        type="search"
-        required
-      ></b-form-input>
+      <b-form-group label='Nome attività'>
+        <b-form-input
+          id="activity-nome"
+          v-model="nome"
+          placeholder="Corsa"
+          type="search"
+          required
+        ></b-form-input>
+      </b-form-group>
 
       <!-- Calorie del cibo -->
-      <b-form-input
-        id="activity-calout"
-        v-model="calout"
-        placeholder="200"
-        type="number"
-        required
-      ></b-form-input>
+      <b-form-group label='Kcal bruciate'>
+        <b-form-input
+          id="activity-calout"
+          v-model="calout"
+          placeholder="200"
+          type="number"
+          required
+        ></b-form-input>
+      </b-form-group>
 
       <!-- Selettore del giorno -->
-      <b-form-datepicker
-        id="activity-data"
-        v-model="data"
-        required
-        value-as-date
-      ></b-form-datepicker>
+      <b-form-group label='Giorno associato al record'>
+        <b-form-datepicker
+          id="activity-data"
+          v-model="data"
+          required
+          value-as-date
+        ></b-form-datepicker>
+      </b-form-group>
 
       <!-- Descrizione agginutiva -->
-      <b-form-textarea
-        id="activity-descrizione"
-        v-model="descrizione"
-        placeholder="Aggiungi dettagli"
-        rows="3"
-        no-resize
+      <b-form-group label='Informazioni aggiuntive'>
+        <b-form-textarea
+          id="activity-descrizione"
+          v-model="descrizione"
+          placeholder="Aggiungi dettagli"
+          rows="3"
+          no-resize
         ></b-form-textarea>
+      </b-form-group>
 
       <b-button type="submit">Regitra attività</b-button>
     </b-form>
