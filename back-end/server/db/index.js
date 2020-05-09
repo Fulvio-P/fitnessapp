@@ -143,15 +143,23 @@ async function getAllMisureCalorie(id) {
 
 //////////////////////////////////  CIBO  /////////////////////////////////////////
 
-//ritorna tutti i cibi di un utente dato il suo id
-async function getAllCibi(id) {
+//trova tutti i cibi di un utente la cui "data" si trova nel range [from, to].
+//ESTREMI INLUSI.
+async function getRangeCibi(id, from, to) {
+    if (!from) from=MINFINITY;    //per sicurezza...
+    if (!to) to=INFINITY;        //'''
     var res = await pool.query(
         "SELECT created, data, nome, calin, descrizione "+
         "FROM cibo "+
-        "WHERE id=$1",
-        [id]
+        "WHERE id=$1 AND $2<=data AND data<=$3",
+        [id, from, to]
     );
     return res.rows;
+}
+
+//ritorna tutti i cibi di un utente dato il suo id
+async function getAllCibi(id) {
+    return await getRangeCibi(id, MINFINITY, INFINITY);
 }
 
 //crea un nuovo cibo per un utente
@@ -214,15 +222,23 @@ async function deleteCibo(id, ts) {
 
 //////////////////////////////////  ATTIVITA  /////////////////////////////////////////
 
-//ritorna tutte le attività di un utente dato il suo id
-async function getAllAttivita(id) {
+//cerca tutte le attività di un utente la cui "data" è compresa in [from, to],
+//ESTREMI INCLUSI
+async function getRangeAttivita(id, from, to) {
+    if (!from) from=MINFINITY;    //per sicurezza...
+    if (!to) to=INFINITY;        //'''
     var res = await pool.query(
         "SELECT created, data, nome, calout, descrizione "+
         "FROM attivita "+
-        "WHERE id=$1;",
-        [id]
+        "WHERE id=$1 AND $2<=data AND data<=$3;",
+        [id, from, to]
     );
     return res.rows;
+}
+
+//ritorna tutte le attività di un utente dato il suo id
+async function getAllAttivita(id) {
+    return await getRangeAttivita(id, MINFINITY, INFINITY);
 }
 
 //crea una nuova attività per un utente
@@ -484,10 +500,12 @@ module.exports = {
     deleteMisuraPeso,
     getRangeMisureCalorie,
     getAllMisureCalorie,
+    getRangeCibi,
     getAllCibi,
     addCibo,
     editCibo,
     deleteCibo,
+    getRangeAttivita,
     getAllAttivita,
     addAttivita,
     editAttivita,

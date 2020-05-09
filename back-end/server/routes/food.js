@@ -10,10 +10,10 @@ const router = express.Router();
  */
 router.use(utils.verifyJWT);
 
-//recupera la lista dei cibi registrati da un utente
-router.get("/", async (req, res) => {
+//get generica che viene usata in varie declinazioni dai vari dipi di route get
+async function generalGet(req, res, from, to) {
     try {
-        var rows = await db.getAllCibi(req.user.id);
+        var rows = await db.getRangeCibi(req.user.id, from, to);
     }
     catch (err) {
         //questa è una get, non ci sono vincoli da violare
@@ -27,6 +27,31 @@ router.get("/", async (req, res) => {
         username: req.user.username,
         dataPoints: rows,
     };
+    return toSend;
+}
+
+//recupera la lista dei cibi registrati da un utente
+router.get("/", async (req, res) => {
+    const toSend = await generalGet(req, res, db.MINFINITY, db.INFINITY);
+    return res.status(200).json(toSend);
+});
+
+//recupera i cibi associati a una certa "data"
+router.get("/:data", async (req, res) => {
+    const toSend = await generalGet(req, res, req.params.data, req.params.data);
+    if (toSend.dataPoints.length<1) {
+        return res.status(404).send("Nessuna entry per questo giorno...")
+    }
+    return res.status(200).json(toSend);
+});
+
+//recupera i cibi la cui "data" è in un certo range. ESTREMI INCLUSI.
+router.get("/:from/:to", async (req, res) => {
+    //definiamo un carattere speciale per dire infinity.
+    //la scelta è stata completamente casuale e si può discutere.
+    if (req.params.from=='-') req.params.from=db.MINFINITY;
+    if (req.params.to=='-') req.params.to=db.INFINITY;
+    const toSend = await generalGet(req, res, req.params.from, req.params.to);
     return res.status(200).json(toSend);
 });
 

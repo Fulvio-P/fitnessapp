@@ -10,6 +10,7 @@ const router = express.Router();
  */
 router.use(utils.verifyJWT);
 
+//get generica che viene usata in varie declinazioni dai vari dipi di route get
 async function generalGet(req, res, from, to) {
     try {
         var rows = await db.getRangeMisureCalorie(req.user.id, from, to);
