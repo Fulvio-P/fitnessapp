@@ -68,13 +68,30 @@ export default {
         .dispatch("API_DELETE", url)
         //se tutto va bene
         .then(() => {
-          //TODO fare la GET per aggiornare
+          this.getFood();
+        })
+        //se qualcosa va male
+        .catch(() => {
+          alert(this.$store.state.status);
+        });
+    },
+
+    getFood() {
+      this.$store
+        //avvio chiamata API (gestita da vuex)
+        .dispatch("API_GET", foodUrl)
+        //se tutto va bene
+        .then(resp => {
+          this.items = resp.body;
         })
         //se qualcosa va male
         .catch(() => {
           alert(this.$store.state.status);
         });
     }
-  }
+  },
+  created() {
+      this.getFood();
+  },
 };
 </script>
