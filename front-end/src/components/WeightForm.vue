@@ -18,7 +18,7 @@
 
 <script>
 
-const weightUrl = "http://localhost:5000/weight";
+const weightUrl = "http://localhost:5000/api/weight";
 
 export default {
   name: "WeightForm",

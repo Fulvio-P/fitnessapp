@@ -43,7 +43,7 @@
 </template>
 
 <script>
-const foodURL = "http://localhost:5000/food";
+const foodURL = "http://localhost:5000/api/food";
 
 export default {
   name: "FoodForm",
