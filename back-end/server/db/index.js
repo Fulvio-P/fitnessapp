@@ -16,6 +16,10 @@ const pool = new Pool();
 
 require("dotenv").config();
 
+// date/timestamp speciali che rappresentano l'assenza di limiti superiore o inferiore
+const INFINITY = "infinity";
+const MINFINITY = "-infinity";
+
 
 /////////////////////////////////////  UTENTI  /////////////////////////////////////////
 
@@ -45,26 +49,32 @@ async function getUserByName(username) {
 
 ////////////////////////////////////  PESO  //////////////////////////////////////////
 
-//ritorna tutte le misure peso di un utente dato il suo id
-async function getAllMisurePeso(id) {
+//ritorna tutte le misure peso dell'utente dato che sono comprese in un range di date.
+//ENTRAMBI GLI ESTREMI SONO INCLUSIVI.
+async function getRangeMisurePeso(id, from, to) {
+    if (!from) from=MINFINITY;    //per sicurezza...
+    if (!to) to=INFINITY;        //'''
     if (!(await getUsernameIfExists(id))) {
         return null;
     }
-    var queryRes = await pool.query("SELECT data as data, peso as peso "+
-                                    "FROM misuraPeso WHERE id=$1", [id]);
+    var queryRes = await pool.query(
+        "SELECT data as data, peso as peso "+
+        "FROM misuraPeso "+
+        "WHERE id=$1 AND $2<=data AND data<=$3",
+        [id, from, to]);
     return queryRes.rows;
+}
+
+//ritorna tutte le misure peso di un utente dato il suo id
+async function getAllMisurePeso(id) {
+    return await getRangeMisurePeso(id, MINFINITY, INFINITY);
 }
 
 //restituisce una misura peso di un utente dati id utente e data in cui è stata effettuata
 //credevo che servisse per una cosa, ma invece mi sbagliavo.
 //la lascio perché a livello di interfaccia col DB è una cosa che potremmo volere in futuro.
 async function getOneMisuraPeso(id, data) {
-    if (!(await getUsernameIfExists(id))) {
-        return null;
-    }
-    var queryRes = await pool.query("SELECT data as data, peso as peso "+
-                                    "FROM misuraPeso WHERE id=$1 AND data=$2", [id, data]);
-    return queryRes.rows[0];
+    return await getRangeMisurePeso(id, data, data);
 }
 
 //aggiunge una nuova misura di peso per la data odierna all'utente indicato
@@ -105,6 +115,29 @@ async function deleteMisuraPeso(id, data) {
         [id, data]
     );
     return res.rows[0];
+}
+
+
+///////////////////////////////  CALORIE  ////////////////////////////////////
+//(hanno solo get perché vengono modificate tramite cibi e attività)
+
+//trova le misure calorie di un utente entro il range di date [from, to] (INCLUSE)
+async function getRangeMisureCalorie(id, from, to) {
+    if (!from) from=MINFINITY;    //per sicurezza...
+    if (!to) to=INFINITY;        //'''
+    if (!(await getUsernameIfExists(id))) {
+        return null;
+    }
+    var queryRes = await pool.query(
+        "SELECT data, calin, calout, (calin-calout) as bilancio "+
+        "FROM misuraCalorie "+
+        "WHERE id=$1 AND $2<=data AND data<=$3",
+        [id, from, to]);
+    return queryRes.rows;
+}
+
+async function getAllMisureCalorie(id) {
+    return await getRangeMisureCalorie(id, MINFINITY, INFINITY);
 }
 
 
@@ -433,26 +466,24 @@ async function setCalorie(username, data, calin, calout) {
     return "setCalorie "+id+": "+res.rows+"(update)";
 }
 
-async function getMisureCalorie(id) {
-    if (!(await getUsernameIfExists(id))) {
-        return null;
-    }
-    var queryRes = await pool.query("SELECT data as data, calin as calin, calout as calout, "+
-                                    "(calin-calout) as bilancio FROM misuraCalorie WHERE id=$1", [id]);
-    return queryRes.rows;
-}
-
 module.exports = {
+
+    //Costanti
+    INFINITY,
+    MINFINITY,
 
     //Funzioni definitive
     addUser,
     getUserByName,
     getUserById,
+    getRangeMisurePeso,
     getAllMisurePeso,
     getOneMisuraPeso,
     addMisuraPeso,
     editMisuraPeso,
     deleteMisuraPeso,
+    getRangeMisureCalorie,
+    getAllMisureCalorie,
     getAllCibi,
     addCibo,
     editCibo,
@@ -467,7 +498,6 @@ module.exports = {
     newUser,
     setCalorie,
     setPeso,
-    getMisureCalorie,
 }
 
 //shell();

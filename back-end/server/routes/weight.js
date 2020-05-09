@@ -10,10 +10,10 @@ const router = express.Router();
  */
 router.use(utils.verifyJWT);
 
-//recupera la lista delle misure del peso di un utente
-router.get("/", async (req, res) => {
+//get generica che viene usata in varie declinazioni dai vari dipi di route get
+async function generalGet(req, res, from, to) {
     try {
-        var rows = await db.getAllMisurePeso(req.user.id);
+        var rows = await db.getRangeMisurePeso(req.user.id, from, to);
     }
     catch (err) {
         console.error(`postgres error no. ${err.code}: ${err.message}`);   //non sono sicuro che vogliamo rimandare al client il messaggio d'errore di postgres
@@ -26,6 +26,33 @@ router.get("/", async (req, res) => {
         username: req.user.username,
         dataPoints: rows,
     };
+    return toSend;
+}
+
+//recupera la lista delle misure del peso di un utente
+router.get("/", async (req, res) => {
+    const toSend =  await generalGet(req, res, db.MINFINITY, db.INFINITY);
+    return res.status(200).json(toSend);
+});
+
+//recupera una misura di un giorno specifico.
+//ha un comportamento speciale se non esiste una msiurazione per quel giorno
+//perché personalmente lo ritengo più appropriato.
+router.get("/:data", async (req, res) => {
+    const toSend = await generalGet(req, res, req.params.data, req.params.data);
+    if (toSend.dataPoints.length<1) {
+        return res.status(404).send("Nessuna misura per questo giorno...")
+    }
+    return res.status(200).json(toSend);
+});
+
+//recupera le misure in un range di date. ESTREMI INCLUSI.
+router.get("/:from/:to", async (req, res) => {
+    //definiamo un carattere speciale per dire infinity.
+    //la scelta è stata completamente casuale e si può discutere.
+    if (req.params.from=='-') req.params.from=db.MINFINITY;
+    if (req.params.to=='-') req.params.to=db.INFINITY;
+    const toSend = await generalGet(req, res, req.params.from, req.params.to);
     return res.status(200).json(toSend);
 });
 
@@ -33,7 +60,7 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
     var newrow;
     try {
-        newrow = await db.addMisuraPeso(req.user.id, req.body.weight);
+        newrow = await db.addMisuraPeso(req.user.id, req.body.peso);
     } catch (err) {
         console.error(`postgres error no. ${err.code}: ${err.message}`);
         switch (err.code) {
@@ -58,7 +85,7 @@ router.post("/", async (req, res) => {
 router.put("/:data", async (req, res) => {
     var edited;
     try {
-        edited = await db.editMisuraPeso(req.user.id, new Date(req.params.data), req.body.weight);
+        edited = await db.editMisuraPeso(req.user.id, new Date(req.params.data), req.body.peso);
     } catch (err) {
         console.error(`postgres error no. ${err.code}: ${err.message}`);
         switch (err.code) {
