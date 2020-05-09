@@ -96,6 +96,8 @@ async function initDB(testUsers) {
         console.log(await index.setCalorie("ChieSatonaka", new Date("2020-04-26"), 50, 0));
         console.log(await index.setCalorie("ChieSatonaka", new Date("2020-04-27"), 0, 60));
         console.log(await index.setCalorie("EdelgardVonHresvelg", new Date("2020-04-27"), 150.25, 200));
+        //purtroppo non posso usare le funzioni che modificano pure le calorie
+        //perché sono troppo veloci e le entry hanno tutte lo stesso timestamp
         await pool.query(
             "INSERT INTO cibo(id, created, data, nome, calin) VALUES "+
             "(1, '2020-05-01', '2020-05-01', 'pollo', 300), "+
@@ -105,6 +107,24 @@ async function initDB(testUsers) {
             "(3, '2020-05-05', '2020-05-05', 'carne', 999), "+
             "(4, '2020-05-06', '2020-05-06', 'gratin veloce di pesce', 200.5);"
         );
+        await pool.query(
+            "INSERT INTO attivita(id, created, data, nome, calout) VALUES "+
+            "(1, '2020-05-01', '2020-05-01', 'boxe', 200), "+
+            "(1, '2020-05-02', '2020-05-02', 'tartarus',500), "+
+            "(1, '2020-05-03', '2020-05-03', 'boxe', 200), "+
+            "(1, '2020-05-04', '2020-05-04', 'tartarus', 500), "+
+            "(1, '2020-05-05', '2020-05-05', 'boxe e tartarus (contemporaneamente)', 700), "+
+            "(2, '2020-05-04', '2020-05-04', 'allenam. combatt. bastone con Estelle', 300), "+
+            "(2, '2020-05-05', '2020-05-05', 'pesca con Joshua', 50), "+
+            "(2, '2020-05-06', '2020-05-06', 'lavoro con la gilda', 400), "+
+            "(3, '2020-05-01', '2020-05-01', 'kung fu', 200), "+
+            "(3, '2020-05-04', '2020-05-04', 'esplorazione castello', 999), "+
+            "(4, '2020-05-01', '2020-05-01', 'esercitazione ascia', 200.5), "+
+            "(4, '2020-05-02', '2020-05-02', 'esercitazione comando', 200.5), "+
+            "(4, '2020-05-03', '2020-05-03', 'esercitazione armatura', 200.5), "+
+            "(4, '2020-05-04', '2020-05-04', 'allenamento con Byleth', 200.5), "+
+            "(4, '2020-05-06', '2020-05-06', 'incarico mensile', 350.75);"
+        )
         console.log("Tutto OK, Ctrl+C per uscire");
     }
 }

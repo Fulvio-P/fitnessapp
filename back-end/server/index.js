@@ -25,7 +25,7 @@ const food = require("./routes/food");
 app.use("/api/food", food);
 
 const activities = require("./routes/activities");
-app.use("/activities", activities);
+app.use("/api/activities", activities);
 
 //starting server
 const port = process.env.PORT || 5000;

@@ -160,7 +160,6 @@ async function editCibo(id, ts, data, nome, calin, descrizione) {
         await addOrSubtractCalories(client, id, nuov.rows[0].data, nuov.rows[0].calin, 0);
         return nuov.rows[0];
     });
-    
 }
 
 //elimina un cibo dati id dell'utente e timestamp di creazione
@@ -179,6 +178,79 @@ async function deleteCibo(id, ts) {
         return res.rows[0];
     });
 }
+
+//////////////////////////////////  ATTIVITA  /////////////////////////////////////////
+
+//ritorna tutte le attività di un utente dato il suo id
+async function getAllAttivita(id) {
+    var res = await pool.query(
+        "SELECT created, data, nome, calout, descrizione "+
+        "FROM attivita "+
+        "WHERE id=$1;",
+        [id]
+    );
+    return res.rows;
+}
+
+//crea una nuova attività per un utente
+async function addAttivita(id, data, nome, calout, descrizione) {
+    const [plusInsert, plusValues, plusParams] = generateInsertOptionals(data, descrizione);
+    return await doTransaction(async (client) => {
+        var res = await client.query(
+            "INSERT INTO attivita(id, nome, calout"+plusInsert+") "+
+            "VALUES ($1, $2, $3"+plusValues+") "+
+            "RETURNING created, data, nome, calout, descrizione",
+            [id, nome, calout].concat(plusParams)
+        );
+        await addOrSubtractCalories(client, id, res.rows[0].data, 0, calout);
+        return res.rows[0];
+    });
+}
+
+//modifica un'attività di un utente
+async function editAttivita(id, ts, data, nome, calout, descrizione) {
+    var vecch = await pool.query(   //non modifica nulla, non fa parte della transazione
+        "SELECT * "+
+        "FROM attivita "+
+        "WHERE id=$1 AND created=$2;",
+        [id, ts]
+    );
+    if (vecch.rows.length<1) {
+        return undefined;    //se non troviamo nulla è meglio che smettiamo subito prima di avere problemi indesiderati durante la transazione
+    }
+    const [plusSet, plusParams] = generateUpdateOptionals(data, descrizione);
+    return await doTransaction(async client => {
+        var nuov = await client.query(
+            "UPDATE attivita "+
+            "SET nome=$3, calout=$4"+plusSet+" "+
+            "WHERE id=$1 AND created=$2 "+
+            "RETURNING created, data, nome, calout, descrizione;",
+            [id, ts, nome, calout].concat(plusParams)
+        );
+        await addOrSubtractCalories(client, id, vecch.rows[0].data, 0, -vecch.rows[0].calout);
+        await addOrSubtractCalories(client, id, nuov.rows[0].data, 0, nuov.rows[0].calout);
+        return nuov.rows[0];
+    });
+}
+
+//elimina un'attività dati id dell'utente e timestamp di creazione
+async function deleteAttivita(id, ts) {
+    return await doTransaction(async client => {
+        var res = await client.query(
+            "DELETE FROM attivita "+
+            "WHERE id=$1 AND created=$2 "+
+            "RETURNING created, data, nome, calout, descrizione;",
+            [id, ts]
+        );
+        if (res.rows.length<1) {
+            return undefined;    //se non troviamo nulla è meglio che smettiamo subito prima di avere problemi indesiderati nella prossima istruzione
+        }
+        await addOrSubtractCalories(client, id, res.rows[0].data, 0, -res.rows[0].calout);
+        return res.rows[0];
+    });
+}
+
+
 
 
 
@@ -262,10 +334,10 @@ function generateUpdateOptionals(data, descrizione) {
     const plusParams = theArray.map(a=>a[0]);
     const nomi = theArray.map(a=>a[1]);
     const dollari = ["=$5", "=$6"];
-    // adesso facciamo praticamente lo zip di nomi e dollari
-    var plusSet = [];
+    // adesso facciamo praticamente una specie di zip di nomi e dollari
+    var plusSet = "";
     for (let i=0; i<nomi.length; i++) {
-        plusSet[i] = nomi[i] + dollari[i];
+        plusSet += nomi[i] + dollari[i];
     }
     return [plusSet, plusParams];
 }
@@ -385,6 +457,10 @@ module.exports = {
     addCibo,
     editCibo,
     deleteCibo,
+    getAllAttivita,
+    addAttivita,
+    editAttivita,
+    deleteAttivita,
     
     //Funzioni test
     getId,
