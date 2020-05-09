@@ -21,7 +21,6 @@ export default new Vuex.Store({
   },
 
   mutations: {
-    
     /* Mutazioni usate dal login */
 
     //segna l'inizio del login
@@ -35,21 +34,11 @@ export default new Vuex.Store({
       state.token = token;
     },
 
-
-
-
-
-
     /* Mutazione del logout */
     AUTH_LOGOUT(state) {
       state.token = "";
       state.status = "";
     },
-
-
-
-
-
 
     /* Mutazioni registrazione */
 
@@ -63,26 +52,17 @@ export default new Vuex.Store({
       state.status = "reg-success";
     },
 
-
-
-    
-    
     /* Mutazioni generiche per chiamate API */
 
     //segna l'inizion di una richesta
-    API_REQUEST(state){
-      state.status = 'api-loading';
+    API_REQUEST(state) {
+      state.status = "api-loading";
     },
-    
+
     //segna il successo di una richiesta
-    API_SUCCESS(state){
-      state.status = 'api-success';
-    },    
-
-
-
-
-
+    API_SUCCESS(state) {
+      state.status = "api-success";
+    },
 
     /* Mutazione errori */
 
@@ -99,11 +79,9 @@ export default new Vuex.Store({
         state.status = error.message;
       }
     }
-
   },
 
   actions: {
-
     /* Azione del login*/
     AUTH_REQUEST({ commit }, user) {
       return new Promise((resolve, reject) => {
@@ -134,10 +112,6 @@ export default new Vuex.Store({
       });
     },
 
-    
-    
-    
-    
     /* Azione di logout */
     AUTH_LOGOUT({ commit }) {
       return new Promise(resolve => {
@@ -147,10 +121,6 @@ export default new Vuex.Store({
       });
     },
 
-    
-    
-    
-    
     /* Azione di registrazione */
     REGISTER_REQUEST({ commit }, user) {
       return new Promise((resolve, reject) => {
@@ -176,96 +146,86 @@ export default new Vuex.Store({
       });
     },
 
-    
-    
-    
-    
     /* Azioni per tutte le altre chiamate API */
-    API_GET({commit}, url){
-      return new Promise((resolve, reject)=>{
-
-        commit('API_REQUEST');
+    API_GET({ commit }, url) {
+      return new Promise((resolve, reject) => {
+        commit("API_REQUEST");
         axios
           .get(url)
 
           //gestisco il successo
           .then(resp => {
-            commit('API_SUCCESS');
+            commit("API_SUCCESS");
             resolve(resp);
           })
 
           //gestisco errori
           .catch(error => {
-            commit('REQUEST_ERROR');
+            commit("REQUEST_ERROR");
             reject(error);
-          })
-      })
+          });
+      });
     },
 
-    API_POST({commit}, url, payload){
-      return new Promise((resolve, reject)=>{
-
-        commit('API_REQUEST');
+    API_POST({ commit }, url, payload) {
+      return new Promise((resolve, reject) => {
+        commit("API_REQUEST");
         axios
           .post(url, payload)
 
           //gestisco il successo
           .then(resp => {
-            commit('API_SUCCESS');
+            commit("API_SUCCESS");
             resolve(resp);
           })
 
           //gestisco errori
           .catch(error => {
-            commit('REQUEST_ERROR');
+            commit("REQUEST_ERROR");
             reject(error);
-          })
-      })
+          });
+      });
     },
 
-    API_PUT({commit}, url, payload){
-      return new Promise((resolve, reject)=>{
-
-        commit('API_REQUEST');
+    API_PUT({ commit }, url, payload) {
+      return new Promise((resolve, reject) => {
+        commit("API_REQUEST");
         axios
           .put(url, payload)
 
           //gestisco il successo
           .then(resp => {
-            commit('API_SUCCESS');
+            commit("API_SUCCESS");
             resolve(resp);
           })
 
           //gestisco errori
           .catch(error => {
-            commit('REQUEST_ERROR');
+            commit("REQUEST_ERROR");
             reject(error);
-          })
-      })
+          });
+      });
     },
 
-    API_DELETE({commit}, url){
-      return new Promise((resolve, reject)=>{
-
-        commit('API_REQUEST');
+    API_DELETE({ commit }, url) {
+      return new Promise((resolve, reject) => {
+        commit("API_REQUEST");
         axios
           .delete(url)
 
           //gestisco il successo
           .then(resp => {
-            commit('API_SUCCESS');
+            commit("API_SUCCESS");
             resolve(resp);
           })
 
           //gestisco errori
           .catch(error => {
-            commit('REQUEST_ERROR');
+            commit("REQUEST_ERROR");
             reject(error);
-          })
-      })
-    },
-
-
+          });
+      });
+    }
   },
 
   modules: {}

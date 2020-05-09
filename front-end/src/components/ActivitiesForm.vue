@@ -1,9 +1,8 @@
 <template>
   <div class="activities-form">
-    <b-form @submit.prevent='addActivity'>
-      
+    <b-form @submit.prevent="addActivity">
       <!-- Nome dell' attività -->
-      <b-form-group label='Nome attività'>
+      <b-form-group label="Nome attività">
         <b-form-input
           id="activity-nome"
           v-model="nome"
@@ -14,7 +13,7 @@
       </b-form-group>
 
       <!-- Calorie del cibo -->
-      <b-form-group label='Kcal bruciate'>
+      <b-form-group label="Kcal bruciate">
         <b-form-input
           id="activity-calout"
           v-model="calout"
@@ -25,7 +24,7 @@
       </b-form-group>
 
       <!-- Selettore del giorno -->
-      <b-form-group label='Giorno associato al record'>
+      <b-form-group label="Giorno associato al record">
         <b-form-datepicker
           id="activity-data"
           v-model="data"
@@ -35,7 +34,7 @@
       </b-form-group>
 
       <!-- Descrizione agginutiva -->
-      <b-form-group label='Informazioni aggiuntive'>
+      <b-form-group label="Informazioni aggiuntive">
         <b-form-textarea
           id="activity-descrizione"
           v-model="descrizione"
@@ -55,39 +54,42 @@ const activitiesURL = "http://localhost:5000/api/activities";
 
 export default {
   name: "ActivitiesForm",
-  
+
   data() {
     return {
-      data: undefined,  //giono a cui si riferisce il record
-      nome: undefined,  //nome dell'attività
-      calout: undefined,//calorie bruciate
-      descrizione: '',  //info aggiuntive
+      data: undefined, //giono a cui si riferisce il record
+      nome: undefined, //nome dell'attività
+      calout: undefined, //calorie bruciate
+      descrizione: "" //info aggiuntive
     };
   },
 
   methods: {
-    
-    addActivity(){
+    addActivity() {
       //recupero dati dal form
-      const {data, nome, calout, descrizione} = this;
+      const { data, nome, calout, descrizione } = this;
       //avvio chiamata API (gestita da vuex)
       this.$store
-        .dispatch('API_POST', activitiesURL, {data, nome, calout, descrizione})
+        .dispatch("API_POST", activitiesURL, {
+          data,
+          nome,
+          calout,
+          descrizione
+        })
         //se tutto va bene
-        .then(()=>{
-          alert('Record inserito correttamente');
+        .then(() => {
+          alert("Record inserito correttamente");
           this.data = undefined;
           this.nome = undefined;
           this.calout = undefined;
-          this.descrizione = '';
+          this.descrizione = "";
         })
         //se qualcosa va male
-        .catch(()=>{
+        .catch(() => {
           alert(this.$store.state.status);
           //in questo caso il form non si resetta, l'utente può subito riprovare
-        })
+        });
     }
-
   }
 };
 </script>

@@ -10,8 +10,10 @@
         commodi!
       </p>
       <ChartsPage />
-      <br>
+      <br />
       <FormsPage />
+      <br />
+      <FoodTable />
     </div>
   </div>
 </template>
@@ -19,11 +21,13 @@
 <script>
 import FormsPage from "@/components/FormsPage.vue";
 import ChartsPage from "@/components/ChartsPage.vue";
+import FoodTable from "@/components/FoodTable.vue";
 export default {
   name: "About",
   components: {
     FormsPage,
-    ChartsPage
+    ChartsPage,
+    FoodTable
   }
 };
 </script>

@@ -2,7 +2,7 @@
   <div class="formspage">
     Seleziona un form e compilalo: <br />
     <b-card no-body class="alt-bg">
-      <b-tabs content-class="mt-3" card pills align='center' justified>
+      <b-tabs content-class="mt-3" card pills align="center" justified>
         <b-tab title="Cibo" active>
           <FoodForm />
         </b-tab>

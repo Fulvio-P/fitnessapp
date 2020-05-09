@@ -1,9 +1,8 @@
 <template>
   <div class="food-form">
-    <b-form @submit.prevent='addFood'>
-      
+    <b-form @submit.prevent="addFood">
       <!-- Nome del cibo -->
-      <b-form-group label='Nome del cibo'>
+      <b-form-group label="Nome del cibo">
         <b-form-input
           id="food-nome"
           v-model="nome"
@@ -14,7 +13,7 @@
       </b-form-group>
 
       <!-- Calorie del cibo -->
-      <b-form-group label='Importo enegetico (kcal)'>
+      <b-form-group label="Importo enegetico (kcal)">
         <b-form-input
           id="food-calin"
           v-model="calin"
@@ -25,7 +24,7 @@
       </b-form-group>
 
       <!-- Selettore del giorno -->
-      <b-form-group label='Giorno associato al record'>
+      <b-form-group label="Giorno associato al record">
         <b-form-datepicker
           id="food-data"
           v-model="data"
@@ -35,7 +34,7 @@
       </b-form-group>
 
       <!-- Descrizione agginutiva -->
-      <b-form-group label='Informazioni aggiuntive'>
+      <b-form-group label="Informazioni aggiuntive">
         <b-form-textarea
           id="food-descrizione"
           v-model="descrizione"
@@ -55,39 +54,37 @@ const foodURL = "http://localhost:5000/api/food";
 
 export default {
   name: "FoodForm",
-  
+
   data() {
     return {
-      data: undefined,  //giono a cui si riferisce il record
-      nome: undefined,  //nome del cibo
+      data: undefined, //giono a cui si riferisce il record
+      nome: undefined, //nome del cibo
       calin: undefined, //importo calorico
-      descrizione: '',  //info aggiuntive
+      descrizione: "" //info aggiuntive
     };
   },
 
   methods: {
-    
-    addFood(){
+    addFood() {
       //recupero dati dal form
-      const {data, nome, calin, descrizione} = this;
+      const { data, nome, calin, descrizione } = this;
       //avvio chiamata API (gestita da vuex)
       this.$store
-        .dispatch('API_POST', foodURL, {data, nome, calin, descrizione})
+        .dispatch("API_POST", foodURL, { data, nome, calin, descrizione })
         //se tutto va bene
-        .then(()=>{
-          alert('Record inserito correttamente');
+        .then(() => {
+          alert("Record inserito correttamente");
           this.data = undefined;
           this.nome = undefined;
           this.calin = undefined;
-          this.descrizione = '';
+          this.descrizione = "";
         })
         //se qualcosa va male
-        .catch(()=>{
+        .catch(() => {
           alert(this.$store.state.status);
           //in questo caso il form non si resetta, l'utente può subito riprovare
-        })
+        });
     }
-
   }
 };
 </script>
