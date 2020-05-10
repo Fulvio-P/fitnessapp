@@ -3,7 +3,7 @@
     <b-table :items="items" :fields="fields" striped responsive="sm">
 
       <template v-slot:cell(delete)="row">
-        <b-button size="sm" @click="deleteWeigth(row.item.data)" class="mr-2">
+        <b-button size="sm" @click="deleteWeight(row.item.data)" class="mr-2">
           Elimina
         </b-button>
       </template>
