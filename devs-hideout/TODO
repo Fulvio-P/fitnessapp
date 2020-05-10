@@ -1,20 +1,21 @@
 Cose da fare:
--Ristrutturazione API: (Francesco)
-  - [parte importante fatta]
-  - implementare per data specifica e range di date
-  - gestire con grazia il fallimento del parsing del body JSON, se possibile
--Più informazioni
+-Più informazioni (Francesco)
   - aggiungere tabella info addizionali
   - fare form per queste informazioni (pagina impostazioni profilo)
--Far funzionare i form della pagina form
--Far funzionare i link nel footer della landing page
+  - cambio username/password (se finisco presto)
+(Fulvio)
+-Far funzionare i link e il form nel footer della landing page
+-miglioramenti grafici
+  - toLocaleString sulle tabelle
+  - colori dei bottoni (es. elimina rosso)
+  - icone identiche
+  - Aggiungere spinner durante i caricamenti
+  - Descrizioni e foto
 
 Priorità minore:
--Integrazione GoogleFit
+-Integrazione FitBit
 
 Cose da fare per flexare:
--Aggiungere spinner durante i caricamenti
--Aggiungere la linea obbiettivo sui grafici
--Aggiungere un sistema di follower
--cambio username/password
 -mirage?
+-Aggiungere un sistema di follower
+-Aggiungere la linea obbiettivo sui grafici
