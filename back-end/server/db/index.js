@@ -529,6 +529,7 @@ module.exports = {
     addAttivita,
     editAttivita,
     deleteAttivita,
+    addOpinione,
     
     //Funzioni test
     getId,
