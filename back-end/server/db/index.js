@@ -304,6 +304,25 @@ async function deleteAttivita(id, ts) {
 
 
 
+////////////////////////////////////  OPINIONI  //////////////////////////////////////////
+
+//aggiunge una nuova opinione al database
+//ritorna la riga appena aggiunta (anche se forse non serve)
+async function addOpinione(email, testo) {
+    var res = await pool.query(
+        "INSERT INTO opinioni(email, testo) "+
+        "VALUES ($1, $2)"+
+        "RETURNING email, testo;",
+        [email, testo]
+    );
+    return res.rows[0];
+}
+
+
+
+
+
+
 
 /////////////////////////////    AUX    /////////////////////////////
 
