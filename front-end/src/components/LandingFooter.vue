@@ -9,19 +9,9 @@
             e fitness. La versione attuale è presentata come progetto per il
             corso di Linguaggi e Teconolgie Web.
           </p>
-        </b-col>
-        <b-col sm class="footer-section links">
-          <h1>Link Rapidi</h1>
-          <ul>
-            <li><a href="#">Servizi</a></li>
-            <li><a href="#">Team</a></li>
-            <li>
-              <a href="https://github.com/Fulvio-P/fitnessapp" class="git-hub"
-                >Pagina GitHub</a
-              >
-            </li>
-            <li><a href="#">Termini e condizioni</a></li>
-          </ul>
+          <a href="https://github.com/Fulvio-P/fitnessapp" class="git-hub">
+            Pagina GitHub
+          </a>
         </b-col>
         <b-col sm class="footer-section contact-form">
           <h1>Contattaci</h1>
