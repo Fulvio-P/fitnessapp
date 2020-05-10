@@ -4,7 +4,7 @@
       <b-form-group label="Il tuo peso oggi (kg)">
         <b-form-input
           id="weight-value"
-          v-model="weight"
+          v-model="peso"
           type="number"
           min="0"
           max="1000"
@@ -24,20 +24,23 @@ export default {
   name: "WeightForm",
   data() {
     return {
-      weight: undefined
+      peso: undefined
     };
   },
   methods: {
     addWeight() {
       //recupero dati dal form
-      const { weight } = this;
+      const { peso } = this;
       //avvio chiamata API (gestita da vuex)
       this.$store
-        .dispatch("API_POST", weightUrl, { weight })
+        .dispatch("API_POST", {
+          url: weightUrl,
+          payload: { peso }
+        })
         //se tutto va bene
         .then(() => {
           alert("Record inserito correttamente");
-          this.weight = undefined;
+          this.peso = undefined;
         })
         //se qualcosa va male
         .catch(() => {

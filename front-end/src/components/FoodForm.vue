@@ -29,7 +29,6 @@
           id="food-data"
           v-model="data"
           required
-          value-as-date
         ></b-form-datepicker>
       </b-form-group>
 
@@ -70,7 +69,10 @@ export default {
       const { data, nome, calin, descrizione } = this;
       //avvio chiamata API (gestita da vuex)
       this.$store
-        .dispatch("API_POST", foodURL, { data, nome, calin, descrizione })
+        .dispatch("API_POST", {
+          url: foodURL,
+          payload: { data, nome, calin, descrizione }
+        })
         //se tutto va bene
         .then(() => {
           alert("Record inserito correttamente");

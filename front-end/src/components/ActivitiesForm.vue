@@ -29,7 +29,6 @@
           id="activity-data"
           v-model="data"
           required
-          value-as-date
         ></b-form-datepicker>
       </b-form-group>
 
@@ -70,11 +69,14 @@ export default {
       const { data, nome, calout, descrizione } = this;
       //avvio chiamata API (gestita da vuex)
       this.$store
-        .dispatch("API_POST", activitiesURL, {
-          data,
-          nome,
-          calout,
-          descrizione
+        .dispatch("API_POST", {
+          url: activitiesURL,
+          payload: {
+            data,
+            nome,
+            calout,
+            descrizione
+          }
         })
         //se tutto va bene
         .then(() => {

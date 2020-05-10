@@ -167,11 +167,11 @@ export default new Vuex.Store({
       });
     },
 
-    API_POST({ commit }, url, payload) {
+    API_POST({ commit }, params) {
       return new Promise((resolve, reject) => {
         commit("API_REQUEST");
         axios
-          .post(url, payload)
+          .post(params.url, params.payload)
 
           //gestisco il successo
           .then(resp => {
@@ -187,11 +187,11 @@ export default new Vuex.Store({
       });
     },
 
-    API_PUT({ commit }, url, payload) {
+    API_PUT({ commit }, params) {
       return new Promise((resolve, reject) => {
         commit("API_REQUEST");
         axios
-          .put(url, payload)
+          .put(params.url, params.payload)
 
           //gestisco il successo
           .then(resp => {
