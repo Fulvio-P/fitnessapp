@@ -25,7 +25,7 @@
         </b-col>
         <b-col sm class="footer-section contact-form">
           <h1>Contattaci</h1>
-          <b-form>
+          <b-form @submit.prevent="addOpinion">
             <b-form-group
               label="Indirizzo e-mail"
               label-for="input-1"
@@ -36,6 +36,7 @@
                 type="email"
                 required
                 placeholder="pippo@email.com"
+                v-model="email"
               ></b-form-input>
             </b-form-group>
             <b-form-group>
@@ -43,6 +44,7 @@
                 id="input-textarea"
                 placeholder="7/10 too much water"
                 no-resize
+                v-model="testo"
               ></b-form-textarea>
             </b-form-group>
             <b-button type="submit" class="footer-form-btn">Invia</b-button>
@@ -57,8 +59,39 @@
 </template>
 
 <script>
+const opinionUrl = 'http://localhost:5000/opinion';
+
 export default {
-  name: "Footer"
+  name: "Footer",
+  data() {
+    return {
+      email: undefined,
+      testo: undefined
+    }
+  },
+  methods: {
+    addOpinion(){
+      //recupero dati dal form
+      const { email, testo } = this;
+      //avvio chiamata API (gestita da vuex)
+      this.$store
+        .dispatch("API_POST", {
+          url: opinionUrl,
+          payload: { email, testo }
+        })
+        //se tutto va bene
+        .then(() => {
+          alert("Messaggio inviato correttamente");
+          this.email = undefined;
+          this.testo = undefined;
+        })
+        //se qualcosa va male
+        .catch(() => {
+          alert(this.$store.state.status);
+          //in questo caso il form non si resetta, l'utente può subito riprovare
+        });
+    }
+  },
 };
 </script>
 
