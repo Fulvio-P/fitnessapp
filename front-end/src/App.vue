@@ -2,8 +2,6 @@
   <div id="app">
     <ShySideNavbar :avoidroutes="['/', '/login']" />
     <router-view />
-    <b-overlay :show='this.$store.getters.isLoading' no-wrap>
-    </b-overlay>
   </div>
 </template>
 

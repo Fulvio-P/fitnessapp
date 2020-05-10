@@ -43,6 +43,9 @@
 
     <hr />
     <b-button router-link to="/">Torna alla home</b-button>
+
+    <b-overlay :show='this.$store.getters.isLoading' no-wrap>
+    </b-overlay>
   </div>
 </template>
 

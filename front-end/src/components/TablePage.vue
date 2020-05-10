@@ -12,7 +12,11 @@
           <WeightTable />
         </b-tab>
       </b-tabs>
+
+      <b-overlay :show='this.$store.getters.isLoading' no-wrap>
+      </b-overlay>
     </b-card>
+    
   </div>
 </template>
 
