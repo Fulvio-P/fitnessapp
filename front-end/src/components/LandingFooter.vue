@@ -90,6 +90,11 @@ a {
   text-decoration: none;
   color: var(--nord6);
 }
+
+a:hover{
+  text-decoration: underline;
+}
+
 .footer-form-btn {
   background: var(--nord1);
 }

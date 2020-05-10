@@ -28,9 +28,9 @@
           > -->
 
           <!-- Questo pulsante va spostato come item della sidebar della pagina del profilo oppure come dropdown del pulsate profilo -->
-          <b-nav-item v-if="$store.state.isUserLoggedIn" @click="logout"
-            >Log out</b-nav-item
-          >
+          <b-nav-item v-if="$store.state.isUserLoggedIn" @click="logout">
+            Log out
+          </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -45,7 +45,7 @@ export default {
       this.$store.dispatch("AUTH_LOGOUT").then(() => {
         this.$router.push("/");
       });
-    }
+    },
 
     //overlay disattivato per il momento
     /* displayOverlay() {

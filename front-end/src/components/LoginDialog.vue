@@ -1,13 +1,8 @@
 <template>
   <div
-    ref="dialog"
-    tabindex="-1"
-    role="dialog"
-    aria-modal="false"
-    aria-labelledby="form-confirm-label"
-    class="text-center p-3"
+    class="text-center"
   >
-    <p><strong id="form-confirm-label">Log in</strong></p>
+    <p><strong id="label">Log in</strong></p>
     <p class="login-form">
       <b-form @submit.prevent="loginSubmit">
         <b-form-group
@@ -41,8 +36,7 @@
       </b-form>
     </p>
 
-    <hr />
-    <b-button router-link to="/">Torna alla home</b-button>
+    <b-button router-link to="/">Annulla</b-button>
 
     <b-overlay :show='this.$store.getters.isLoading' no-wrap>
     </b-overlay>

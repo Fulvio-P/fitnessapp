@@ -21,7 +21,7 @@
       </li>
       <li class="SideNavItem">
         <div @click="logout()" class="SideNavLink">
-          <BIconX class="centopercento" />
+          <BIconBoxArrowLeft class="centopercento" />
           <span class="LinkText">Log out</span>
         </div>
       </li>
@@ -32,7 +32,7 @@
 <script>
 //import SvgTest from "@/components/SvgTest.vue";
 //import SvgTest from "../assets/icons/user-profile.svg";
-import { BIconGraphUp, BIconPencilSquare, BIconX, BIconFileText } from "bootstrap-vue";
+import { BIconGraphUp, BIconPencilSquare, BIconBoxArrowLeft, BIconFileText } from "bootstrap-vue";
 import ActivatingRouterLink from "@/components/ActivatingRouterLink.vue";
 export default {
   name: "SideNav",
@@ -41,7 +41,7 @@ export default {
     BIconGraphUp,
     BIconPencilSquare,
     BIconFileText,
-    BIconX,
+    BIconBoxArrowLeft,
     ActivatingRouterLink
   },
   methods: {
