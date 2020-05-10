@@ -13,7 +13,7 @@
       <br />
       <FormsPage />
       <br />
-      <FoodTable />
+      <TablePage />
     </div>
   </div>
 </template>
@@ -21,13 +21,13 @@
 <script>
 import FormsPage from "@/components/FormsPage.vue";
 import ChartsPage from "@/components/ChartsPage.vue";
-import FoodTable from "@/components/FoodTable.vue";
+import TablePage from "@/components/TablePage.vue";
 export default {
   name: "About",
   components: {
     FormsPage,
     ChartsPage,
-    FoodTable
+    TablePage
   }
 };
 </script>
