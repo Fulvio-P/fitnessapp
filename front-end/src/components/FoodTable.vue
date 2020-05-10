@@ -35,29 +35,7 @@ export default {
         { key: "details", label: "" },
         { key: "delete", label: "" }
       ],
-      items: [
-        {
-          ts: 1,
-          nome: "Banana",
-          calin: 60,
-          data: "0101010101",
-          descrizione: "Molto potassio"
-        },
-        {
-          ts: 2,
-          nome: "Banana",
-          calin: 60,
-          data: "0101010101",
-          descrizione: "Molto potassio"
-        },
-        {
-          ts: 3,
-          nome: "Banana",
-          calin: 60,
-          data: "0101010101",
-          descrizione: "Molto potassio"
-        }
-      ]
+      items: []
     };
   },
   methods: {
@@ -82,7 +60,7 @@ export default {
         .dispatch("API_GET", foodUrl)
         //se tutto va bene
         .then(resp => {
-          this.items = resp.body;
+          this.items = resp.body.dataPoints;
         })
         //se qualcosa va male
         .catch(() => {

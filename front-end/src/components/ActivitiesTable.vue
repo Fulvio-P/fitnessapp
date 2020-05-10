@@ -35,29 +35,7 @@ export default {
         { key: "details", label: "" },
         { key: "delete", label: "" }
       ],
-      items: [
-        {
-          ts: 1,
-          nome: "Corsa",
-          calout: 60,
-          data: "0101010101",
-          descrizione: "Molto sudore"
-        },
-        {
-          ts: 2,
-          nome: "Corsa",
-          calout: 60,
-          data: "0101010101",
-          descrizione: "Molto sudore"
-        },
-        {
-          ts: 3,
-          nome: "Corsa",
-          calout: 60,
-          data: "0101010101",
-          descrizione: "Molto sudore"
-        },
-      ]
+      items: []
     };
   },
   methods: {
@@ -82,7 +60,7 @@ export default {
         .dispatch("API_GET", activitiesUrl)
         //se tutto va bene
         .then(resp => {
-          this.items = resp.body;
+          this.items = resp.body.dataPoints;
         })
         //se qualcosa va male
         .catch(() => {

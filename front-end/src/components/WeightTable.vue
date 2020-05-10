@@ -23,20 +23,7 @@ export default {
         { key: "peso", label: "Kg" },
         { key: "delete", label: "" }
       ],
-      items: [
-        {
-          data: "0101010101",
-          peso: 75
-        },
-        {
-          data: "0101010101",
-          peso: 76
-        },
-        {
-          data: "0101010101",
-          peso: 75
-        },
-      ]
+      items: []
     };
   },
   methods: {
@@ -61,7 +48,7 @@ export default {
         .dispatch("API_GET", weightUrl)
         //se tutto va bene
         .then(resp => {
-          this.items = resp.body;
+          this.items = resp.body.dataPoints;
         })
         //se qualcosa va male
         .catch(() => {
