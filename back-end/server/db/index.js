@@ -336,6 +336,26 @@ async function getAdditionalInfo(id, what) {
     return res.rows[0];
 }
 
+//modifica più info addizionali in un colpo solo
+//solo le info passate nell'argomento verranno modificate
+//l'argomento è un oggetto che contiene coppie nome_info:nuovo_valore_info
+//in teoria si può usare null per cancellare un'info in questo modo,
+//ma non è ortodosso a livello di API (e il gestore di PATCH [...]/profile non lo consente)
+//ancora, i nomi_info verranno concatenati direttamente alla query,
+//ma sono solo parametri di servizio.
+//per evitare sbagli futuri: NON LASCIARLI DECIDERE ALL'UTENTE!
+async function editAdditionalInfo(id, args) {
+    const [plusSet, plusParams] = generateUpdateOptionalsGeneric(args, 2, false);
+    var res = await pool.query(
+        "UPDATE infoAddizionali "+
+        "SET "+plusSet+" "+
+        "WHERE id=$1 "+
+        "RETURNING * ",
+        [id].concat(plusParams)
+    );
+    return res.rows[0];
+}
+
 
 
 
@@ -430,6 +450,30 @@ function generateUpdateOptionals(data, descrizione) {
     for (let i=0; i<nomi.length; i++) {
         plusSet += nomi[i] + dollari[i];
     }
+    return [plusSet, plusParams];
+}
+
+//come quella sopra, ma generica.
+//passare come parametro un oggetto con nome_proprietà:valore_proprietà
+//per ogni proprietà da modificare.
+//startFrom è il numero da cui cominciare per generare i placeholder $
+//per i parametri di node-postgres. (è meglio che gli opzionali siano gli ultimi)
+//startWithComma è un booleano che indica se la stringa plusSet dovrà cominciare con una virgola
+//o no. Usare false se non si sono altre assegnazioni nella SET originale, true se invece
+//quelle restituite da questa funzione saranno le prime.
+//TODO una volta accertato che funziona, tradurre quella in funzione di questa
+function generateUpdateOptionalsGeneric(args, startFrom, startWithComma) {
+    var i = startFrom;
+    var plusSet = startWithComma ? ", " : "";
+    var plusParams = [];
+    for (name in args) {
+        plusSet += `${name}=$${i}, `;
+        i++;
+        const val = args[name];
+        plusParams.push(val);
+    }
+    //elimina gli ultimi due caratteri (saranno sempre ", " (a meno che la stringa non sia vuota, nel qual caso si riotterrà al stringa vuota))
+    plusSet = plusSet.slice(0, -2);
     return [plusSet, plusParams];
 }
 
@@ -553,6 +597,7 @@ module.exports = {
     editAttivita,
     deleteAttivita,
     getAdditionalInfo,
+    editAdditionalInfo,
     
     //Funzioni test
     getId,
