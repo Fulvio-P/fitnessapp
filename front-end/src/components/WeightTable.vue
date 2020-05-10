@@ -48,10 +48,12 @@ export default {
         .dispatch("API_GET", weightUrl)
         //se tutto va bene
         .then(resp => {
-          this.items = resp.body.dataPoints;
+          console.log(resp);
+          this.items = resp.data.dataPoints;
         })
         //se qualcosa va male
-        .catch(() => {
+        .catch((err) => {
+          console.log(err);
           alert(this.$store.state.status);
         });
     }

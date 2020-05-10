@@ -60,7 +60,7 @@ export default {
         .dispatch("API_GET", foodUrl)
         //se tutto va bene
         .then(resp => {
-          this.items = resp.body.dataPoints;
+          this.items = resp.data.dataPoints;
         })
         //se qualcosa va male
         .catch(() => {

@@ -17,7 +17,7 @@ vedere chartUtils.js (e il resto dei file relativi ai grafici).
             :suggymax="80"
             :dataurls="[
               {
-                url: 'http://localhost:5000/api/weight/' + loggedId,
+                url: 'http://localhost:5000/api/weight/',
                 onDatasets: [
                   {
                     index: 0,
@@ -40,7 +40,7 @@ vedere chartUtils.js (e il resto dei file relativi ai grafici).
             :stacked="true"
             :dataurls="[
               {
-                url: 'http://localhost:5000/api/calories/' + loggedId,
+                url: 'http://localhost:5000/api/calories/',
                 onDatasets: [
                   {
                     index: 0,

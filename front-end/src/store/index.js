@@ -161,7 +161,7 @@ export default new Vuex.Store({
 
           //gestisco errori
           .catch(error => {
-            commit("REQUEST_ERROR");
+            commit("REQUEST_ERROR", error);
             reject(error);
           });
       });
@@ -181,7 +181,7 @@ export default new Vuex.Store({
 
           //gestisco errori
           .catch(error => {
-            commit("REQUEST_ERROR");
+            commit("REQUEST_ERROR", error);
             reject(error);
           });
       });
@@ -201,7 +201,7 @@ export default new Vuex.Store({
 
           //gestisco errori
           .catch(error => {
-            commit("REQUEST_ERROR");
+            commit("REQUEST_ERROR", error);
             reject(error);
           });
       });
@@ -221,7 +221,7 @@ export default new Vuex.Store({
 
           //gestisco errori
           .catch(error => {
-            commit("REQUEST_ERROR");
+            commit("REQUEST_ERROR", error);
             reject(error);
           });
       });
