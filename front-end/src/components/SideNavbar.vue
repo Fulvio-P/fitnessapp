@@ -21,8 +21,8 @@
       </li>
       <li class="SideNavItem">
         <div @click="logout()" class="SideNavLink">
-          <BIconHouse class="centopercento" />
-          <span class="LinkText">Home</span>
+          <BIconX class="centopercento" />
+          <span class="LinkText">Log out</span>
         </div>
       </li>
     </ul>
@@ -32,7 +32,7 @@
 <script>
 //import SvgTest from "@/components/SvgTest.vue";
 //import SvgTest from "../assets/icons/user-profile.svg";
-import { BIconGraphUp, BIconPencilSquare, BIconHouse, BIconFileText } from "bootstrap-vue";
+import { BIconGraphUp, BIconPencilSquare, BIconX, BIconFileText } from "bootstrap-vue";
 import ActivatingRouterLink from "@/components/ActivatingRouterLink.vue";
 export default {
   name: "SideNav",
@@ -41,7 +41,7 @@ export default {
     BIconGraphUp,
     BIconPencilSquare,
     BIconFileText,
-    BIconHouse,
+    BIconX,
     ActivatingRouterLink
   },
   methods: {
@@ -123,6 +123,7 @@ il numero di item se ne mettiamo di più*/
 
 .SideNavItem {
   width: 100%;
+  cursor: pointer;
 }
 
 .SideNavItem:last-child {
