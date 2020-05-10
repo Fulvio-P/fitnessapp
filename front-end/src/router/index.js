@@ -35,11 +35,6 @@ const routes = [
     name: "About",
     component: () => import("../views/About.vue")
   },
-  {
-    path: "/profile",
-    name: "Profile",
-    component: () => import("../views/Profile.vue")
-  },
 
   /* Path buoni */
   {
@@ -65,7 +60,13 @@ const routes = [
     name: "Forms",
     component: () => import("../views/Forms.vue"),
     beforeEnter: ifAuthenticated
-  }
+  },
+  {
+    path: "/tables",
+    name: "Tables",
+    component: () => import("../views/Tables.vue"),
+    beforeEnter: ifAuthenticated
+  },
 ];
 
 const router = new VueRouter({
