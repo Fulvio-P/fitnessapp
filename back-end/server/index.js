@@ -36,6 +36,9 @@ app.use("/api/food", food);
 const activities = require("./routes/activities");
 app.use("/api/activities", activities);
 
+const profile = require("./routes/profile/profile");
+app.use("/api/profile", profile);
+
 //starting server
 const port = process.env.PORT || 5000;
 app.listen(port, () => { console.log(`Server started on port ${port}`)});

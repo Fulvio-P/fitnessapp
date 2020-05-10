@@ -320,6 +320,28 @@ async function deleteAttivita(id, ts) {
 }
 
 
+/////////////////////////////////////// INFO ADDIZIONALI //////////////////////////////////////
+
+//restituisce una info addizionale o tutte, in base al parametro what.
+//esso viene concatenato direttamente alla query, ma è solo un parametro di servizio.
+//bisogna assicurarsi che IL SUO VALORE NON VENGA MAI SCELTO DALL'UTENTE.
+//non ne ho intenzione, ma quest'avvertimento resta per il futuro.
+async function getAdditionalInfo(id, what) {
+    var res = await pool.query(
+        "SELECT "+what+" "+
+        "FROM infoAddizionali "+
+        "WHERE id=$1",
+        [id]
+    );
+    return res.rows[0];
+}
+
+
+
+
+
+
+
 
 
 
@@ -530,6 +552,7 @@ module.exports = {
     addAttivita,
     editAttivita,
     deleteAttivita,
+    getAdditionalInfo,
     
     //Funzioni test
     getId,
