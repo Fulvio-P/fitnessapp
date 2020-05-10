@@ -1,12 +1,12 @@
 <template>
-  <div class="tablesview sidebar-margin">
+  <div class="tablesview sidebar-margin padding">
     <h1>Diario</h1>
-    <FormsPage />
+    <TablePage />
   </div>
 </template>
 
 <script>
-import FormsPage from "@/components/TablePage.vue";
+import TablePage from "@/components/TablePage.vue";
 export default {
   name: "Tables",
   components: {
