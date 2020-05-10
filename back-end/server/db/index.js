@@ -24,8 +24,28 @@ const MINFINITY = "-infinity";
 /////////////////////////////////////  UTENTI  /////////////////////////////////////////
 
 //aggiunge un nuovo utente al database
-async function addUser(username, password) {
-    await pool.query("INSERT INTO utente(username, password) VALUES ($1, $2);",[username, password]);
+//gli argomenti dopo i primi due corrispondono a informazioni facoltative.
+//se un'informazione non è fornita, passare come argomento null o undefined,
+//oppure non passare affatto quell'argomento se possibile (equivale a dare undefined).
+//in fase di inserimento, node-postgres tratta null e undefined come NULL.
+async function addUser(username, password, email, altezza) {
+    return await doTransaction(async client => {
+        var res = await client.query(
+            "INSERT INTO utente(username, password) "+
+            "VALUES ($1, $2) "+
+            "RETURNING * ;",
+            [username, password]
+        );   //se un errore avviene qui, lasciamo che si propaghi al chiamante
+        await client.query(
+            "INSERT INTO infoAddizionali "+
+            "VALUES ($1, $2, $3);",
+            [res.rows[0].id, email, altezza]
+        );  //se un errore si verifica qui, l'utente non viene creato affatto:
+            //la scelta di progetto è che un utente abbia sempre una riga di questa tabella associata,
+            //per semplicità.
+        return res.rows[0];
+    })
+    
 }
 
 //ritorna i dati di un utente dato il suo id
