@@ -3,12 +3,12 @@
     <b-table :items="items" :fields="fields" striped responsive="sm">
       <template v-slot:cell(details)="row">
         <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-          {{ row.detailsShowing ? "Nascodi" : "Mostra" }} Dettagli
+          {{ row.detailsShowing ? "Nascondi" : "Mostra" }} Dettagli
         </b-button>
       </template>
 
       <template v-slot:cell(delete)="row">
-        <b-button size="sm" @click="deleteFood(row.item.ts)" class="mr-2">
+        <b-button size="sm" @click="deleteActivity(row.item.ts)" class="mr-2">
           Elimina
         </b-button>
       </template>
@@ -23,14 +23,14 @@
 </template>
 
 <script>
-const foodUrl = "http://localhost:5000/api/food/";
+const activitiesUrl = "http://localhost:5000/api/activities/";
 
 export default {
   data() {
     return {
       fields: [
-        { key: "nome", label: "Cibo" },
-        { key: "calin", label: "Kcal" },
+        { key: "nome", label: "Attività" },
+        { key: "calout", label: "Kcal" },
         { key: "data", label: "Giorno" },
         { key: "details", label: "" },
         { key: "delete", label: "" }
@@ -38,37 +38,37 @@ export default {
       items: [
         {
           ts: 1,
-          nome: "Banana",
-          calin: 60,
+          nome: "Corsa",
+          calout: 60,
           data: "0101010101",
-          descrizione: "Molto potassio"
+          descrizione: "Molto sudore"
         },
         {
           ts: 2,
-          nome: "Banana",
-          calin: 60,
+          nome: "Corsa",
+          calout: 60,
           data: "0101010101",
-          descrizione: "Molto potassio"
+          descrizione: "Molto sudore"
         },
         {
           ts: 3,
-          nome: "Banana",
-          calin: 60,
+          nome: "Corsa",
+          calout: 60,
           data: "0101010101",
-          descrizione: "Molto potassio"
-        }
+          descrizione: "Molto sudore"
+        },
       ]
     };
   },
   methods: {
-    deleteFood(key) {
-      let url = foodUrl + key;
+    deleteActivity(key) {
+      let url = activitiesUrl + key;
       //avvio chiamata API (gestita da vuex)
       this.$store
         .dispatch("API_DELETE", url)
         //se tutto va bene
         .then(() => {
-          this.getFood();
+          this.getActivities();
         })
         //se qualcosa va male
         .catch(() => {
@@ -76,10 +76,10 @@ export default {
         });
     },
 
-    getFood() {
+    getActivities() {
       this.$store
         //avvio chiamata API (gestita da vuex)
-        .dispatch("API_GET", foodUrl)
+        .dispatch("API_GET", activitiesUrl)
         //se tutto va bene
         .then(resp => {
           this.items = resp.body;
@@ -91,7 +91,7 @@ export default {
     }
   },
   created() {
-      this.getFood();
+      this.getActivities();
   },
 };
 </script>
