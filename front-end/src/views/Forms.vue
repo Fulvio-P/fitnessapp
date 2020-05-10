@@ -1,5 +1,5 @@
 <template>
-  <div class="formsview sidebar-margin">
+  <div class="formsview sidebar-margin padding">
     <h1>Registrazione Informazioni</h1>
     <FormsPage />
   </div>

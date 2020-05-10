@@ -1,32 +1,48 @@
 <template>
   <div class="food-form">
-    <b-form @submit="sendFood">
-      <!-- Cibo mangiato -->
-      <b-form-input
-        id="food-input"
-        v-model="foodItem"
-        placeholder="Cosa hai mangiato ?"
-        type="search"
-        required
-      ></b-form-input>
+    <b-form @submit.prevent="addFood">
+      <!-- Nome del cibo -->
+      <b-form-group label="Nome del cibo">
+        <b-form-input
+          id="food-nome"
+          v-model="nome"
+          placeholder="Banana"
+          type="search"
+          required
+        ></b-form-input>
+      </b-form-group>
 
-      <!-- Quantità del cibo -->
-      <b-form-input
-        id="food-input"
-        v-model="foodQuantity"
-        placeholder="Quanti grammi ?"
-        type="number"
-        min="0"
-        max="1000"
-      ></b-form-input>
+      <!-- Calorie del cibo -->
+      <b-form-group label="Importo enegetico (kcal)">
+        <b-form-input
+          id="food-calin"
+          v-model="calin"
+          placeholder="60"
+          type="number"
+          required
+        ></b-form-input>
+      </b-form-group>
 
-      <b-form-input
-        id="food-energy"
-        v-model="foodEnergy"
-        placeholder="350"
-        type="number"
-        required
-      ></b-form-input>
+      <!-- Selettore del giorno -->
+      <b-form-group label="Giorno associato al record">
+        <b-form-datepicker
+          id="food-data"
+          v-model="data"
+          required
+          value-as-date
+        ></b-form-datepicker>
+      </b-form-group>
+
+      <!-- Descrizione agginutiva -->
+      <b-form-group label="Informazioni aggiuntive">
+        <b-form-textarea
+          id="food-descrizione"
+          v-model="descrizione"
+          placeholder="Aggiungi dettagli"
+          rows="3"
+          no-resize
+        ></b-form-textarea>
+      </b-form-group>
 
       <b-button type="submit">Regitra calorie</b-button>
     </b-form>
@@ -34,26 +50,40 @@
 </template>
 
 <script>
-import axios from "axios";
+const foodURL = "http://localhost:5000/api/food";
 
 export default {
   name: "FoodForm",
+
   data() {
     return {
-      foodItem: undefined,
-      foodQuantity: undefined,
-      foodEnergy: undefined
+      data: undefined, //giono a cui si riferisce il record
+      nome: undefined, //nome del cibo
+      calin: undefined, //importo calorico
+      descrizione: "" //info aggiuntive
     };
   },
+
   methods: {
-    sendFood(ev) {
-      ev.preventDefault();
-      axios.post("http://localhost:5000/food", {
-        foodItem: this.foodItem,
-        foodQuantity: this.foodQuantity,
-        foodEnergy: this.foodEnergy
-      });
-      ev.target.reset();
+    addFood() {
+      //recupero dati dal form
+      const { data, nome, calin, descrizione } = this;
+      //avvio chiamata API (gestita da vuex)
+      this.$store
+        .dispatch("API_POST", foodURL, { data, nome, calin, descrizione })
+        //se tutto va bene
+        .then(() => {
+          alert("Record inserito correttamente");
+          this.data = undefined;
+          this.nome = undefined;
+          this.calin = undefined;
+          this.descrizione = "";
+        })
+        //se qualcosa va male
+        .catch(() => {
+          alert(this.$store.state.status);
+          //in questo caso il form non si resetta, l'utente può subito riprovare
+        });
     }
   }
 };

@@ -14,6 +14,12 @@
         </ActivatingRouterLink>
       </li>
       <li class="SideNavItem">
+        <ActivatingRouterLink to="/tables" class="SideNavLink">
+          <BIconPencilSquare class="centopercento" />
+          <span class="LinkText">Diario</span>
+        </ActivatingRouterLink>
+      </li>
+      <li class="SideNavItem">
         <div @click="logout()" class="SideNavLink">
           <BIconHouse class="centopercento" />
           <span class="LinkText">Home</span>

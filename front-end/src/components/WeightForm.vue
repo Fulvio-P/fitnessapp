@@ -1,26 +1,16 @@
 <template>
   <div class="weight-form">
-    <b-form @submit="sendWeight">
-      <b-container>
-        <b-row>
-          <b-col>
-            Inserisci il tuo peso
-          </b-col>
-          <b-col>
-            <b-form-spinbutton
-              id="weight-input"
-              inline
-              min="0"
-              max="500"
-              step="0.1"
-              v-model="weight"
-            ></b-form-spinbutton>
-          </b-col>
-          <b-col>
-            <b-form-select :options="options" required></b-form-select>
-          </b-col>
-        </b-row>
-      </b-container>
+    <b-form @submit.prevent="addWeight">
+      <b-form-group label="Il tuo peso oggi (kg)">
+        <b-form-input
+          id="weight-value"
+          v-model="weight"
+          type="number"
+          min="0"
+          max="1000"
+          placeholder="Inserisci il tuo peso in kg"
+        ></b-form-input>
+      </b-form-group>
 
       <b-button type="submit">Registra peso</b-button>
     </b-form>
@@ -28,31 +18,32 @@
 </template>
 
 <script>
-import axios from "axios";
-
-//Non sono riuscito a far funzionare dotenv
+const weightUrl = "http://localhost:5000/api/weight";
 
 export default {
   name: "WeightForm",
   data() {
     return {
-      weight: 60,
-      options: [
-        { value: "kg", text: "kg" },
-        { value: "lb", text: "lb" }
-      ]
+      weight: undefined
     };
   },
   methods: {
-    sendWeight(ev) {
-      ev.preventDefault();
-      axios
-        .post("http://localhost:5000/weight", {
-          weight: this.weight
+    addWeight() {
+      //recupero dati dal form
+      const { weight } = this;
+      //avvio chiamata API (gestita da vuex)
+      this.$store
+        .dispatch("API_POST", weightUrl, { weight })
+        //se tutto va bene
+        .then(() => {
+          alert("Record inserito correttamente");
+          this.weight = undefined;
         })
-        .then(res => console.log(res))
-        .catch(err => console.error(err));
-      ev.target.reset();
+        //se qualcosa va male
+        .catch(() => {
+          alert(this.$store.state.status);
+          //in questo caso il form non si resetta, l'utente può subito riprovare
+        });
     }
   }
 };

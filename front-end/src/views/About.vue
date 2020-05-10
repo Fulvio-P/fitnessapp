@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <div class="body sidebar-margin">
+    <div class="body sidebar-margin padding">
       <h1>This is an about page</h1>
       <p>Usiamo questa pagina per i test</p>
       <p>
@@ -10,8 +10,10 @@
         commodi!
       </p>
       <ChartsPage />
-      <b-button router-link to="/"> BACK HOME </b-button>
+      <br />
       <FormsPage />
+      <br />
+      <TablePage />
     </div>
   </div>
 </template>
@@ -19,11 +21,13 @@
 <script>
 import FormsPage from "@/components/FormsPage.vue";
 import ChartsPage from "@/components/ChartsPage.vue";
+import TablePage from "@/components/TablePage.vue";
 export default {
   name: "About",
   components: {
     FormsPage,
-    ChartsPage
+    ChartsPage,
+    TablePage
   }
 };
 </script>

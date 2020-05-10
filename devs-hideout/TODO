@@ -1,10 +1,4 @@
 Cose da fare:
--Fare login bene (Fulvio)
-  - registrazione fa login (backend)
-  - Gestire errori login nel frontend
-  - Resettare correttamente i form
-  - mettere token in storage e usarlo (come header Authentication)
-  - gestire fallimento autenticazione (redirect login)
 -Ristrutturazione API: (Francesco)
   - [parte importante fatta]
   - implementare per data specifica e range di date
@@ -12,8 +6,8 @@ Cose da fare:
 -Più informazioni
   - aggiungere tabella info addizionali
   - fare form per queste informazioni (pagina impostazioni profilo)
--Padding responsivo
 -Far funzionare i form della pagina form
+-Far funzionare i link nel footer della landing page
 
 Priorità minore:
 -Integrazione GoogleFit

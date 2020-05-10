@@ -1,16 +1,15 @@
 <template>
-  <div class="formspage">
-    Seleziona un form e compilalo: <br />
+  <div class="table-page">
     <b-card no-body class="alt-bg">
       <b-tabs content-class="mt-3" card pills align="center" justified>
         <b-tab title="Cibo" active>
-          <FoodForm />
+          <FoodTable />
         </b-tab>
         <b-tab title="Attività">
-          <ActivitiesForm />
+          <ActivitiesTable />
         </b-tab>
         <b-tab title="Peso">
-          <WeightForm />
+          <WeightTable />
         </b-tab>
       </b-tabs>
     </b-card>
@@ -18,37 +17,37 @@
 </template>
 
 <script>
-import ActivitiesForm from "@/components/ActivitiesForm.vue";
-import FoodForm from "@/components/FoodForm.vue";
-import WeightForm from "@/components/WeightForm.vue";
+import ActivitiesTable from "@/components/ActivitiesTable.vue";
+import FoodTable from "@/components/FoodTable.vue";
+import WeightTable from "@/components/WeightTable.vue";
 
 export default {
-  name: "FormsPage",
+  name: "TablePage",
   components: {
-    ActivitiesForm,
-    FoodForm,
-    WeightForm
+    ActivitiesTable,
+    FoodTable,
+    WeightTable
   }
 };
 </script>
 
 <!--Lo style va necessariamente NON scoped affinché raggiunga le b-tabs-->
 <style>
-.formspage .alt-bg {
+.table-page .alt-bg {
   background-color: var(--nord5);
 }
 
 /* nav, nav-link e active  sono classi possedute dalle b-tabs di default */
 
-.formspage .nav .nav-link.active {
+.table-page .nav .nav-link.active {
   /*non ho idea di cosa sia !important, ma senza non applica i colori, percui :/ */
   background-color: var(--nord10) !important;
   color: var(--nord6) !important;
 }
-.formspage .nav .nav-link:not(.active) {
+.table-page .nav .nav-link:not(.active) {
   color: var(--nord0) !important;
 }
-.formspage .nav .nav-link:not(.active):hover {
+.table-page .nav .nav-link:not(.active):hover {
   color: var(--nord10) !important;
 }
 </style>

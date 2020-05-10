@@ -12,16 +12,17 @@ export default new Vuex.Store({
 
     //stati usati per il login vero
     token: localStorage.getItem("user-token") || "", //JWT conservato anche se localstorage non disponibile
-    status: "" //status del login o registrazione
+    status: "" //status interno della applicazione per richieste di login, regitrazione e altre API
   },
 
   getters: {
     isAuthenticated: state => !!state.token,
-    authStatus: state => state.status
+    getStatus: state => state.status
   },
 
   mutations: {
     /* Mutazioni usate dal login */
+
     //segna l'inizio del login
     AUTH_REQUEST(state) {
       state.status = "loading";
@@ -32,7 +33,6 @@ export default new Vuex.Store({
       state.status = "success";
       state.token = token;
     },
-    /* Fine mutazioni del login vero */
 
     /* Mutazione del logout */
     AUTH_LOGOUT(state) {
@@ -41,6 +41,7 @@ export default new Vuex.Store({
     },
 
     /* Mutazioni registrazione */
+
     //segna l'inizio della registrazione
     REGISTER_REQUEST(state) {
       state.status = "reg-loading";
@@ -50,9 +51,21 @@ export default new Vuex.Store({
     REGISTER_SUCCESS(state) {
       state.status = "reg-success";
     },
-    /* Fine mutazioni registrazione */
+
+    /* Mutazioni generiche per chiamate API */
+
+    //segna l'inizion di una richesta
+    API_REQUEST(state) {
+      state.status = "api-loading";
+    },
+
+    //segna il successo di una richiesta
+    API_SUCCESS(state) {
+      state.status = "api-success";
+    },
 
     /* Mutazione errori */
+
     //segna errore
     REQUEST_ERROR(state, error) {
       if (error.response) {
@@ -128,6 +141,87 @@ export default new Vuex.Store({
             localStorage.removeItem("user-token");
             //rimuovo il token dall'header per sicurezza
             delete axios.defaults.headers.common["Authorization"];
+            reject(error);
+          });
+      });
+    },
+
+    /* Azioni per tutte le altre chiamate API */
+    API_GET({ commit }, url) {
+      return new Promise((resolve, reject) => {
+        commit("API_REQUEST");
+        axios
+          .get(url)
+
+          //gestisco il successo
+          .then(resp => {
+            commit("API_SUCCESS");
+            resolve(resp);
+          })
+
+          //gestisco errori
+          .catch(error => {
+            commit("REQUEST_ERROR");
+            reject(error);
+          });
+      });
+    },
+
+    API_POST({ commit }, url, payload) {
+      return new Promise((resolve, reject) => {
+        commit("API_REQUEST");
+        axios
+          .post(url, payload)
+
+          //gestisco il successo
+          .then(resp => {
+            commit("API_SUCCESS");
+            resolve(resp);
+          })
+
+          //gestisco errori
+          .catch(error => {
+            commit("REQUEST_ERROR");
+            reject(error);
+          });
+      });
+    },
+
+    API_PUT({ commit }, url, payload) {
+      return new Promise((resolve, reject) => {
+        commit("API_REQUEST");
+        axios
+          .put(url, payload)
+
+          //gestisco il successo
+          .then(resp => {
+            commit("API_SUCCESS");
+            resolve(resp);
+          })
+
+          //gestisco errori
+          .catch(error => {
+            commit("REQUEST_ERROR");
+            reject(error);
+          });
+      });
+    },
+
+    API_DELETE({ commit }, url) {
+      return new Promise((resolve, reject) => {
+        commit("API_REQUEST");
+        axios
+          .delete(url)
+
+          //gestisco il successo
+          .then(resp => {
+            commit("API_SUCCESS");
+            resolve(resp);
+          })
+
+          //gestisco errori
+          .catch(error => {
+            commit("REQUEST_ERROR");
             reject(error);
           });
       });

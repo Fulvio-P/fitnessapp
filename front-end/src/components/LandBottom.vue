@@ -1,5 +1,5 @@
 <template>
-  <div class="landing-bottom">
+  <div class="landing-bottom padding">
     <b-container fluid>
       <b-row>
         <b-col sm>
@@ -14,12 +14,12 @@
             consequuntur deserunt eos sunt exercitationem.
           </p>
         </b-col>
-        <b-col sm>
+        <b-col sm align-self="center" align="center">
           <img src="@/assets/logo.png" alt="Ops! Immagine non trovata" />
         </b-col>
       </b-row>
       <b-row>
-        <b-col sm>
+        <b-col sm align-self="center" align="center">
           <img src="@/assets/logo.png" alt="Ops! Immagine non trovata" />
         </b-col>
         <b-col sm>
@@ -48,7 +48,7 @@
             accusamus? Corrupti.
           </p>
         </b-col>
-        <b-col>
+        <b-col align-self="center">
           <RegistrationForm />
         </b-col>
       </b-row>
@@ -65,9 +65,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.landing-bottom {
-  padding: 5rem;
-}
-</style>

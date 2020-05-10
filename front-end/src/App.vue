@@ -60,10 +60,28 @@ export default {
   color: var(--nord0);
 }
 
-.sidebar-margin {
-  margin: 0;
-  padding: 0;
-  margin-left: 5.5rem;
+/* Large screens */
+@media only screen and (min-width: 600px) {
+  .sidebar-margin {
+    margin: 0;
+    margin-left: 5.5rem;
+  }
+
+  .padding {
+    padding: 5rem;
+  }
+}
+
+/* Small screens */
+@media only screen and (max-width: 600px) {
+  .sidebar-margin {
+    margin: 0;
+    margin-bottom: 5.5rem;
+  }
+
+  .padding {
+    padding: 2rem;
+  }
 }
 
 /*
