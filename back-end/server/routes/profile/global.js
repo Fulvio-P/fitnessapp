@@ -55,6 +55,13 @@ router.patch("/", async (req, res) => {
     res.status(200).json(toSend);
 });
 
+//metto le route specifiche in un altro file per evitare cluttering di questo,
+//questa dichiarazione è in questo punto per farle dopo la verifica del JWT
+//e dopo aver controllato le route di questo file
+
+const specific_rtr = require("./specific");
+router.use("/", specific_rtr);
+
 module.exports = router;
 
 

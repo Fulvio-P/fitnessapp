@@ -356,6 +356,26 @@ async function editAdditionalInfo(id, args) {
     return res.rows[0];
 }
 
+//rimuove una info addizionale, quella indicata dal parametro what.
+//esso viene concatenato direttamente alla query, ma è solo un parametro di servizio.
+//bisogna assicurarsi che IL SUO VALORE NON VENGA MAI SCELTO DALL'UTENTE.
+//non ne ho intenzione, ma quest'avvertimento resta per il futuro.
+async function deleteOneAdditionalInfo(id, what) {
+    var vecch = await pool.query(
+        "SELECT "+what+" "+
+        "FROM infoAddizionali "+
+        "WHERE id=$1;",
+        [id]
+    );
+    await pool.query(
+        "UPDATE infoAddizionali "+
+        "SET "+what+"=null "+
+        "WHERE id=$1",
+        [id]
+    );
+    return vecch.rows[0];
+}
+
 
 
 
@@ -598,6 +618,7 @@ module.exports = {
     deleteAttivita,
     getAdditionalInfo,
     editAdditionalInfo,
+    deleteOneAdditionalInfo,
     
     //Funzioni test
     getId,

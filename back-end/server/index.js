@@ -36,7 +36,7 @@ app.use("/api/food", food);
 const activities = require("./routes/activities");
 app.use("/api/activities", activities);
 
-const profile = require("./routes/profile/profile");
+const profile = require("./routes/profile/global");
 app.use("/api/profile", profile);
 
 //starting server
