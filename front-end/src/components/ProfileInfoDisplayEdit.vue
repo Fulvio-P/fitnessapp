@@ -37,7 +37,7 @@
                 </b-button>
                 <b-button
                     v-if="isEditMode"
-                    @click="alert('TODO sei sicuro!??!')"
+                    @click="deleteInfo()"
                     class="pide-button"
                 >
                     ELIMINA
@@ -103,6 +103,9 @@ export default {
             this.mode=DISP_MODE;
             this.editInput="";
         },
+        setDisplay(newDisp) {
+            this.infoDisplay = newDisp ? newDisp : "[non presente]"
+        },
         getInfo() {
             this.$store
                 //avvio chiamata API (gestita da vuex)
@@ -110,7 +113,7 @@ export default {
                 //se tutto va bene
                 .then(resp => {
                     console.log(resp);
-                    this.infoDisplay = resp.data[this.infoname.toLowerCase()];
+                    this.setDisplay(resp.data[this.infoname.toLowerCase()]);
                 })
                 //se qualcosa va male
                 .catch((err) => {
@@ -132,7 +135,25 @@ export default {
                     .then(resp => {
                         console.log(resp);
                         //alla PUT faccio comunque tornare la nuova info, quindi la scrivo tranquillamente senza bisogno di un'altra GET
-                        this.infoDisplay = resp.data[this.infoname.toLowerCase()];
+                        this.setDisplay(resp.data[this.infoname.toLowerCase()]);
+                        this.toDispMode();
+                    })
+                    //se qualcosa va male
+                    .catch((err) => {
+                        console.log(err);
+                        alert(this.$store.state.status);
+                    });
+            }
+        },
+        deleteInfo() {
+            if (confirm("Sei sicuro di voler ELIMINARE DEFINITIVAMENTE questa proprietà?\nQuest'azione non può essere annullata.")) {
+                this.$store
+                    //avvio chiamata API (gestita da vuex)
+                    .dispatch("API_DELETE", profileUrl + translator[this.infoname])
+                    //se tutto va bene
+                    .then(resp => {
+                        console.log(resp);
+                        this.getInfo();
                         this.toDispMode();
                     })
                     //se qualcosa va male
