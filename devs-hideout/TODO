@@ -4,7 +4,6 @@ Cose da fare:
   [ø] fare API per gestirle
   [ø] fare form per queste informazioni (pagina impostazioni profilo)
   [ø] spostare logout nella pagina profilo
-  [ ] cambio username/password (se finisco presto)
 (Fulvio)
 -Far funzionare i link e il form nel footer della landing page
 -miglioramenti grafici
@@ -20,6 +19,7 @@ Priorità minore:
 -Coerenza utenti di test
 
 Cose da fare per flexare:
+-cambio username/password
 -mirage?
 -Aggiungere un sistema di follower
 -Aggiungere la linea obbiettivo sui grafici
