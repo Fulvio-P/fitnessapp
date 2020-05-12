@@ -1,25 +1,30 @@
-Cose da fare:
--Più informazioni (Francesco)
-  [ø] aggiungere tabella info addizionali
-  [ø] fare API per gestirle
-  [ø] fare form per queste informazioni (pagina impostazioni profilo)
-  [ø] spostare logout nella pagina profilo
-(Fulvio)
-xFar funzionare i link e il form nel footer della landing page 
-xmiglioramenti grafici
-  x toLocaleString sulle tabelle
-  x colori dei bottoni (es. elimina rosso)
-  x icone identiche
-  x Aggiungere spinner durante i caricamenti
-  x Descrizioni e foto
-[memento] possiamo mettere il .env del front-end in .gitignore?
+Cose da fare (Priorità decrescente):
+
+-Integrazione Open Food Facts:
+  -Fare le funzioni che gestiscono la richiesta dal back end
+  -Aggiungere un campo nel form cibo nel front end
+
+-Integrazione FitBit:
+  -Ottenere il token oAuth
+  -Fare funzioni che gestiscono i dati nel back end
+  -Impostare la comunicazione tra backend e front end
+  -Aggiungere pulsanti per sincronizzazione nel front end
+
+-Sviluppo Feed (Solo se FitBit non usa già messaggi):
+  -Creare possibilità di inviare al server richieste di generare messaggi (pulsante vantati)
+  -Implementare creazione di messaggi da parte del server
+  -Implementare ricezione di messaggi da parte del front end
+  -FLEX: implemantare un sistema di follower
+
+-Implementare possibilità di cambiare nome utente e password:
+  -Fare funzioni che gestiscono la richiesta nel backend
+  -Aggiungere righe apposite nelle impostazioni utente
+
 
 Priorità minore:
--Integrazione FitBit
+-Documentazione installazione, uso API e casi di prova
 -Coerenza utenti di test
 
 Cose da fare per flexare:
--cambio username/password
 -mirage?
--Aggiungere un sistema di follower
 -Aggiungere la linea obbiettivo sui grafici
