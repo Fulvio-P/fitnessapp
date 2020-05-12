@@ -25,14 +25,14 @@
                 id="input-1"
                 type="email"
                 required
-                placeholder="pippo@email.com"
+                placeholder="La tua email"
                 v-model="email"
               ></b-form-input>
             </b-form-group>
             <b-form-group>
               <b-form-textarea
                 id="input-textarea"
-                placeholder="7/10 too much water"
+                placeholder="Inserisci un messaggio"
                 no-resize
                 v-model="testo"
               ></b-form-textarea>

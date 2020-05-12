@@ -3,8 +3,6 @@
     <b-carousel
       id="carousel-1"
       :interval="8000"
-      controls
-      indicators
       background="#ababab"
       img-width="1024"
       img-height="480"
