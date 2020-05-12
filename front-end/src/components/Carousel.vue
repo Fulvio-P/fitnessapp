@@ -9,7 +9,9 @@
       style="text-shadow: 1px 1px 2px #333;"
     >
       <!-- Slides with custom text -->
-      <b-carousel-slide img-src="https://media.giphy.com/media/WopaNdn9m3dJdbCEtw/giphy.gif">
+      <b-carousel-slide
+        img-src="https://media.giphy.com/media/WopaNdn9m3dJdbCEtw/giphy.gif"
+      >
       </b-carousel-slide>
 
       <!-- Text slides with image -->

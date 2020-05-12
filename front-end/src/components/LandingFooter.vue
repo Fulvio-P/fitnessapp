@@ -49,7 +49,7 @@
 </template>
 
 <script>
-const opinionUrl = 'http://localhost:5000/opinion';
+const opinionUrl = "http://localhost:5000/opinion";
 
 export default {
   name: "Footer",
@@ -57,10 +57,10 @@ export default {
     return {
       email: undefined,
       testo: undefined
-    }
+    };
   },
   methods: {
-    addOpinion(){
+    addOpinion() {
       //recupero dati dal form
       const { email, testo } = this;
       //avvio chiamata API (gestita da vuex)
@@ -81,7 +81,7 @@ export default {
           //in questo caso il form non si resetta, l'utente può subito riprovare
         });
     }
-  },
+  }
 };
 </script>
 
@@ -91,7 +91,7 @@ a {
   color: var(--nord6);
 }
 
-a:hover{
+a:hover {
   text-decoration: underline;
 }
 

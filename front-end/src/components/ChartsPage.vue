@@ -63,16 +63,16 @@ vedere chartUtils.js (e il resto dei file relativi ai grafici).
             ]"
           />
           <div class="controls">
-          <b-button
-            @click="calchart.mostraBilancio()"
-            v-bind:class="bilancioCondition"
-            >Bilancio</b-button
-          >
-          <b-button
-            @click="calchart.mostraInOut()"
-            v-bind:class="inOutCondition"
-            >Ingerite e Bruciate</b-button
-          >
+            <b-button
+              @click="calchart.mostraBilancio()"
+              v-bind:class="bilancioCondition"
+              >Bilancio</b-button
+            >
+            <b-button
+              @click="calchart.mostraInOut()"
+              v-bind:class="inOutCondition"
+              >Ingerite e Bruciate</b-button
+            >
           </div>
         </b-col>
       </b-row>
@@ -194,10 +194,10 @@ export default {
   background-color: var(--nord3);
   color: var(--nord6);
 }
-.btn{
+.btn {
   margin: 1rem;
 }
-.controls{
+.controls {
   display: flex;
   align-items: center;
   justify-content: center;

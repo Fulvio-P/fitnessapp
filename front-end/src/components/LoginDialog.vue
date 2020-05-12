@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="text-center"
-  >
+  <div class="text-center">
     <p><strong id="label">Log in</strong></p>
     <p class="login-form">
       <b-form @submit.prevent="loginSubmit">
@@ -38,8 +36,7 @@
 
     <b-button router-link to="/">Annulla</b-button>
 
-    <b-overlay :show='this.$store.getters.isLoading' no-wrap>
-    </b-overlay>
+    <b-overlay :show="this.$store.getters.isLoading" no-wrap> </b-overlay>
   </div>
 </template>
 

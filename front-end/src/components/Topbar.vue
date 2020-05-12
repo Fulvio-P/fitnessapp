@@ -45,7 +45,7 @@ export default {
       this.$store.dispatch("AUTH_LOGOUT").then(() => {
         this.$router.push("/");
       });
-    },
+    }
 
     //overlay disattivato per il momento
     /* displayOverlay() {

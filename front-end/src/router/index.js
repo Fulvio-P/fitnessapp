@@ -66,7 +66,7 @@ const routes = [
     name: "Tables",
     component: () => import("../views/Tables.vue"),
     beforeEnter: ifAuthenticated
-  },
+  }
 ];
 
 const router = new VueRouter({

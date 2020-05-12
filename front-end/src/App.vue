@@ -27,7 +27,7 @@ export default {
         throw err;
       });
     });
-  },
+  }
 };
 </script>
 
@@ -60,7 +60,7 @@ export default {
   color: var(--nord0);
 }
 
-body{
+body {
   background: var(--nord6);
 }
 
@@ -88,18 +88,18 @@ body{
   }
 }
 
-.btn-secondary{
+.btn-secondary {
   background: var(--nord0);
 }
-.btn-secondary:hover{
+.btn-secondary:hover {
   background: var(--nord2);
 }
 
-.red-btn{
+.red-btn {
   background: var(--nord11);
   border: none;
 }
-.red-btn:hover{
+.red-btn:hover {
   background: var(--nord12);
 }
 </style>

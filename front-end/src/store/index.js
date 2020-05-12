@@ -18,7 +18,10 @@ export default new Vuex.Store({
   getters: {
     isAuthenticated: state => !!state.token,
     getStatus: state => state.status,
-    isLoading: state => state.status == 'loading' || state.status == 'reg-loading' || state.status == 'api-loading',
+    isLoading: state =>
+      state.status == "loading" ||
+      state.status == "reg-loading" ||
+      state.status == "api-loading"
   },
 
   mutations: {
@@ -96,7 +99,7 @@ export default new Vuex.Store({
             const token = resp.data.token;
             localStorage.setItem("user-token", token);
             //imposto il token come header di default
-            axios.defaults.headers.common["Authorization"] = 'Bearer '+token;
+            axios.defaults.headers.common["Authorization"] = "Bearer " + token;
             commit("AUTH_SUCCESS", token);
             resolve(resp);
           })
