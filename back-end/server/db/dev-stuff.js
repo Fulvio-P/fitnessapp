@@ -10,22 +10,32 @@ const bcrypt = require('bcryptjs');
 const { Pool } = require("pg");
 const pool = new Pool();
 
-async function addTestUser(username, password) {
+async function addTestUser(username, password, email, altezza) {
     /* Hashing della password */
     let salt = bcrypt.genSaltSync(10);
     let hashedPassword = bcrypt.hashSync(password, salt);
-    await index.addUser(username, hashedPassword);
+    await index.addUser(username, hashedPassword, email, altezza);
 }
 
 //Crea le tabelle del DB, se testUsers == true le popola con dati di alcuni utenti
 async function initDB(testUsers) {
 
-    //Tabella utente TODO: modificare in modo che accetta le cose !
+    //Tabella utente
     console.log("N.B.: Avere risposte vuote per insert/update è buon segno!");
     await pool.query("CREATE TABLE utente ("+
                         "id SERIAL PRIMARY KEY, "+
                         "username VARCHAR(50) UNIQUE NOT NULL, "+
                         "password VARCHAR(200) NOT NULL);"
+    );
+
+    //Tabella info addizionali
+    await pool.query(
+        "CREATE TABLE infoAddizionali ("+
+            "id integer PRIMARY KEY REFERENCES utente(id), "+
+            "email VARCHAR(300), "+    //sembra che il limite standard sia 254, e ci prendiamo un altro po' di spazio per buona misura
+            "altezza SMALLINT"+   //in centimetri (limite superiore: 32768)
+            //eventuali altre
+            ");"
     );
 
     //Tabella peso
@@ -87,10 +97,10 @@ async function initDB(testUsers) {
     
     if(testUsers){
         //user di default
-        await addTestUser("AkihikoSanada", "polydeuces");   //un utente completo, il protagonista dei test che andrò a fare sul frontend
+        await addTestUser("AkihikoSanada", "polydeuces", 'a.sanada@gekkoukan.edu', 175);   //un utente completo, il protagonista dei test che andrò a fare sul frontend
         await addTestUser("CassiusBright", "estelle1184");  //ha misure di peso, non di calorie
-        await addTestUser("ChieSatonaka", "tomoe");        //ha misure di calorie, non di peso
-        await addTestUser("EdelgardVonHresvelg", "blackeagle");    //ha una misura di entrambi, e dimostra che il tipo NUMERIC accetta anche i decimali
+        await addTestUser("ChieSatonaka", "tomoe", 'c.satonaka@yasogami.edu');        //ha misure di calorie, non di peso
+        await addTestUser("EdelgardVonHresvelg", "blackeagle", undefined, 158);    //ha una misura di entrambi, e dimostra che il tipo NUMERIC accetta anche i decimali
         console.log(await index.setPeso("AkihikoSanada", new Date("2020-04-25"), 80));
         console.log(await index.setPeso("AkihikoSanada", new Date("2020-04-26"), 70));
         console.log(await index.setPeso("AkihikoSanada", new Date("2020-04-27"), 75));
@@ -133,7 +143,7 @@ async function initDB(testUsers) {
             "(4, '2020-05-03', '2020-05-03', 'esercitazione armatura', 200.5), "+
             "(4, '2020-05-04', '2020-05-04', 'allenamento con Byleth', 200.5), "+
             "(4, '2020-05-06', '2020-05-06', 'incarico mensile', 350.75);"
-        )
+        );
         console.log("Tutto OK, Ctrl+C per uscire");
     }
 }

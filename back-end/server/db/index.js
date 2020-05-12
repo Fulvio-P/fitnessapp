@@ -24,8 +24,28 @@ const MINFINITY = "-infinity";
 /////////////////////////////////////  UTENTI  /////////////////////////////////////////
 
 //aggiunge un nuovo utente al database
-async function addUser(username, password) {
-    await pool.query("INSERT INTO utente(username, password) VALUES ($1, $2);",[username, password]);
+//gli argomenti dopo i primi due corrispondono a informazioni facoltative.
+//se un'informazione non è fornita, passare come argomento null o undefined,
+//oppure non passare affatto quell'argomento se possibile (equivale a dare undefined).
+//in fase di inserimento, node-postgres tratta null e undefined come NULL.
+async function addUser(username, password, email, altezza) {
+    return await doTransaction(async client => {
+        var res = await client.query(
+            "INSERT INTO utente(username, password) "+
+            "VALUES ($1, $2) "+
+            "RETURNING * ;",
+            [username, password]
+        );   //se un errore avviene qui, lasciamo che si propaghi al chiamante
+        await client.query(
+            "INSERT INTO infoAddizionali "+
+            "VALUES ($1, $2, $3);",
+            [res.rows[0].id, email, altezza]
+        );  //se un errore si verifica qui, l'utente non viene creato affatto:
+            //la scelta di progetto è che un utente abbia sempre una riga di questa tabella associata,
+            //per semplicità.
+        return res.rows[0];
+    })
+    
 }
 
 //ritorna i dati di un utente dato il suo id
@@ -300,6 +320,68 @@ async function deleteAttivita(id, ts) {
 }
 
 
+/////////////////////////////////////// INFO ADDIZIONALI //////////////////////////////////////
+
+//restituisce una info addizionale o tutte, in base al parametro what.
+//esso viene concatenato direttamente alla query, ma è solo un parametro di servizio.
+//bisogna assicurarsi che IL SUO VALORE NON VENGA MAI SCELTO DALL'UTENTE.
+//non ne ho intenzione, ma quest'avvertimento resta per il futuro.
+async function getAdditionalInfo(id, what) {
+    var res = await pool.query(
+        "SELECT "+what+" "+
+        "FROM infoAddizionali "+
+        "WHERE id=$1",
+        [id]
+    );
+    return res.rows[0];
+}
+
+//modifica più info addizionali in un colpo solo
+//solo le info passate nell'argomento verranno modificate
+//l'argomento è un oggetto che contiene coppie nome_info:nuovo_valore_info
+//in teoria si può usare null per cancellare un'info in questo modo,
+//ma non è ortodosso a livello di API (e il gestore di PATCH [...]/profile non lo consente)
+//ancora, i nomi_info verranno concatenati direttamente alla query,
+//ma sono solo parametri di servizio.
+//per evitare sbagli futuri: NON LASCIARLI DECIDERE ALL'UTENTE!
+async function editAdditionalInfo(id, args) {
+    const [plusSet, plusParams] = generateUpdateOptionalsGeneric(args, 2, false);
+    var res = await pool.query(
+        "UPDATE infoAddizionali "+
+        "SET "+plusSet+" "+
+        "WHERE id=$1 "+
+        "RETURNING * ",
+        [id].concat(plusParams)
+    );
+    return res.rows[0];
+}
+
+//rimuove una info addizionale, quella indicata dal parametro what.
+//esso viene concatenato direttamente alla query, ma è solo un parametro di servizio.
+//bisogna assicurarsi che IL SUO VALORE NON VENGA MAI SCELTO DALL'UTENTE.
+//non ne ho intenzione, ma quest'avvertimento resta per il futuro.
+async function deleteOneAdditionalInfo(id, what) {
+    var vecch = await pool.query(
+        "SELECT "+what+" "+
+        "FROM infoAddizionali "+
+        "WHERE id=$1;",
+        [id]
+    );
+    await pool.query(
+        "UPDATE infoAddizionali "+
+        "SET "+what+"=null "+
+        "WHERE id=$1",
+        [id]
+    );
+    return vecch.rows[0];
+}
+
+
+
+
+
+
+
 
 
 
@@ -407,6 +489,30 @@ function generateUpdateOptionals(data, descrizione) {
     for (let i=0; i<nomi.length; i++) {
         plusSet += nomi[i] + dollari[i];
     }
+    return [plusSet, plusParams];
+}
+
+//come quella sopra, ma generica.
+//passare come parametro un oggetto con nome_proprietà:valore_proprietà
+//per ogni proprietà da modificare.
+//startFrom è il numero da cui cominciare per generare i placeholder $
+//per i parametri di node-postgres. (è meglio che gli opzionali siano gli ultimi)
+//startWithComma è un booleano che indica se la stringa plusSet dovrà cominciare con una virgola
+//o no. Usare false se non si sono altre assegnazioni nella SET originale, true se invece
+//quelle restituite da questa funzione saranno le prime.
+//TODO una volta accertato che funziona, tradurre quella in funzione di questa
+function generateUpdateOptionalsGeneric(args, startFrom, startWithComma) {
+    var i = startFrom;
+    var plusSet = startWithComma ? ", " : "";
+    var plusParams = [];
+    for (name in args) {
+        plusSet += `${name}=$${i}, `;
+        i++;
+        const val = args[name];
+        plusParams.push(val);
+    }
+    //elimina gli ultimi due caratteri (saranno sempre ", " (a meno che la stringa non sia vuota, nel qual caso si riotterrà al stringa vuota))
+    plusSet = plusSet.slice(0, -2);
     return [plusSet, plusParams];
 }
 
@@ -529,6 +635,9 @@ module.exports = {
     addAttivita,
     editAttivita,
     deleteAttivita,
+    getAdditionalInfo,
+    editAdditionalInfo,
+    deleteOneAdditionalInfo,
     addOpinione,
     
     //Funzioni test

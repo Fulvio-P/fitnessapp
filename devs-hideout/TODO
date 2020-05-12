@@ -1,8 +1,9 @@
 Cose da fare:
 -Più informazioni (Francesco)
-  - aggiungere tabella info addizionali
-  - fare form per queste informazioni (pagina impostazioni profilo)
-  - cambio username/password (se finisco presto)
+  [ø] aggiungere tabella info addizionali
+  [ø] fare API per gestirle
+  [ø] fare form per queste informazioni (pagina impostazioni profilo)
+  [ø] spostare logout nella pagina profilo
 (Fulvio)
 xFar funzionare i link e il form nel footer della landing page 
 xmiglioramenti grafici
@@ -11,12 +12,14 @@ xmiglioramenti grafici
   x icone identiche
   x Aggiungere spinner durante i caricamenti
   x Descrizioni e foto
+[memento] possiamo mettere il .env del front-end in .gitignore?
 
 Priorità minore:
 -Integrazione FitBit
 -Coerenza utenti di test
 
 Cose da fare per flexare:
+-cambio username/password
 -mirage?
 -Aggiungere un sistema di follower
 -Aggiungere la linea obbiettivo sui grafici
