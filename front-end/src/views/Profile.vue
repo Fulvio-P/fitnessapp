@@ -1,5 +1,5 @@
 <template>
-  <div class="profileview sidebar-margin">
+  <div class="profileview sidebar-margin padding">
     <h1>Impostazioni Profilo</h1>
     Questa è la pagina del profilo qui metteremo il grosso delle funzionalità
     <ProfilePage />

@@ -27,12 +27,12 @@
           form="theform"
           type="submit"
           v-if="isEditMode"
-          class="pide-button"
+          class="pide-button pide-confirm-btn"
         >
           Conferma
         </b-button>
-        <b-button v-if="isEditMode" @click="deleteInfo()" class="pide-button">
-          ELIMINA
+        <b-button v-if="isEditMode" @click="deleteInfo()" class="pide-button pide-delete-btn">
+          Elimina
         </b-button>
         <b-button v-if="isEditMode" @click="toDispMode" class="pide-button">
           Annulla
@@ -173,5 +173,11 @@ export default {
 .pide-button {
   margin: 5px 2px;
   width: 7em;
+}
+.pide-confirm-btn {
+  background-color: var(--nord14);
+}
+.pide-delete-btn {
+  background-color: var(--nord11);
 }
 </style>
