@@ -69,7 +69,7 @@ export default {
     }
   },
   created() {
-      this.getActivities();
-  },
+    this.getActivities();
+  }
 };
 </script>

@@ -69,7 +69,7 @@ export default {
     }
   },
   created() {
-      this.getFood();
-  },
+    this.getFood();
+  }
 };
 </script>

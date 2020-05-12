@@ -1,13 +1,11 @@
 <template>
   <div>
     <b-table :items="items" :fields="fields" striped responsive="sm">
-
       <template v-slot:cell(delete)="row">
         <b-button size="sm" @click="deleteWeight(row.item.data)" class="mr-2">
           Elimina
         </b-button>
       </template>
-
     </b-table>
   </div>
 </template>
@@ -52,14 +50,14 @@ export default {
           this.items = resp.data.dataPoints;
         })
         //se qualcosa va male
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
           alert(this.$store.state.status);
         });
     }
   },
   created() {
-      this.getWeight();
-  },
+    this.getWeight();
+  }
 };
 </script>

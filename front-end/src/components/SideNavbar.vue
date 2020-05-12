@@ -32,11 +32,7 @@
 <script>
 //import SvgTest from "@/components/SvgTest.vue";
 //import SvgTest from "../assets/icons/user-profile.svg";
-import {
-  BIconGraphUp,
-  BIconPencilSquare,
-  BIconPerson
-} from "bootstrap-vue";
+import { BIconGraphUp, BIconPencilSquare, BIconPerson } from "bootstrap-vue";
 import ActivatingRouterLink from "@/components/ActivatingRouterLink.vue";
 export default {
   name: "SideNav",
