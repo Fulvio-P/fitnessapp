@@ -72,7 +72,7 @@ body {
   }
 
   .padding {
-    padding: 5rem;
+    padding: 3rem;
   }
 }
 

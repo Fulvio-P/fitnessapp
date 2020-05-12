@@ -191,7 +191,7 @@ export default {
 
 <style scoped>
 .selectedmode {
-  background-color: var(--nord3);
+  background-color: var(--nord10);
   color: var(--nord6);
 }
 .btn {
