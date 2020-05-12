@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="profileview sidebar-margin">
     Questa è la pagina del profilo qui metteremo il grosso delle funzionalità
   </div>
 </template>
@@ -9,3 +9,5 @@ export default {
   name: "Profile"
 };
 </script>
+
+<style scoped></style>

@@ -67,6 +67,12 @@ const routes = [
     component: () => import("../views/Tables.vue"),
     beforeEnter: ifAuthenticated
   },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: () => import("../views/Profile.vue"),
+    beforeEnter: ifAuthenticated
+  },
 ];
 
 const router = new VueRouter({
