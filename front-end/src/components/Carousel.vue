@@ -41,7 +41,10 @@ export default {
   display: flex;
   align-items: center;
 }
-
-
+@media only screen and (min-width: 600px) {
+.carousel-caption {
+  transform: translateY(-25%);
+}
+}
 
 </style>
