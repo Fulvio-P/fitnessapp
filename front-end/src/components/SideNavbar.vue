@@ -21,15 +21,9 @@
       </li>
       <li class="SideNavItem">
         <ActivatingRouterLink to="/profile" class="SideNavLink">
-          <BIconWrench class="centopercento" />
-          <span class="LinkText">Impostazioni<br/>Profilo</span>
+          <BIconPerson class="centopercento" />
+          <span class="LinkText">Profilo</span>
         </ActivatingRouterLink>
-      </li>
-      <li class="SideNavItem">
-        <div @click="logout()" class="SideNavLink">
-          <BIconHouse class="centopercento" />
-          <span class="LinkText">Home</span>
-        </div>
       </li>
     </ul>
   </nav>
@@ -41,8 +35,7 @@
 import {
   BIconGraphUp,
   BIconPencilSquare,
-  BIconHouse,
-  BIconWrench
+  BIconPerson
 } from "bootstrap-vue";
 import ActivatingRouterLink from "@/components/ActivatingRouterLink.vue";
 export default {
@@ -51,16 +44,8 @@ export default {
     //SvgTest,
     BIconGraphUp,
     BIconPencilSquare,
-    BIconHouse,
-    BIconWrench,
+    BIconPerson,
     ActivatingRouterLink
-  },
-  methods: {
-    logout() {
-      this.$store.dispatch("AUTH_LOGOUT").then(() => {
-        this.$router.push("/");
-      });
-    }
   }
 };
 </script>
