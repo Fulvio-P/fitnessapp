@@ -97,7 +97,7 @@ il numero di item se ne mettiamo di più*/
 .SideNav {
   --text-primary: var(--nord6);
   --text-secondary: var(--nord8);
-  --bg-primary: var(--nord1);
+  --bg-primary: var(--nord0);
   --bg-secondary: var(--nord2);
   --transition-speed: 600ms;
   position: fixed;

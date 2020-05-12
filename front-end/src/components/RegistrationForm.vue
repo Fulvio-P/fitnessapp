@@ -27,7 +27,7 @@
         ></b-form-input>
       </b-form-group>
 
-      <b-button class="form-btn" type="submit">
+      <b-button type="submit">
         Registrati
       </b-button>
     </b-form>
@@ -67,8 +67,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.form-btn {
-  background: var(--nord0);
-}
-</style>
+

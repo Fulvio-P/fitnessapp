@@ -3,7 +3,7 @@
     <b-table :items="items" :fields="fields" striped responsive="sm">
 
       <template v-slot:cell(delete)="row">
-        <b-button size="sm" @click="deleteWeight(row.item.data)" class="mr-2">
+        <b-button size="sm" @click="deleteWeight(row.item.data)" class="mr-2 red-btn">
           Elimina
         </b-button>
       </template>
@@ -23,7 +23,10 @@ export default {
         { key: "peso", label: "Kg" },
         { key: "delete", label: "" }
       ],
-      items: []
+      items: [
+        {data: 213412,
+        peso: 45}
+      ]
     };
   },
   methods: {

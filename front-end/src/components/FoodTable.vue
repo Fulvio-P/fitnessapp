@@ -8,7 +8,7 @@
       </template>
 
       <template v-slot:cell(delete)="row">
-        <b-button size="sm" @click="deleteFood(row.item.ts)" class="mr-2">
+        <b-button size="sm" @click="deleteFood(row.item.ts)" class="mr-2 red-btn">
           Elimina
         </b-button>
       </template>

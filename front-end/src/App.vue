@@ -84,17 +84,18 @@ export default {
   }
 }
 
-/*
-#nav {
-  padding: 30px;
+.btn-secondary{
+  background: var(--nord0);
+}
+.btn-secondary:hover{
+  background: var(--nord2);
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.red-btn{
+  background: var(--nord11);
+  border: none;
 }
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-} */
+.red-btn:hover{
+  background: var(--nord12);
+}
 </style>
