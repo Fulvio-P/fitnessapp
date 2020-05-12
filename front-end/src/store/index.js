@@ -17,7 +17,11 @@ export default new Vuex.Store({
 
   getters: {
     isAuthenticated: state => !!state.token,
-    getStatus: state => state.status
+    getStatus: state => state.status,
+    isLoading: state =>
+      state.status == "loading" ||
+      state.status == "reg-loading" ||
+      state.status == "api-loading"
   },
 
   mutations: {

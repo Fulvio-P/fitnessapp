@@ -10,7 +10,7 @@
           id="registration-username"
           v-model="username"
           required
-          placeholder="Inserisci il tuo nome"
+          placeholder="Inserisci username"
         ></b-form-input>
       </b-form-group>
 
@@ -23,11 +23,12 @@
           id="registration-password"
           v-model="password"
           type="password"
+          placeholder="Inserisci password"
           required
         ></b-form-input>
       </b-form-group>
 
-      <b-button class="form-btn" type="submit">
+      <b-button type="submit">
         Registrati
       </b-button>
     </b-form>
@@ -66,9 +67,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.form-btn {
-  background: var(--nord0);
-}
-</style>

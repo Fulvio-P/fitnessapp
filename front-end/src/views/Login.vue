@@ -1,6 +1,13 @@
 <template>
-  <div class="login-page">
-    <LoginDialog />
+  <div class="login-page padding">
+    <!-- Modo barbaro di centrare il login, ma funziona bene quindi... -->
+    <b-container>
+      <b-row>
+        <b-col></b-col>
+        <b-col sm><LoginDialog /></b-col>
+        <b-col></b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 

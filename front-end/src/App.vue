@@ -60,6 +60,10 @@ export default {
   color: var(--nord0);
 }
 
+body {
+  background: var(--nord6);
+}
+
 /* Large screens */
 @media only screen and (min-width: 600px) {
   .sidebar-margin {
@@ -68,7 +72,7 @@ export default {
   }
 
   .padding {
-    padding: 5rem;
+    padding: 3rem;
   }
 }
 
@@ -84,17 +88,18 @@ export default {
   }
 }
 
-/*
-#nav {
-  padding: 30px;
+.btn-secondary {
+  background: var(--nord0);
+}
+.btn-secondary:hover {
+  background: var(--nord2);
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.red-btn {
+  background: var(--nord11);
+  border: none;
 }
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-} */
+.red-btn:hover {
+  background: var(--nord12);
+}
 </style>

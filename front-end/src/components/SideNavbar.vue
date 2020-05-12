@@ -15,7 +15,7 @@
       </li>
       <li class="SideNavItem">
         <ActivatingRouterLink to="/tables" class="SideNavLink">
-          <BIconPencilSquare class="centopercento" />
+          <BIconFileText class="centopercento" />
           <span class="LinkText">Diario</span>
         </ActivatingRouterLink>
       </li>
@@ -32,7 +32,12 @@
 <script>
 //import SvgTest from "@/components/SvgTest.vue";
 //import SvgTest from "../assets/icons/user-profile.svg";
-import { BIconGraphUp, BIconPencilSquare, BIconPerson } from "bootstrap-vue";
+import {
+  BIconGraphUp,
+  BIconPencilSquare,
+  BIconFileText,
+  BIconPerson
+} from "bootstrap-vue";
 import ActivatingRouterLink from "@/components/ActivatingRouterLink.vue";
 export default {
   name: "SideNav",
@@ -40,6 +45,7 @@ export default {
     //SvgTest,
     BIconGraphUp,
     BIconPencilSquare,
+    BIconFileText,
     BIconPerson,
     ActivatingRouterLink
   }
@@ -89,7 +95,7 @@ il numero di item se ne mettiamo di più*/
 .SideNav {
   --text-primary: var(--nord6);
   --text-secondary: var(--nord8);
-  --bg-primary: var(--nord1);
+  --bg-primary: var(--nord0);
   --bg-secondary: var(--nord2);
   --transition-speed: 600ms;
   position: fixed;
@@ -115,6 +121,7 @@ il numero di item se ne mettiamo di più*/
 
 .SideNavItem {
   width: 100%;
+  cursor: pointer;
 }
 
 .SideNavItem:last-child {

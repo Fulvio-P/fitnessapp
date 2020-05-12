@@ -62,17 +62,18 @@ vedere chartUtils.js (e il resto dei file relativi ai grafici).
               }
             ]"
           />
-          Modalità:
-          <b-button
-            @click="calchart.mostraBilancio()"
-            v-bind:class="bilancioCondition"
-            >Bilancio</b-button
-          >
-          <b-button
-            @click="calchart.mostraInOut()"
-            v-bind:class="inOutCondition"
-            >Ingerite e Bruciate</b-button
-          >
+          <div class="controls">
+            <b-button
+              @click="calchart.mostraBilancio()"
+              v-bind:class="bilancioCondition"
+              >Bilancio</b-button
+            >
+            <b-button
+              @click="calchart.mostraInOut()"
+              v-bind:class="inOutCondition"
+              >Ingerite e Bruciate</b-button
+            >
+          </div>
         </b-col>
       </b-row>
     </b-container>
@@ -190,7 +191,15 @@ export default {
 
 <style scoped>
 .selectedmode {
-  background-color: var(--nord13);
-  color: var(--nord0);
+  background-color: var(--nord10);
+  color: var(--nord6);
+}
+.btn {
+  margin: 1rem;
+}
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
