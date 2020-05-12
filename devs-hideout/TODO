@@ -13,6 +13,7 @@ Cose da fare:
   - icone identiche
   - Aggiungere spinner durante i caricamenti
   - Descrizioni e foto
+[memento] possiamo mettere il .env del front-end in .gitignore?
 
 Priorità minore:
 -Integrazione FitBit
