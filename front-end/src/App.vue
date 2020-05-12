@@ -60,6 +60,10 @@ export default {
   color: var(--nord0);
 }
 
+body{
+  background: var(--nord6);
+}
+
 /* Large screens */
 @media only screen and (min-width: 600px) {
   .sidebar-margin {

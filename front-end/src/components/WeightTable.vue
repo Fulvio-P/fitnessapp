@@ -23,10 +23,7 @@ export default {
         { key: "peso", label: "Kg" },
         { key: "delete", label: "" }
       ],
-      items: [
-        {data: 213412,
-        peso: 45}
-      ]
+      items: []
     };
   },
   methods: {
