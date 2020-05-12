@@ -1,5 +1,5 @@
 <template>
-  <div class="chartsview sidebar-margin">
+  <div class="chartsview sidebar-margin padding">
     <h1>Grafici</h1>
     <ChartsPage />
   </div>

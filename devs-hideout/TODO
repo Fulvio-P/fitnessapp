@@ -4,13 +4,13 @@ Cose da fare:
   - fare form per queste informazioni (pagina impostazioni profilo)
   - cambio username/password (se finisco presto)
 (Fulvio)
--Far funzionare i link e il form nel footer della landing page
--miglioramenti grafici
-  - toLocaleString sulle tabelle
-  - colori dei bottoni (es. elimina rosso)
-  - icone identiche
-  - Aggiungere spinner durante i caricamenti
-  - Descrizioni e foto
+xFar funzionare i link e il form nel footer della landing page 
+xmiglioramenti grafici
+  x toLocaleString sulle tabelle
+  x colori dei bottoni (es. elimina rosso)
+  x icone identiche
+  x Aggiungere spinner durante i caricamenti
+  x Descrizioni e foto
 
 Priorità minore:
 -Integrazione FitBit

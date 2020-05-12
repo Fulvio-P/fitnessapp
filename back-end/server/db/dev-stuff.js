@@ -72,6 +72,15 @@ async function initDB(testUsers) {
         ");"
     );
 
+    //Tabella opinioni
+    await pool.query("CREATE TABLE opinioni ("+
+                        "created TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, "+
+                        "email VARCHAR(50) NOT NULL, "+
+                        "testo VARCHAR(512) NOT NULL DEFAULT '', "+
+                        "PRIMARY KEY (created)"+
+                    ");"
+    );
+
 
 
     
@@ -155,6 +164,11 @@ async function destroyDB() {
         await pool.query("DROP TABLE utente;");
     } catch (err) {
         console.error("errore destroyDB(utente): "+err.message);
+    }
+    try {
+        await pool.query("DROP TABLE opinioni;");
+    } catch (err) {
+        console.error("errore destroyDB(opinioni): "+err.message);
     }
 }
 

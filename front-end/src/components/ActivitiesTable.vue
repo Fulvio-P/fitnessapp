@@ -8,7 +8,11 @@
       </template>
 
       <template v-slot:cell(delete)="row">
-        <b-button size="sm" @click="deleteActivity(row.item.ts)" class="mr-2">
+        <b-button
+          size="sm"
+          @click="deleteActivity(row.item.created)"
+          class="mr-2 red-btn"
+        >
           Elimina
         </b-button>
       </template>
@@ -60,16 +64,26 @@ export default {
         .dispatch("API_GET", activitiesUrl)
         //se tutto va bene
         .then(resp => {
-          this.items = resp.data.dataPoints;
+          this.items = this.fixDates(resp.data.dataPoints);
         })
         //se qualcosa va male
         .catch(() => {
           alert(this.$store.state.status);
         });
+    },
+
+    fixDates(array) {
+      array.forEach(element => {
+        element.data = new Date(element.data).toLocaleString("default", {
+          day: "numeric",
+          month: "long"
+        });
+      });
+      return array;
     }
   },
   created() {
-      this.getActivities();
-  },
+    this.getActivities();
+  }
 };
 </script>

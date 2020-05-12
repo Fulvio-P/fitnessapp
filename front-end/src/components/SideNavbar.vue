@@ -15,14 +15,14 @@
       </li>
       <li class="SideNavItem">
         <ActivatingRouterLink to="/tables" class="SideNavLink">
-          <BIconPencilSquare class="centopercento" />
+          <BIconFileText class="centopercento" />
           <span class="LinkText">Diario</span>
         </ActivatingRouterLink>
       </li>
       <li class="SideNavItem">
         <div @click="logout()" class="SideNavLink">
-          <BIconHouse class="centopercento" />
-          <span class="LinkText">Home</span>
+          <BIconBoxArrowLeft class="centopercento" />
+          <span class="LinkText">Log out</span>
         </div>
       </li>
     </ul>
@@ -32,7 +32,12 @@
 <script>
 //import SvgTest from "@/components/SvgTest.vue";
 //import SvgTest from "../assets/icons/user-profile.svg";
-import { BIconGraphUp, BIconPencilSquare, BIconHouse } from "bootstrap-vue";
+import {
+  BIconGraphUp,
+  BIconPencilSquare,
+  BIconBoxArrowLeft,
+  BIconFileText
+} from "bootstrap-vue";
 import ActivatingRouterLink from "@/components/ActivatingRouterLink.vue";
 export default {
   name: "SideNav",
@@ -40,7 +45,8 @@ export default {
     //SvgTest,
     BIconGraphUp,
     BIconPencilSquare,
-    BIconHouse,
+    BIconFileText,
+    BIconBoxArrowLeft,
     ActivatingRouterLink
   },
   methods: {
@@ -96,7 +102,7 @@ il numero di item se ne mettiamo di più*/
 .SideNav {
   --text-primary: var(--nord6);
   --text-secondary: var(--nord8);
-  --bg-primary: var(--nord1);
+  --bg-primary: var(--nord0);
   --bg-secondary: var(--nord2);
   --transition-speed: 600ms;
   position: fixed;
@@ -122,6 +128,7 @@ il numero di item se ne mettiamo di più*/
 
 .SideNavItem {
   width: 100%;
+  cursor: pointer;
 }
 
 .SideNavItem:last-child {
