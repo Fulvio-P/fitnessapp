@@ -8,8 +8,8 @@
         responsive
         thead-class="hidden"
         >
-            <template v-slot:cell(comp)="">
-                <ProfileInfoDisplayEdit />
+            <template v-slot:cell(comp)="row">
+                <ProfileInfoDisplayEdit :infoname="row.item.head"/>
             </template>
         </b-table>
     </div>
