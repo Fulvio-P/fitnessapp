@@ -1,6 +1,6 @@
 <template>
     <div class="off-form">
-        <b-form @submit.prevent="pippo">
+        <b-form @submit.prevent="OFFCall">
 
             <b-form-group label="Codice a barre del cibo consumato">
                 <b-form-input
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+const OFF_URL = "http://localhost:5000/api/food/off";
 export default {
     name: "OFFForm",
     data() {
@@ -45,8 +46,27 @@ export default {
         }
     },
     methods: {
-        pippo() {
-            alert("pippo");
+        OFFCall() {
+            //recupero dati dal form
+            const { barcode, quantita, data } = this;
+            //avvio chiamata API (gestita da vuex)
+            this.$store
+                .dispatch("API_POST", {
+                    url: OFF_URL,
+                    payload: { barcode, quantita, data }
+                })
+                //se tutto va bene
+                .then(() => {
+                    alert("Record inserito correttamente");
+                    this.barcode = undefined;
+                    this.quantita = undefined;
+                    this.data = undefined;
+                })
+                //se qualcosa va male
+                .catch(() => {
+                    alert(this.$store.state.status);
+                    //in questo caso il form non si resetta, l'utente può subito riprovare
+                });
         }
     }
 }
