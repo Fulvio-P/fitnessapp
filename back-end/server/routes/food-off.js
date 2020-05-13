@@ -103,9 +103,60 @@ router.post("/off", async (req, res) => {
         }
     }
 
-    //TODO fare inserimento, ma per adesso mi assicuro che funzioni
-    console.log({ id: req.user.id, data: req.body.data, nome: name, calin: energy, desc });
-    return res.status(200).send("Fatto, vedi un po' la console...")
+    //inserimento nel DB
+    const toInsert = {
+        id: req.user.id,
+        data: req.body.data,
+        nome: name,
+        calin: energy,
+        descrizione: desc
+    };
+    var timesMet22001Error = 0;  //una misura di sicurezza
+    var stopTrying = false;
+    while (!stopTrying) {
+        try {
+            var added = await db.addCibo(
+                toInsert.id,
+                toInsert.data,
+                toInsert.nome,
+                toInsert.calin,
+                toInsert.descrizione
+            );
+            stopTrying = true;
+        } catch (err) {
+            console.error(`postgres error no. ${err.code}: ${err.message}`);
+            switch (err.code) {
+                case "23505": //errore violazione vincolo UNIQUE / PRIMARY KEY, praticamente non dovrebbe succedere visto che il timestamp è preciso al millisecondo
+                    return res.status(429).send("Sei troppo veloce! Riprova tra qualche secondo...");
+                case "23503": //errore violazione vincolo FOREIGN KEY
+                    return res.status(404).send("User ID does not exist");
+                case "23502": //errore violazione vincolo NOT NULL
+                    return res.status(500).send("Errore interno");
+                case "22001": //quando una stringa è più lunga del limite dato nella definizione VARCHAR
+                    if (timesMet22001Error>=2) {  //evitiamo loop infiniti
+                    //(una volta per nome e una per descrizione)
+                        return res.status(500).send("Errore sconosciuto");
+                    }
+                    timesMet22001Error++;
+                    //devo accorciare qualche parametro stringa
+                    var oldlen = toInsert.nome.length;
+                    toInsert.nome = toInsert.nome.slice(0,47);   //il limite del nome è 50
+                    //se si cerca di fare slice oltre il limite della stringa, non si ha alcun effetto aggiuntivo
+                    var newlen = toInsert.nome.length;
+                    if (newlen!=oldlen) {   //se la stringa à veramente stata tagliata
+                        toInsert.nome+="...";
+                    } else {  //la colpa è necessariamente della descrizione (per quanto spazio abbia...)
+                        toInsert.descrizione = toInsert.descrizione.slice(0,509)+"...";  //limite 512
+                    }
+                    //poi riprova
+                    break;
+                default:
+                    return res.status(500).send("Internal Database Error");
+            }
+        }
+    }
+    //se va tutto bene...
+    return res.status(201).send(added);
 });
 
 module.exports = router;
