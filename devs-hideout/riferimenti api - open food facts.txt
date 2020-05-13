@@ -15,3 +15,24 @@ NOME
      - product_name_it (dovrebbe essere in italiano, se c'è)
      - product_name (lingua non garantita, ma dovrebbe esserci sempre)
      x usare il codice a barre come nome dell'entry
+
+CARBOIDRATI
+    usare, in ordine di priorità:
+     - carbohydrates
+     - carbohydrates_100g
+     - carbohydrates_value
+     x rinunciare a inserirli nella descrizione
+
+PROTEINE
+    usare, in ordine di priorità:
+     - proteins
+     - proteins_100g
+     - proteins_value
+     x rinunciare a inserirle nella descrizione
+
+GRASSI
+    usare, in ordine di priorità:
+     - fat
+     - fat_100g
+     - fat_value
+     x rinunciare a inserirli nella descrizione

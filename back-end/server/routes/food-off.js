@@ -79,8 +79,32 @@ router.post("/off", async (req, res) => {
     //se non c'è un nome ci arrendiamo e usiamo l'unico identificatore che abbiamo
     if (!name) { name = `Codice a barre no. ${req.body.barcode}`; }
 
+    //estraiamo info addizionali che ci faranno da descrizione
+    var desc = `Quantità consumata: ${req.body.quantita} unità`;
+    //definiamo una lista di proprietà nutrizionali che ci interessano
+    const coseDaEsaminare = [
+        {it: "Carboidrati", en: "carbohydrates"},
+        {it: "Proteine", en: "proteins"},
+        {it: "Grassi", en: "fat"}
+    ];
+    for (cosa of coseDaEsaminare) {
+        //cerchiamo la proprietà nutrizionale in vari punti dell'oggetto nutriments
+        //(OFF è *molto* ridondante a volte)
+        var val100 = nutr[cosa.en];
+        if (!val100) val100 = nutr[cosa.en+"_100g"];
+        if (!val100) val100 = nutr[cosa.en+"_value"];
+        //cerchiamo di recuperare l'unità di misura (proviamo a fidarci, va'?)
+        var um = nutr[cosa.en+"_unit"];
+        if (!um) um="";
+        //se abbiamo trovato qualcosa, lo inseriamo nella descrizione
+        if (val100) {
+            const val = val100 * req.body.quantita / nutr_per;
+            desc+=`\n${cosa.it}: ${val}${um}`;
+        }
+    }
+
     //TODO fare inserimento, ma per adesso mi assicuro che funzioni
-    console.log({ id: req.user.id, data: req.body.data, nome: name, calin: energy });
+    console.log({ id: req.user.id, data: req.body.data, nome: name, calin: energy, desc });
     return res.status(200).send("Fatto, vedi un po' la console...")
 });
 
