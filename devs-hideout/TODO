@@ -1,10 +1,10 @@
 Cose da fare (Priorità decrescente):
 
--Integrazione Open Food Facts:
+-Integrazione Open Food Facts (Francesco):
   -Fare le funzioni che gestiscono la richiesta dal back end
   -Aggiungere un campo nel form cibo nel front end
 
--Integrazione FitBit:
+-Integrazione FitBit (Fulvio):
   -Ottenere il token oAuth
   -Fare funzioni che gestiscono i dati nel back end
   -Impostare la comunicazione tra backend e front end
