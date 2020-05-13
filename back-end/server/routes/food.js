@@ -10,6 +10,10 @@ const router = express.Router();
  */
 router.use(utils.verifyJWT);
 
+//importiamo e usiamo la sotto-route per le richieste a OFF
+const off_rtr = require("./food-off");
+router.use("/", off_rtr);
+
 //get generica che viene usata in varie declinazioni dai vari dipi di route get
 async function generalGet(req, res, from, to) {
     try {

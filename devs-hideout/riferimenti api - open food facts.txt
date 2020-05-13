@@ -1,0 +1,14 @@
+Mi faccio una guida più specifica perché le proprietà che danno sono veramente tante
+
+ENERGIA (in kcal, per 100g)
+    usare, in ordine di priorità:
+     - energy-kcal_value
+     - energy_value
+     x fallimento chiamata
+    Tutti gli altri campi energy sono in kJ, a dispetto del nome.
+
+NOME
+    usare, in ordine di priorità:
+     - product_name_it (dovrebbe essere in italiano, se c'è)
+     - product_name (lingua non garantita, ma dovrebbe esserci sempre)
+     x usare il codice a barre come nome dell'entry
