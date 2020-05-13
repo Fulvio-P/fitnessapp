@@ -10,16 +10,11 @@ const router = express.Router();
 //la verifica della JWT è già stata fatta da food.js
 
 router.post("/off", async (req, res) => {
-    //verifichiamo che gli argomenti ci siano
+    //verifichiamo che l'argomento principale (e richiesto per la chiamata OFF) ci sia
     if (!req.body.barcode) {
         return res.status(400).send("Specificare il codice a barre è obbligatorio");
     }
-    if (!req.body.quantita) {
-        req.body.quantita=100;  //default
-    }
-    if (!req.body.data) {
-        req.body.data = new Date();   //default
-    }
+    //la verifica della presenza degli altri argomenti sta dopo aver determinato nutr_per
 
     //facciamo la richiesta a OFF
     try {
@@ -51,14 +46,31 @@ router.post("/off", async (req, res) => {
     const prod = axiosResp.data.product;
     const nutr = prod.nutriments;
 
-    //cominciamo dalle cose importanti: estraiamo l'apporto energetico (per 100g)
+    //recuperiamo la quantità di prodotto rispetto a cui sono date le info nutrizionali
+    //(tipicamente sono 100g, ma non si sa mai...)
+    //(solo la quantità perché l'unità di misura ci interessa poco,
+    // inoltre apparentemente anche per le bevande OFF dà "100g", quindi è proprio inutile)
+    const nutr_per = parseInt(prod["nutrition_data_per"]);
+    //parseInt taglia lettere successive al numero, ma dà NaN se comincia per una lettera
+    //dà NaN anche se l'argomento è "" o undefined, quindi possiamo fare un unico controllo adesso
+    if (isNaN(nutr_per))  nutr_per = 100;  //default
+
+    //verifichiamo che gli altri argomenti ci siano
+    if (!req.body.quantita) {
+        req.body.quantita=nutr_per;  //default
+    }
+    if (!req.body.data) {
+        req.body.data = new Date();   //default
+    }
+
+    //cominciamo dalle cose importanti: estraiamo l'apporto energetico (per 100g, o qualunque sia nutr_per)
     //del cibo richiesto e dimensioniamolo in base a quanto ne ha mangiato l'utente
-    var energy100g = nutr["energy-kcal_value"];
-    if (!energy100g) { energy100g = nutr["energy_value"]; }
-    if (!energy100g) {   //senza kcal non possiamo registrare il cibo: lo consideriamo un fallimento
+    var energy100 = nutr["energy-kcal_value"];
+    if (!energy100) { energy100 = nutr["energy_value"]; }
+    if (!energy100) {   //senza kcal non possiamo registrare il cibo: lo consideriamo un fallimento
         return res.status(404).send("La ricerca su Open Food Facts non ha prodotto risultati.");
     }
-    const energy = energy100g * req.body.quantita / 100;
+    const energy = energy100 * req.body.quantita / nutr_per;
 
     //estraiamo il nome del cibo, in italiano se c'è
     var name = prod["product_name_it"];
@@ -68,7 +80,7 @@ router.post("/off", async (req, res) => {
     if (!name) { name = `Codice a barre no. ${req.body.barcode}`; }
 
     //TODO fare inserimento, ma per adesso mi assicuro che funzioni
-    console.log({id: req.user.id, data: req.body.data, nome: name, calin: energy});
+    console.log({ id: req.user.id, data: req.body.data, nome: name, calin: energy });
     return res.status(200).send("Fatto, vedi un po' la console...")
 });
 
