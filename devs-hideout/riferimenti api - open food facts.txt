@@ -1,5 +1,8 @@
 Mi faccio una guida più specifica perché le proprietà che danno sono veramente tante
 
+QUANTITÀ DI RIFERIMENTO (spesso 100g)
+    nutrition_data_per
+
 ENERGIA (in kcal, per 100g)
     usare, in ordine di priorità:
      - energy-kcal_value
