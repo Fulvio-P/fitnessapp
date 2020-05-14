@@ -7,6 +7,7 @@ Cose da fare (Priorità decrescente):
   -Aggiungere pulsanti per sincronizzazione nel front end
 
 -Login/registrazione più realistici:
+  [--] Leggere view express, .ejs, res.render
   [  ] Realizzare login e registrazione come pagine separate dall'app,
        inviate dal backend al momento opportuno
   [  ] Una volta completata la procedura, inviare il token all'app come querystring
