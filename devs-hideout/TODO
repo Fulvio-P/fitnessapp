@@ -1,8 +1,8 @@
 Cose da fare (Priorità decrescente):
 
 -Integrazione Open Food Facts (Francesco):
-  -Fare le funzioni che gestiscono la richiesta dal back end
-  -Aggiungere un campo nel form cibo nel front end
+  [ø] Fare le funzioni che gestiscono la richiesta dal back end
+  [ø] Aggiungere un campo nel form cibo nel front end
 
 -Integrazione FitBit (Fulvio):
   -Ottenere il token oAuth
@@ -24,6 +24,8 @@ Cose da fare (Priorità decrescente):
 Priorità minore:
 -Documentazione installazione, uso API e casi di prova
 -Coerenza utenti di test
+-Dare la possibilità di mettere una descrizione personalizzata anche
+ nel form OFF (apparirebbe dopo quella pregenerata)
 
 Cose da fare per flexare:
 -mirage?

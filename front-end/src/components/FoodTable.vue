@@ -18,7 +18,7 @@
       </template>
 
       <template v-slot:row-details="row">
-        <b-card>
+        <b-card class="realnewlines">
           {{ row.item.descrizione }}
         </b-card>
       </template>
@@ -87,3 +87,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.realnewlines {
+  white-space: pre-line;
+}
+</style>

@@ -63,11 +63,3 @@ const specific_rtr = require("./specific");
 router.use("/", specific_rtr);
 
 module.exports = router;
-
-
-/*
-TODO
-file per email e altezza con GET, PUT e DELETE
-    (sarebbe carino impostare le loro route qui piuttosto che in server/index)
-se finisco presto: file username con GET e PUT, file password con PUT
-*/
