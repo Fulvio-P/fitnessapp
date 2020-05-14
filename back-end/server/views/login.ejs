@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+        <script>
+            function invia() {
+                axios
+                    .post("/api/user/login", {
+                        username: document.forms.loginform.username.value,
+                        password: document.forms.loginform.password.value,
+                    })
+                    .then(resp=>{
+                        console.log(resp);
+                    })
+                return false;
+            }
+        </script>
+        <style>
+            :root {
+                /*mi sono stufato di copincollare dal sito di nord 30 volte per scegliere il colore giusto*/
+                --nord0: #2e3440;
+                --nord1: #3b4252;
+                --nord2: #434c5e;
+                --nord3: #4c566a;
+                --nord4: #d8dee9;
+                --nord5: #e5e9f0;
+                --nord6: #eceff4;
+                --nord7: #8fbcbb;
+                --nord8: #88c0d0;
+                --nord9: #81a1c1;
+                --nord10: #5e81ac;
+                --nord11: #bf616a;
+                --nord12: #d08770;
+                --nord13: #ebcb8b;
+                --nord14: #a3be8c;
+                --nord15: #b48ead;
+            }
+            body {
+                background-color: var(--nord6);
+            }
+            body * {
+                font-size: larger;
+                margin: 0.4em 0;
+                color: var(--nord0);
+            }
+            input {
+                border: none;
+                border-bottom: 3px solid;
+                transition: 600ms;
+                padding: 0.2em;
+            }
+            input:not(:focus) {
+                background-color: var(--nord6);
+                border-color: gray;
+            }
+            input:focus {
+                background-color: var(--nord4);
+                border-color: var(--nord8);
+            }
+            button[type=submit] {
+                transition: 600ms;
+                padding: 1em 3em;
+                background-color: var(--nord14);
+                color: var(--nord0);
+                filter: brightness(100%);
+                border-color: var(--nord14);
+            }
+            button[type=submit]:hover {
+                filter: brightness(125%);
+            }
+        </style>
+    </head>
+    <body>
+        <p><strong>Effettua il login su FitnessApp</strong></p>
+        <form name="loginform" onsubmit="return invia();">
+            <input
+                type="text"
+                name="username"
+                required
+                placeholder="Inserisci username..."
+            />
+            <br />
+            <input
+                type="password"
+                name="password"
+                required
+                placeholder="Inserisci password..."
+            />
+            <br />
+            <button type="submit">Login</button>
+        </form>
+    </body>
+</html>

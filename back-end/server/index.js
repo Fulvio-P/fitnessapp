@@ -19,8 +19,15 @@ app.use((err, req, res, next) => {   //https://stackoverflow.com/questions/15819
     }
 });
 app.use(cors());
+app.set('view engine', 'ejs');
+//imposta la dir dove cercare le view, __dirname=[...]/back-end/server, credo sia la posizione di questo file
+app.set('views', __dirname + '/views');
 
 //routes
+app.get("/login", (req, res) => {
+    res.render("login.ejs");
+})
+
 const weight = require("./routes/weight");
 app.use("/api/weight/", weight);
 
