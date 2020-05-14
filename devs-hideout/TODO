@@ -6,6 +6,12 @@ Cose da fare (Priorità decrescente):
   -Impostare la comunicazione tra backend e front end
   -Aggiungere pulsanti per sincronizzazione nel front end
 
+-Login/registrazione più realistici:
+  [  ] Realizzare login e registrazione come pagine separate dall'app,
+       inviate dal backend al momento opportuno
+  [  ] Una volta completata la procedura, inviare il token all'app come querystring
+  [  ] Varie ed eventuali
+
 -Sviluppo Feed (Solo se FitBit non usa già messaggi):
   -Creare possibilità di inviare al server richieste di generare messaggi (pulsante vantati)
   -Implementare creazione di messaggi da parte del server
