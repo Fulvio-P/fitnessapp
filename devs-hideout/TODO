@@ -11,6 +11,7 @@ Cose da fare (Priorità decrescente):
   [  ] Realizzare login e registrazione come pagine separate dall'app,
        inviate dal backend al momento opportuno
   [  ] Una volta completata la procedura, inviare il token all'app come querystring
+       (nel frontend, usare this.$route.query.<nome-parametro>)
   [  ] Varie ed eventuali
 
 -Sviluppo Feed (Solo se FitBit non usa già messaggi):
