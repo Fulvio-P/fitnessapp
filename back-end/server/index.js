@@ -26,7 +26,11 @@ app.set('views', __dirname + '/views');
 //routes
 app.get("/login", (req, res) => {
     res.render("login.ejs");
-})
+});
+
+app.get("/register", (req, res) => {
+    res.render("register.ejs");
+});
 
 const weight = require("./routes/weight");
 app.use("/api/weight/", weight);

@@ -15,7 +15,12 @@
                         //trova il parametro querystring successURL
                         //e ne salva il valore nel gruppo [2]
                         const regex = /([?]|&)successURL=([^&]*)/;
-                        const successURL = window.location.search.match(regex)[2];
+                        const matches = window.location.search.match(regex);
+                        if (matches==null) {
+                            document.getElementById("errorbox").innerHTML = "Parametro successURL mancante";
+                            return;
+                        }
+                        const successURL=matches[2];
                         window.location.href = successURL+"?token="+resp.data.token;
                     })
                     .catch(err=>{
@@ -28,9 +33,11 @@
                                 "Errore interno";
                         }
                     });
-                return false;
+                return false;   //dobbiamo sempre bloccare l'azione submit predefinita, gestiamo tutto noi
             }
         </script>
+        <!--purtroppo l'importazione di file esterni non funziona troppo bene su Express,
+        per cui siamo costretti a copiare lo stesso foglio di stile in due pagine-->
         <style>
             :root {
                 /*mi sono stufato di copincollare dal sito di nord 30 volte per scegliere il colore giusto*/
