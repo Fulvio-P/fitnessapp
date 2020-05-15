@@ -12,8 +12,8 @@ Cose da fare (Priorità decrescente):
        inviate dal backend al momento opportuno
   [LR] Una volta completata la procedura, inviare il token all'app come querystring
        (nel frontend, usare this.$route.query.<nome-parametro>)
-  [L ] rimandare da gui a form server
-  [  ] Varie ed eventuali
+  [LR] rimandare da gui a form server
+  [--] Varie ed eventuali
 
 -Sviluppo Feed (Solo se FitBit non usa già messaggi):
   -Creare possibilità di inviare al server richieste di generare messaggi (pulsante vantati)
