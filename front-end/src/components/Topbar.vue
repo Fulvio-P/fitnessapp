@@ -14,6 +14,13 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-item
             v-if="!$store.state.isUserLoggedIn"
+            v-bind:href="registerURL"
+          >
+            Registrati
+          </b-nav-item>
+
+          <b-nav-item
+            v-if="!$store.state.isUserLoggedIn"
             v-bind:href="loginURL"
           >
             Log in
@@ -56,6 +63,9 @@ export default {
   computed: {
     loginURL() {
       return `http://localhost:5000/login?successURL=${window.location.origin}/savetoken`
+    },
+    registerURL() {
+      return `http://localhost:5000/register?successURL=${window.location.origin}/savetoken`
     }
   }
 };
