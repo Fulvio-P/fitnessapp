@@ -120,6 +120,9 @@ export default new Vuex.Store({
     /* Azione di salvataggio token */
     AUTH_SAVETOKEN({ commit }, token) {
       return new Promise((resolve) => {
+        localStorage.setItem("user-token", token);
+        //imposto il token come header di default
+        axios.defaults.headers.common["Authorization"] = "Bearer " + token;
         commit("AUTH_SUCCESS", token);
         resolve(token);
       });
