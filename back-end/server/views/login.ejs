@@ -11,7 +11,18 @@
                     })
                     .then(resp=>{
                         console.log(resp);
+                        document.getElementById("errorbox").innerHTML = "";
                     })
+                    .catch(err=>{
+                        console.log(err.response);
+                        if (err.response && err.response.status==403) {
+                            document.getElementById("errorbox").innerHTML = 
+                                "Username o password errati";
+                        } else {
+                            document.getElementById("errorbox").innerHTML = 
+                                "Errore interno";
+                        }
+                    });
                 return false;
             }
         </script>
@@ -76,6 +87,14 @@
                 filter: brightness(75%);
                 transition: 0ms;
             }
+            #errorbox {
+                background-color: var(--nord12);
+                border: 3px solid var(--nord11);
+                padding: 0.2em;
+            }
+            #errorbox:empty {
+                display: none;
+            }
         </style>
     </head>
     <body>
@@ -95,6 +114,7 @@
                 placeholder="Inserisci password..."
             />
             <br />
+            <div id="errorbox"></div>
             <button type="submit">Login</button>
         </form>
     </body>
