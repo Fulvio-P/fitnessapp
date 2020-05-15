@@ -6,6 +6,11 @@
         Login con FitnessApp
       </b-button>
     </p>
+    <p>
+      <b-button v-router-link to="/">
+        Torna alla home
+      </b-button>
+    </p>
   </div>
 </template>
 
@@ -21,7 +26,10 @@ export default {
 </script>
 
 <style scoped>
-
+div * {
+  text-align: center;
+  font-size: large;
+}
 </style>
 
 
