@@ -12,7 +12,11 @@
                     .then(resp=>{
                         console.log(resp);
                         document.getElementById("errorbox").innerHTML = "";
-                        window.location.href = "http://localhost:8080/savetoken?token="+resp.data.token;
+                        //trova il parametro querystring successURL
+                        //e ne salva il valore nel gruppo [2]
+                        const regex = /([?]|&)successURL=([^&]*)/;
+                        const successURL = window.location.search.match(regex)[2];
+                        window.location.href = successURL+"?token="+resp.data.token;
                     })
                     .catch(err=>{
                         console.log(err.response);

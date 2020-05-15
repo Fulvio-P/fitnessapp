@@ -1,4 +1,43 @@
 <template>
+  <div>
+    <p>Per usare questa funzione devi essere autenticato.</p>
+    <p>
+      <b-button v-bind:href="linkURL">
+        Login con FitnessApp
+      </b-button>
+    </p>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "LoginDialog",
+  computed: {
+    linkURL() {
+      return `http://localhost:5000/login?successURL=${window.location.origin}/savetoken`
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>
+
+
+
+
+
+
+
+
+
+
+<!--
+Vecchia versione di quando questo form era nella GUI,
+TODO marcata per rimozione
+
+<template>
   <div class="text-center">
     <p><strong id="label">Log in</strong></p>
     <p class="login-form">
@@ -76,3 +115,4 @@ export default {
   color: var(--nord11);
 }
 </style>
+-->
