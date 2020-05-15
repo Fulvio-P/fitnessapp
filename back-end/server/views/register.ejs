@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+        <script>
+            function invia() {
+                axios
+                    .post("/api/user/register", {
+                        username: document.forms.registerform.username.value,
+                        password: document.forms.registerform.password.value,
+                    })
+                    .then(resp=>{
+                        console.log(resp);
+                        document.getElementById("errorbox").innerHTML = "";
+                        //login automatico
+                        return axios.post("/api/user/login", {
+                            username: document.forms.registerform.username.value,
+                            password: document.forms.registerform.password.value,
+                        });
+                    })
+                    .then(resp=>{
+                        //trova il parametro querystring successURL
+                        //e ne salva il valore nel gruppo [2]
+                        const regex = /([?]|&)successURL=([^&]*)/;
+                        const matches = window.location.search.match(regex);
+                        if (matches==null) {
+                            document.getElementById("errorbox").innerHTML = "Parametro successURL mancante";
+                            return;
+                        }
+                        const successURL=matches[2];
+                        window.location.href = successURL+"?token="+resp.data.token;
+
+                    })
+                    .catch(err=>{
+                        console.log(err);
+                        if (err.response && err.response.status==400) {
+                            document.getElementById("errorbox").innerHTML = 
+                                err.response.data;
+                        } else {
+                            document.getElementById("errorbox").innerHTML = 
+                                "Errore interno";
+                        }
+                    });
+                return false;   //dobbiamo sempre bloccare l'azione submit predefinita, gestiamo tutto noi
+            }
+        </script>
+        <!--purtroppo l'importazione di file esterni non funziona troppo bene su Express,
+        per cui siamo costretti a copiare lo stesso foglio di stile in due pagine-->
+        <style>
+            :root {
+                /*mi sono stufato di copincollare dal sito di nord 30 volte per scegliere il colore giusto*/
+                --nord0: #2e3440;
+                --nord1: #3b4252;
+                --nord2: #434c5e;
+                --nord3: #4c566a;
+                --nord4: #d8dee9;
+                --nord5: #e5e9f0;
+                --nord6: #eceff4;
+                --nord7: #8fbcbb;
+                --nord8: #88c0d0;
+                --nord9: #81a1c1;
+                --nord10: #5e81ac;
+                --nord11: #bf616a;
+                --nord12: #d08770;
+                --nord13: #ebcb8b;
+                --nord14: #a3be8c;
+                --nord15: #b48ead;
+            }
+            body {
+                background-color: var(--nord6);
+                margin-top: 5em;
+            }
+            body * {
+                font-size: xx-large;
+                margin: 0.4em 0;
+                color: var(--nord0);
+                text-align: center;
+                vertical-align: middle;
+            }
+            input {
+                border: none;
+                border-bottom: 3px solid;
+                transition: 600ms;
+                padding: 0.2em;
+                text-align: left;
+            }
+            input:not(:focus) {
+                background-color: var(--nord6);
+                border-color: gray;
+            }
+            input:focus {
+                background-color: var(--nord4);
+                border-color: var(--nord8);
+            }
+            button[type=submit] {
+                transition: 600ms;
+                padding: 1em 3em;
+                background-color: var(--nord14);
+                color: var(--nord0);
+                filter: brightness(100%);
+                border-color: var(--nord14);
+            }
+            button[type=submit]:hover {
+                filter: brightness(125%);
+            }
+            button[type=submit]:active {
+                filter: brightness(75%);
+                transition: 0ms;
+            }
+            #errorbox {
+                background-color: var(--nord12);
+                border: 3px solid var(--nord11);
+                padding: 0.2em;
+            }
+            #errorbox:empty {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <p><strong>Registrati ora su FitnessApp</strong></p>
+        <form name="registerform" onsubmit="return invia();">
+            <input
+                type="text"
+                name="username"
+                required
+                placeholder="Inserisci username..."
+            />
+            <br />
+            <input
+                type="password"
+                name="password"
+                required
+                placeholder="Inserisci password..."
+            />
+            <br />
+            <div id="errorbox"></div>
+            <button type="submit">Registrati</button>
+        </form>
+    </body>
+</html>
