@@ -8,9 +8,9 @@ Cose da fare (Priorità decrescente):
 
 -Login/registrazione più realistici:
   [--] Leggere view express, .ejs, res.render
-  [L ] Realizzare login e registrazione come pagine separate dall'app,
+  [LR] Realizzare login e registrazione come pagine separate dall'app,
        inviate dal backend al momento opportuno
-  [L ] Una volta completata la procedura, inviare il token all'app come querystring
+  [LR] Una volta completata la procedura, inviare il token all'app come querystring
        (nel frontend, usare this.$route.query.<nome-parametro>)
   [L ] rimandare da gui a form server
   [  ] Varie ed eventuali
