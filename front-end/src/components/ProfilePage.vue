@@ -1,5 +1,7 @@
 <template>
   <div class="profilepage">
+
+    <!-- Tabella info addizionali -->
     <b-table
       :items="items"
       :fields="fields"
@@ -12,6 +14,11 @@
         <ProfileInfoDisplayEdit :infoname="row.item.head" />
       </template>
     </b-table>
+
+    <!-- Fitbit -->
+    <ProfileFitbit />
+
+    <!-- Logout -->
     <h1>Logout</h1>
     <b-button @click="logout()">Clicca qui per effettuare il logout</b-button>
   </div>
@@ -19,10 +26,13 @@
 
 <script>
 import ProfileInfoDisplayEdit from "@/components/ProfileInfoDisplayEdit.vue";
+import ProfileFitbit from "@/components/ProfileFitbit.vue";
+
 export default {
   name: "ProfilePage",
   components: {
-    ProfileInfoDisplayEdit
+    ProfileInfoDisplayEdit,
+    ProfileFitbit
   },
   data() {
     return {
