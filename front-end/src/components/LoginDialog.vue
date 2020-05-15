@@ -2,7 +2,7 @@
   <div>
     <p>Per usare questa funzione devi essere autenticato.</p>
     <p>
-      <b-button v-bind:href="linkURL">
+      <b-button v-bind:href="loginURL">
         Login con FitnessApp
       </b-button>
     </p>
@@ -18,7 +18,7 @@
 export default {
   name: "LoginDialog",
   computed: {
-    linkURL() {
+    loginURL() {
       return `http://localhost:5000/login?successURL=${window.location.origin}/savetoken`
     }
   }

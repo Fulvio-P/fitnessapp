@@ -13,19 +13,20 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <b-nav-item
+            v-if="!$store.state.isUserLoggedIn"
+            v-bind:href="loginURL"
+          >
+            Log in
+          </b-nav-item>
+
+          <!--TODO marcato per rimozione
+          <b-nav-item
             router-link
             to="/login"
             v-if="!$store.state.isUserLoggedIn"
             >Log in</b-nav-item
           >
-
-          <!-- Questo pulsante deve essere eliminato -->
-          <!-- <b-nav-item
-            v-if="$store.state.isUserLoggedIn"
-            router-link
-            to="/profile"
-            >Profile</b-nav-item
-          > -->
+          -->
 
           <!-- Questo pulsante va spostato come item della sidebar della pagina del profilo oppure come dropdown del pulsate profilo -->
           <b-nav-item v-if="$store.state.isUserLoggedIn" @click="logout">
@@ -51,6 +52,11 @@ export default {
     /* displayOverlay() {
       this.$store.dispatch("displayLoginDialog", true);
     } */
+  },
+  computed: {
+    loginURL() {
+      return `http://localhost:5000/login?successURL=${window.location.origin}/savetoken`
+    }
   }
 };
 </script>
