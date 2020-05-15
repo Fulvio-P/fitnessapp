@@ -87,6 +87,7 @@ export default new Vuex.Store({
 
   actions: {
     /* Azione del login*/
+    //TODO marcata per rimozione
     AUTH_REQUEST({ commit }, user) {
       return new Promise((resolve, reject) => {
         commit("AUTH_REQUEST");
@@ -113,6 +114,14 @@ export default new Vuex.Store({
             delete axios.defaults.headers.common["Authorization"];
             reject(err);
           });
+      });
+    },
+
+    /* Azione di salvataggio token */
+    AUTH_SAVETOKEN({ commit }, token) {
+      return new Promise((resolve) => {
+        commit("AUTH_SUCCESS", token);
+        resolve(token);
       });
     },
 

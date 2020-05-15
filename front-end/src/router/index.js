@@ -68,10 +68,9 @@ const routes = [
     beforeEnter: ifAuthenticated
   },
   {
-    path: "/profile",
-    name: "Profile",
-    component: () => import("../views/Profile.vue"),
-    beforeEnter: ifAuthenticated
+    path: "/savetoken",
+    name: "SaveToken",
+    component: () => import("../views/SaveToken.vue"),
   }
 ];
 

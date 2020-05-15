@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <ShySideNavbar :avoidroutes="['/', '/login']" />
+    <ShySideNavbar :avoidroutes="['/', '/login', '/savetoken']" />
     <router-view />
   </div>
 </template>
