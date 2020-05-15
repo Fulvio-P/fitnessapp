@@ -8,10 +8,11 @@ Cose da fare (Priorità decrescente):
 
 -Login/registrazione più realistici:
   [--] Leggere view express, .ejs, res.render
-  [  ] Realizzare login e registrazione come pagine separate dall'app,
+  [L ] Realizzare login e registrazione come pagine separate dall'app,
        inviate dal backend al momento opportuno
-  [  ] Una volta completata la procedura, inviare il token all'app come querystring
+  [L ] Una volta completata la procedura, inviare il token all'app come querystring
        (nel frontend, usare this.$route.query.<nome-parametro>)
+  [  ] rimandare da gui a form server
   [  ] Varie ed eventuali
 
 -Sviluppo Feed (Solo se FitBit non usa già messaggi):
