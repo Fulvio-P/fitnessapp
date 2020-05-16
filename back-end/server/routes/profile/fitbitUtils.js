@@ -1,5 +1,6 @@
 require('dotenv').config();
-const axios = require('axios')
+const axios = require('axios');
+const db = require("../../db/index");
 
 
 
@@ -60,7 +61,10 @@ function requestRefresh(fitbitRefresh){
 }
 
 
-//Da usare in login, chiede a fitbit di rispondere con i token
+
+////////////////////////////////// AUTHENTICATION //////////////////////////////////
+
+//Chiede a fitbit di rispondere con i token
 function requestToken(authCode){
     return new Promise((resolve,reject) => {
 
