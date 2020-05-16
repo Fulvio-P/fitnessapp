@@ -53,13 +53,6 @@ export default {
       // $socket is [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) instance
       this.$socket.send("rabbit, don't you say that I didn't didn't give you a chance")
     }
-  },
-  created() {
-    //definisce un listener per i messaggi ricevuti lungo ws
-    this.$options.sockets.onmessage = (msg) => {
-      console.log(msg);
-      alert(msg.data);
-    }
   }
 };
 </script>

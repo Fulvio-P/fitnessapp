@@ -49,7 +49,10 @@ app.use("/opinion", opinion);
 app.ws('/echo', function(ws, req) {
     ws.on('message', function(msg) {
         console.log("websocket got: "+msg);
-        ws.send(msg);
+        setTimeout(()=>{
+            console.log("sent");
+            ws.send(msg);
+        }, 3000)
     });
 });
 

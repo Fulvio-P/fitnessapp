@@ -27,6 +27,13 @@ export default {
         throw err;
       });
     });
+  },
+  mounted() {
+    //mettiamo su un listener per i websocket
+    //mettendolo qui, tutta l'applicazione può ricevere i messaggi, indipendentemente dalla route corrente
+    this.$options.sockets.onmessage = (msg) => {
+      console.log(msg);
+    }
   }
 };
 </script>
