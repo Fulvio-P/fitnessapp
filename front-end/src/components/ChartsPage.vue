@@ -84,16 +84,6 @@ vedere chartUtils.js (e il resto dei file relativi ai grafici).
 import TimeLineChart from "@/components/TimeLineChart.vue";
 import CalorieChart from "@/components/CalorieChart.vue";
 
-/*
-Non so se sia un problema di ChartsJS o di tutto JavaScript,
-ma se uso le variabili CSS qui il colore si rompe quando si fa hovering
-sul grafico.
-Quindi non metto le variabili CSS qui.
-
-Sintassi usata per recuperare le variabili CSS in JS:
-getComputedStyle(document.documentElement).getPropertyValue('--my-variable-name');
-*/
-
 function getCSSVar(varname) {
   return getComputedStyle(document.documentElement)
     .getPropertyValue(varname)
