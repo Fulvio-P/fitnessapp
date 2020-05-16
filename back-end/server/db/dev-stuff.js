@@ -32,8 +32,11 @@ async function initDB(testUsers) {
     await pool.query(
         "CREATE TABLE infoAddizionali ("+
             "id integer PRIMARY KEY REFERENCES utente(id), "+
-            "email VARCHAR(300), "+    //sembra che il limite standard sia 254, e ci prendiamo un altro po' di spazio per buona misura
-            "altezza SMALLINT"+   //in centimetri (limite superiore: 32768)
+            "email VARCHAR(300), "+           //sembra che il limite standard sia 254, e ci prendiamo un altro po' di spazio per buona misura
+            "altezza SMALLINT, "+             //in centimetri (limite superiore: 32768)
+            "fitbitToken VARCHAR(1024), "+    //i token fitbit possono essere fino a 1024 byte
+            "fitbitRefresh VARCHAR(1024), "+
+            "fitbitUser VARCHAR(100)"+        //non sono sicuro del limite per questo ma 100 caratteri dovrebbero essere abbastanza 
             //eventuali altre
             ");"
     );
@@ -169,6 +172,11 @@ async function destroyDB() {
         await pool.query("DROP TABLE attivita;");
     } catch (err) {
         console.error("errore destroyDB(attivita): "+err.message);
+    }
+    try {
+        await pool.query("DROP TABLE infoAddizionali;");
+    } catch (err) {
+        console.error("errore destroyDB(infoAddizionali): "+err.message);
     }
     try {
         await pool.query("DROP TABLE utente;");
