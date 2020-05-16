@@ -63,10 +63,16 @@ export default {
       });
     },
     richiediFitbitsync() {
-      this.$socket.sendObj({
-        token: this.$store.state.token,
-        action: "fitbitsync"
-      });
+      try {
+        this.$socket.sendObj({
+          token: this.$store.state.token,
+          action: "fitbitsync"
+        });
+      } catch (err) {   //in realtà da lato vue non sembra lanciare errori, ma comunque è sempre meglio un try-catch in più che uno in meno
+        console.error("and the ws error is...");
+        console.error(err);
+        alert("Errore durante l'invio della richiesta di sincronizzazione");
+      }
     }
   }
 };

@@ -6,6 +6,18 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const jwtSecret = process.env.JWT_SECRET;
 
+/*
+Ovviamente anche i websocket possono dare errori, ad esempio se si cerca di
+inviare un messaggio lungo una connessione chiusa
+*/
+function trySend(ws, msg) {
+    try {
+        ws.send(msg);
+    } catch (err) {
+        console.error(`ws error: ${err.message}`);
+    }
+}
+
 //la funzione in globalutils è una funzione middleware che guarda la request,
 //qui è inutile
 function verifyTokenInMessage(ws, msg) {
@@ -15,14 +27,14 @@ function verifyTokenInMessage(ws, msg) {
     catch (err) {
         console.error(`jwt ${err.name}: ${err.message}`);   //non sono sicuro che vogliamo rimandare al client il messaggio d'errore di jwt
         if (err.name=="TokenExpiredError") {
-            ws.send(JSON.stringify({
+            trySend(ws, JSON.stringify({
                 type: "error",
                 message: "Token scaduto"
             }));
             return false;
         }
         else {
-            ws.send(JSON.stringify({
+            trySend(ws, JSON.stringify({
                 type: "error",
                 message: "Autenticazione fallita"
             }));
@@ -46,7 +58,7 @@ router.ws("/", function(ws, req) {
         if (!user) return;
 
         if (msg.action!="fitbitsync") {
-            return ws.send(JSON.stringify({
+            return trySend(ws, JSON.stringify({
                 type: "error",
                 message: "Azione non riconosciuta, prova fitbitsync"
             }));
@@ -54,7 +66,7 @@ router.ws("/", function(ws, req) {
 
         console.log("TODO do all the fitbit stuff");
         
-        return ws.send(JSON.stringify({
+        return trySend(ws, JSON.stringify({
             type: "success",
             message: "Sincronizzazione riuscita!"
         }));
