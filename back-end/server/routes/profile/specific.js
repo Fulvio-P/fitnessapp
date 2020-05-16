@@ -1,10 +1,19 @@
 const express = require('express');
 const db = require("../../db/index");
 const utils = require("../../globalutils");
+const fitUtils = require("./fitbitUtils");
 
 const router = express.Router();
 
 //la JWT è già stata controllata in global.js
+
+
+/*
+    COMMENTO MODULARITÀ:
+    Secondo me sarebbe più ordinato se  tutte le funzioni general fossero
+    spostate in un modulo separato e ritornassero promesse in modo che i
+    messaggi di errore siano gestiti direttamente dalle funzioni router
+*/
 
 
 
@@ -78,6 +87,7 @@ router.put("/height", async (req, res) => {
 
 router.put("/fitbit", async(req,res) => {
     console.log(req.body.authCode);
+    console.log(fitUtils.makeBasicHeader());
     return res.status(501).send("Not Implemented, YET")
 })
 
