@@ -44,7 +44,7 @@ const opinion = require("./routes/opinion");
 app.use("/opinion", opinion);
 
 const fitbitsync = require("./routes/fitbitsync");
-app.use("/fitbitsync", fitbitsync);
+app.use("/ws/fitbitsync", fitbitsync);
 
 //starting server
 const port = process.env.PORT || 5000;
