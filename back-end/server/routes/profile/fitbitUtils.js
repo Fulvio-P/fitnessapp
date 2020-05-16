@@ -101,6 +101,34 @@ function requestToken(authCode){
 
 
 
+function get(apiURL, token){
+    return new Promise((resolve, reject)=>{
+        
+        //preparo header per la get
+        let bearerHeader = "Bearer "+token
+        let headers = {
+            'Authorization': bearerHeader
+        }
+        //tutto pronto inviamo il messaggio con axios
+        axios.post(
+            apiURL,
+            {headers: headers}
+        )
+        
+        //qualsiasi sia l'esito se la vede il chiamante
+        .then(response=>{
+            resolve(response);
+        })
+        .catch(error=>{
+            reject(error);
+        })
+    })
+    
+}
+
+
+
+
 
 
 
@@ -115,5 +143,6 @@ module.exports = {
     makeBasicHeader,
     requestRefresh,
     requestToken,
+    get,
     //Aggiungere qui le funzioni da esportare
 }
