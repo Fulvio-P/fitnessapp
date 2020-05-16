@@ -15,14 +15,16 @@ export default {
     name: "WebsocketInbox",
     data() {
         return {
-            msgobj: {type: "success", message:"TODO mettere un messaggio none" }
+            msgobj: {type: "", message:"" }
         }
     },
     computed: {
         classBindings() {
             return {
-                "d-block": this.msgobj.type!="none",  //classe bootstrapvue
-                "d-none": this.msgobj.type=="none",   //classe bootstrapvue
+                //d-block e d-none sono classi boostrapvue, le uso visto che posso
+                "d-block": this.msgobj.message,
+                "d-none": !this.msgobj.message,
+                //invece per i colori voglio quelli della palette, per cui faccio classi custom
                 "col-succ": this.msgobj.type=="success",
                 "col-err": this.msgobj.type=="error"
             }
@@ -30,7 +32,8 @@ export default {
     },
     methods: {
         hide() {
-            this.msgobj.type="none";
+            this.msgobj.type="";
+            this.msgobj.message="";
         }
     }
 }
@@ -42,7 +45,7 @@ export default {
     bottom: 10px;
     right: 10px;
     padding: 1em 3em;
-    border: 2px solid #000000b0;
+    border: 2px solid #000000b0;   /*uso il nero trasparente per ottenere un "bordo scuro"*/
     border-radius: 8px;
 }
 .col-succ {
