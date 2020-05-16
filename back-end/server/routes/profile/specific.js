@@ -4,7 +4,14 @@ const utils = require("../../globalutils");
 
 const router = express.Router();
 
-//la JWT è già stata controllata in profile.js
+//la JWT è già stata controllata in global.js
+
+
+
+
+
+
+///////////////////////////////////// GET /////////////////////////////////////
 
 //recupera una info di un utente, null se non ce l'ha
 //name NON DEVE ESSERE SCELTO LIBERAMENTE DLL'UTENTE.
@@ -28,7 +35,18 @@ router.get("/email", async (req, res) => {
 router.get("/height", async (req, res) => {
     return await generalGet(req, res, "altezza");
 });
+router.get("/fitbit", async (req, res) => {
+    return await generalGet(req, res, "fitbituser");
+});
 
+
+
+
+
+
+
+
+///////////////////////////////////// PUT /////////////////////////////////////
 
 //modifica un'info dell'utente
 //name NON DEVE ESSERE SCELTO LIBERAMENTE DLL'UTENTE.
@@ -58,6 +76,16 @@ router.put("/height", async (req, res) => {
     return await generalPut(req, res, "altezza");
 });
 
+router.put("/fitbit", async(req,res) => {
+    console.log(req.body.authCode);
+    return res.status(501).send("Not Implemented, YET")
+})
+
+
+
+
+///////////////////////////////////// DELETE /////////////////////////////////////
+
 //rimuove un'info dell'utente
 //name NON DEVE ESSERE SCELTO LIBERAMENTE DLL'UTENTE.
 async function generalDelete(req, res, name) {
@@ -77,6 +105,40 @@ router.delete("/email", async(req, res) => {
 });
 router.delete("/height", async(req, res) => {
     return await generalDelete(req, res, "altezza");
+});
+//per questo non posso usare general delete dato che deve cancellare diverse colonne
+router.delete("/fitbit", async(req, res) => {
+    
+    //provo a cancellare fitbit token
+    try {
+        await db.deleteOneAdditionalInfo(req.user.id, "fitbittoken");
+    } catch (err) {
+         //dovrebbe essere impossibile rompere vincoli con questa operazione
+         console.error(`postgres error no. ${err.code}: ${err.message}`);
+         return res.status(500).send("Internal Database Error");
+    }
+
+    //provo a cancellare fitbit refresh
+    try {
+        await db.deleteOneAdditionalInfo(req.user.id, "fitbitrefresh");
+    } catch (err) {
+         //dovrebbe essere impossibile rompere vincoli con questa operazione
+         console.error(`postgres error no. ${err.code}: ${err.message}`);
+         return res.status(500).send("Internal Database Error");
+    }
+
+    //provo a cancellare fitbit user
+    try {
+        await db.deleteOneAdditionalInfo(req.user.id, "fitbituser");
+    } catch (err) {
+         //dovrebbe essere impossibile rompere vincoli con questa operazione
+         console.error(`postgres error no. ${err.code}: ${err.message}`);
+         return res.status(500).send("Internal Database Error");
+    }
+
+    //invio conferma come risposta
+    deleted.username = req.user.username;
+    return res.status(200).json(deleted);
 });
 
 module.exports = router;

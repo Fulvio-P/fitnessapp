@@ -2,7 +2,7 @@
     <div>
         <h1>Account FitBit</h1>
         <div v-show="fitbitConnected">
-            <p> Hai eseguito l'acesso a FitBit come {{fitbit_user}} </p>
+            <p> Hai eseguito l'acesso a FitBit come {{fitbitUser}} </p>
             <b-button @click="fitbitLogout" > Dissocia </b-button>
         </div>
         <div v-show="!fitbitConnected">
@@ -25,7 +25,7 @@ const authURI = "https://www.fitbit.com/oauth2/authorize?"+
                 
 
 
-const fitbitURL = "http://localhost:5000/fitbit"
+const fitbitURL = "http://localhost:5000/api/profile/fitbit"
 
 
 export default {
@@ -41,13 +41,14 @@ export default {
         fitbitLogin(){
 
             //recupero payload dalla URL query
-            const {authCode} = this.$route.query.code;
+            console.log(this.$route.query.code);
+            const payload = {authCode: this.$route.query.code};
             
             //chiamata API di vuex
             this.$store
-            .dispatch("API_POST",{
+            .dispatch("API_PUT",{
                 url: fitbitURL,
-                payload: {authCode}
+                payload: payload
             })
             
             //se tutto va bene recupero username per farlo vedere
@@ -103,14 +104,14 @@ export default {
 
         //quando l'utente viene ridiretto da fitbit questo si attiva
         if(!this.fitbitConnected && this.$route.query.code){
-            /* this.fitbitLogin(); */
+            this.fitbitLogin();
         }
     },
     computed: {
 
         //vale true se nel backend è sono presenti dati fibit
         fitbitConnected () {
-            if(this.fitbit_user) return true;
+            if(this.fitbitUser) return true;
             else return false;
         },
     },
