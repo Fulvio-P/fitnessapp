@@ -51,7 +51,12 @@ export default {
   methods: {
     goingSocketsPackets() {
       // $socket is [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) instance
-      this.$socket.send("rabbit, don't you say that I didn't didn't give you a chance")
+      //this.$socket.send("rabbit, don't you say that I didn't didn't give you a chance")
+      // or with {format: 'json'} enabled
+      this.$socket.sendObj({
+        name: "LotusJuice",
+        msg: "rabbit, don't you say that I didn't didn't give you a chance"
+      });
     }
   }
 };

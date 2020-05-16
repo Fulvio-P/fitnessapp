@@ -20,6 +20,14 @@ if (token) {
 //ma prima voglio fare un prototipo funzionante
 import VueNativeSock from 'vue-native-websocket';
 Vue.use(VueNativeSock, 'ws://localhost:5000/echo', { format: 'json' });
+/*
+i benefici del format:json sono SOLO due:
+ - permette di usare sendObj che fa stringify automatico
+ - fa parse automatico quando passa la risposta a vuex
+E BASTA.
+In particolare, NON ha effetto sulla risposta ricevuta dai listener.
+E non esiste una funzione simile per express-ws.
+*/
 
 new Vue({
   router,
