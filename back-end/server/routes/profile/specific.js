@@ -90,18 +90,14 @@ router.put("/height", async (req, res) => {
 
 router.put("/fitbit", async(req,res) => {
     
-    //configurazione richiesta verso fitbit
     let authCode = req.body.authCode;
-
     fitbitUtils.requestToken(authCode)
 
     //la richiesta è andata bene
     .then(async(fitbitRes)=>{
-
         //estraggo i dati dalla risposta
         let fitbitToken = fitbitRes.data.access_token;
         let fitbitRefresh = fitbitRes.data.refresh_token;
-
         //provo a salvare i token nel database
         let what = {
             fitbittoken: fitbitToken,
@@ -113,8 +109,6 @@ router.put("/fitbit", async(req,res) => {
             console.error(`postgres error no. ${err.code}: ${err.message}`);
             return res.status(500).send("Internal Database Error");
         }
-
-
         //invio risposta al server
         return res.status(200).send("Token fitbit memorizzati");
     })
