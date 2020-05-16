@@ -16,7 +16,7 @@
     <b-button
       @click="richiediFitbitsync"
     >
-      Clicca qui per sincrinizzare con FitBit
+      Clicca qui per sincronizzare con FitBit
     </b-button>
     <b-card style="background-color:var(--nord13);">
       TODO <i>(eliminare una volta fatto)</i>
