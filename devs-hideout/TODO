@@ -6,10 +6,10 @@ Cose da fare (Priorità decrescente):
   -Impostare la comunicazione tra backend e front end
   -Aggiungere pulsanti per sincronizzazione nel front end
 
--Prototipo Rabbit/websocket (Francesco):
+-Prototipo Websocket (Francesco):
   (in qualsiasi ordine)
-  [ ] Implementare lato client
-  [ ] Implementare lato server (con work placeholder)
+  [ø] Implementare lato client
+  [ø] Implementare lato server (con work placeholder)
 
 -Sviluppo Feed (Solo se FitBit non usa già messaggi):
   -Creare possibilità di inviare al server richieste di generare messaggi (pulsante vantati)
