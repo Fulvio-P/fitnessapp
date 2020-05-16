@@ -18,15 +18,43 @@ export default {
   intecetta se sono errori di non autorizzazione fanno logout e
   lo ridirigono alla pagina di login */
   created: () => {
-    axios.interceptors.response.use(undefined, err => {
+
+
+    /*
+      BUG: l'inteceptor non funziona, riesce a vadere gli errori,
+      ma l'unica cosa che legge sono i messaggi che scriviamo del
+      tipo "Token Expired", non so se il problema è del backend
+      che non inserisce abbastanza info oppure qui che non si legge
+      bene il codice di errore, un fix brutto nel caso e fare i
+      confronti con i nostri messaggi di errore al posto di 401 
+    */
+
+    //versione 1
+    /* axios.interceptors.response.use(undefined, err => {
       return new Promise(() => {
-        if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+        console.log(err.status);
+        if (err.status === 401) { //qui la condizione era un po' piu severa
+          console.log("Err intercepted")
           this.$store.dispatch("AUTH_LOGOUT");
           this.$router.push("/login");
         }
         throw err;
       });
-    });
+    }); */
+
+    //versione 2
+    axios.interceptors.response.use(
+      function (response) {
+        return response
+      }, 
+      function (error) {
+        console.log(error.status)
+        if (error.status === 401) {
+          this.$store.dispatch("AUTH_LOGOUT");
+          this.$router.push("/login");
+        }
+      return Promise.reject(error)
+    })
   }
 };
 </script>
