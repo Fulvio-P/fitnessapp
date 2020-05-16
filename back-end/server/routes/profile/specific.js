@@ -1,7 +1,7 @@
 const express = require('express');
 const db = require("../../db/index");
 const utils = require("../../globalutils");
-const fitUtils = require("./fitbitUtils");
+const fitbitUtils = require("./fitbitUtils");
 const axios = require('axios');
 
 require('dotenv').config();
@@ -91,31 +91,13 @@ router.put("/height", async (req, res) => {
 router.put("/fitbit", async(req,res) => {
     
     //configurazione richiesta verso fitbit
-    let basicHeader = fitUtils.makeBasicHeader();
     let authCode = req.body.authCode;
-    let client_id = process.env.FITBIT_ID;
-    let tokenURI = 'https://api.fitbit.com/oauth2/token';
-    
-    let headers = {
-        'Authorization': basicHeader
-    }
-    
-    let payload =
-        'client_id='+client_id+'&'+
-        'grant_type=authorization_code&'+
-        'redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fprofile&'+
-        'code='+authCode
-    ;
 
-    //tutto pronto inviamo il messaggio con axios
-    axios.post(
-        tokenURI,
-        payload,
-        {headers: headers}
-    )
+    fitbitUtils.requestToken(authCode)
 
-    .then(async(fitbitRes)=>{        
-        
+    //la richiesta è andata bene
+    .then(async(fitbitRes)=>{
+
         //estraggo i dati dalla risposta
         let fitbitToken = fitbitRes.data.access_token;
         let fitbitRefresh = fitbitRes.data.refresh_token;
@@ -137,7 +119,7 @@ router.put("/fitbit", async(req,res) => {
         return res.status(200).send("Token fitbit memorizzati");
     })
 
-    //axios ha fallito, messaggio di errore per il front-end
+    //qualcosa è andato male, messaggio di errore per il front-end
     .catch((fitbitErr)=>{
         console.log(fitbitErr.response.data.errors);
         return res.status(500).send('API call failed');
