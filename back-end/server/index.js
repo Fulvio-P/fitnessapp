@@ -8,6 +8,7 @@ const cors = require('cors');
 const app = express();
 
 //middleware
+var expressWs = require('express-ws')(app);
 app.use(bodyParser.json());
 //cattura errori dal bodyParser
 app.use((err, req, res, next) => {   //https://stackoverflow.com/questions/15819337/catch-express-bodyparser-error
@@ -41,6 +42,16 @@ app.use("/api/profile", profile);
 
 const opinion = require("./routes/opinion");
 app.use("/opinion", opinion);
+
+
+
+//server websocket di prova
+app.ws('/echo', function(ws, req) {
+    ws.on('message', function(msg) {
+        console.log("websocket got: "+msg);
+        ws.send(msg);
+    });
+});
 
 //starting server
 const port = process.env.PORT || 5000;
