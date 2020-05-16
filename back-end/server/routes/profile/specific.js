@@ -92,6 +92,9 @@ router.put("/fitbit", async(req,res) => {
     let authCode = req.body.authCode;
     let userId = req.user.id;
 
+    //COMMENTO EFFICIENZA:
+    //si potrebbe evitare di andare oltre se abbiamo già token
+
     fitbit.authenticate(userId, authCode)
 
     .then((message)=>{
