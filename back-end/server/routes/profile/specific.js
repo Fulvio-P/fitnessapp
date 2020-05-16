@@ -2,6 +2,9 @@ const express = require('express');
 const db = require("../../db/index");
 const utils = require("../../globalutils");
 const fitUtils = require("./fitbitUtils");
+const axios = require('axios');
+
+require('dotenv').config();
 
 const router = express.Router();
 
@@ -86,9 +89,60 @@ router.put("/height", async (req, res) => {
 });
 
 router.put("/fitbit", async(req,res) => {
-    console.log(req.body.authCode);
-    console.log(fitUtils.makeBasicHeader());
-    return res.status(501).send("Not Implemented, YET")
+    
+    //configurazione richiesta verso fitbit
+    let basicHeader = fitUtils.makeBasicHeader();
+    let authCode = req.body.authCode;
+    let client_id = process.env.FITBIT_ID;
+    let tokenURI = 'https://api.fitbit.com/oauth2/token';
+    
+    let headers = {
+        'Authorization': basicHeader
+    }
+    
+    let payload =
+        'client_id='+client_id+'&'+
+        'grant_type=authorization_code&'+
+        'redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fprofile&'+
+        'code='+authCode
+    ;
+
+    //tutto pronto inviamo il messaggio con axios
+    axios.post(
+        tokenURI,
+        payload,
+        {headers: headers}
+    )
+
+    .then(async(fitbitRes)=>{        
+        
+        //estraggo i dati dalla risposta
+        let fitbitToken = fitbitRes.data.access_token;
+        let fitbitRefresh = fitbitRes.data.refresh_token;
+
+        //provo a salvare i token nel database
+        let what = {
+            fitbittoken: fitbitToken,
+            fitbitrefresh: fitbitRefresh
+        }
+        try {
+            await db.editAdditionalInfo(req.user.id, what);
+        } catch (err) {
+            console.error(`postgres error no. ${err.code}: ${err.message}`);
+            return res.status(500).send("Internal Database Error");
+        }
+
+
+        //invio risposta al server
+        return res.status(200).send("Token fitbit memorizzati");
+    })
+
+    //axios ha fallito, messaggio di errore per il front-end
+    .catch((fitbitErr)=>{
+        console.log(fitbitErr.response.data.errors);
+        return res.status(500).send('API call failed');
+    })
+
 })
 
 

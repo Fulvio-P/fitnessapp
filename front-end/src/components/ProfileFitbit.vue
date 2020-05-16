@@ -43,6 +43,8 @@ export default {
             //recupero payload dalla URL query
             console.log(this.$route.query.code);
             const payload = {authCode: this.$route.query.code};
+            //reset della route
+            this.$router.push(this.$route.path)
             
             //chiamata API di vuex
             this.$store
@@ -51,9 +53,11 @@ export default {
                 payload: payload
             })
             
-            //se tutto va bene recupero username per farlo vedere
-            .then(()=>{
-                this.getFitbitInfo();
+            //DA MODIFICARE: se tutto va bene messagio di confema
+            .then((res)=>{
+                alert(res.data);
+                //se tutto va bene recupero username per farlo vedere
+                /* this.getFitbitInfo(); */
             })
 
             //se qualcosa va male alert di errore
