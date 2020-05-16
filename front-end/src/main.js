@@ -19,7 +19,7 @@ if (token) {
 //c'è la possibilità di integrazione con vuex (vd. readme github),
 //ma prima voglio fare un prototipo funzionante
 import VueNativeSock from 'vue-native-websocket';
-Vue.use(VueNativeSock, 'ws://localhost:5000/echo', { format: 'json' });
+Vue.use(VueNativeSock, 'ws://localhost:5000/fitbitsync', { format: 'json' });
 /*
 i benefici del format:json sono SOLO due:
  - permette di usare sendObj che fa stringify automatico

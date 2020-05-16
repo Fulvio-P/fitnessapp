@@ -8,7 +8,7 @@ const cors = require('cors');
 const app = express();
 
 //middleware
-var expressWs = require('express-ws')(app);
+var expressWs = require('express-ws')(app);   //basta scrivere questa riga. Non c'è bisogno di usare expressWs altrove.
 app.use(bodyParser.json());
 //cattura errori dal bodyParser
 app.use((err, req, res, next) => {   //https://stackoverflow.com/questions/15819337/catch-express-bodyparser-error
@@ -43,30 +43,8 @@ app.use("/api/profile", profile);
 const opinion = require("./routes/opinion");
 app.use("/opinion", opinion);
 
-
-
-//server websocket di prova
-app.ws('/echo', function(ws, req) {
-    ws.on('message', function(msg) {
-        console.log("and websocket got...");
-        console.log(msg)
-        const obj = JSON.parse(msg);
-        setTimeout(()=>{
-            if (obj.msg=="rabbit, don't you say that I didn't didn't give you a chance") {
-                ws.send(JSON.stringify({
-                    name: "Yumi&Shihoko",
-                    msg: "no matter what we use we will not stop the coding forever"
-                }));
-            } else {
-                ws.send(JSON.stringify({
-                    name: "Yumi&Shihoko",
-                    msg: "nani?"
-                }));
-            }
-            console.log("sent");
-        }, 3000)
-    });
-});
+const fitbitsync = require("./routes/fitbitsync");
+app.use("/fitbitsync", fitbitsync);
 
 //starting server
 const port = process.env.PORT || 5000;

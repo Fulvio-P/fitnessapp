@@ -54,8 +54,8 @@ export default {
       //this.$socket.send("rabbit, don't you say that I didn't didn't give you a chance")
       // or with {format: 'json'} enabled
       this.$socket.sendObj({
-        name: "LotusJuice",
-        msg: "rabbit, don't you say that I didn't didn't give you a chance"
+        token: "pippo",
+        action: "fitbitsync"
       });
     }
   }
