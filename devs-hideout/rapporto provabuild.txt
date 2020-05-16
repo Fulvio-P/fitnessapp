@@ -15,6 +15,15 @@
      chiamato specificamente "index.html")
 5.  Enjoy ;)
 
+N.B.: Per permettere accesso diretto alle pagine col vue-router in history mode,
+      abbiamo due alternative:
+       - Ripetere TUTTE le route del client nel server express
+       - Usare una route catch-all come indicato qui:
+         https://forum.vuejs.org/t/how-to-handle-vue-routes-with-express-ones/23522
+         https://router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations
+         Attenzione: questa soluzione eliminerà gli errori 404: *qualsiasi* route
+             non programmata sul server riporterà all'app.
+
 N.B.: Questo è il modo in cui funziona.
       Ho provato anche ad aprire il Live Server di VSC e andare in frontend/dist,
       ma non ha mostrato nulla. Il browser dava errori di non riuscire a caricare
