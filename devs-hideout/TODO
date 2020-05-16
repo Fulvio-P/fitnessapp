@@ -6,12 +6,10 @@ Cose da fare (Priorità decrescente):
   -Impostare la comunicazione tra backend e front end
   -Aggiungere pulsanti per sincronizzazione nel front end
 
--Login/registrazione più realistici:
-  [--] Leggere view express, .ejs, res.render
-  [  ] Realizzare login e registrazione come pagine separate dall'app,
-       inviate dal backend al momento opportuno
-  [  ] Una volta completata la procedura, inviare il token all'app come querystring
-  [  ] Varie ed eventuali
+-Prototipo Rabbit (Francesco):
+  (in qualsiasi ordine)
+  [ ] Implementare Rabbit lato client
+  [ ] Implementare Rabbit lato server (con work placeholder)
 
 -Sviluppo Feed (Solo se FitBit non usa già messaggi):
   -Creare possibilità di inviare al server richieste di generare messaggi (pulsante vantati)
