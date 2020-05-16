@@ -24,56 +24,87 @@ const authURI = "https://www.fitbit.com/oauth2/authorize?"+
                 "scope=activity%20profile";
                 
 
-//Da modificare: link legacy
-const fitbitUserUrl = "http://localhost:5000/api/profile/fitbitusr";
-const fitbitUrl = "http://localhost:5000/fitbit";
+
+const fitbitURL = "http://localhost:5000/fitbit"
+
 
 export default {
     data() {
         return {
-            fitbit_user: undefined,
-            fitbitUrl: fitbitUrl,
+            fitbitUser: undefined,
             authURI: authURI,
         }
     },
     methods: {
+
+        //invia il l'auth code al backend che lo scabierà per i token
+        fitbitLogin(){
+
+            //recupero payload dalla URL query
+            const {authCode} = this.$route.query.code;
+            
+            //chiamata API di vuex
+            this.$store
+            .dispatch("API_POST",{
+                url: fitbitURL,
+                payload: {authCode}
+            })
+            
+            //se tutto va bene recupero username per farlo vedere
+            .then(()=>{
+                this.getFitbitInfo();
+            })
+
+            //se qualcosa va male alert di errore
+            .catch(()=>{
+                alert(this.$store.state.status);
+            })
+
+        },
         
         //recupera username di fitbit se presente nel backend
         getFitbitInfo() {
+            
             this.$store
-            //avvio chiamata API (gestita da vuex)
-            .dispatch("API_GET", fitbitUserUrl )
-            //se tutto va bene
+            .dispatch("API_GET", fitbitURL)
+            
+            //se tutto va bene aggiorna i dati locali
             .then(resp => {
-                this.fitbit_user = resp.fitbit_user;
+                this.fitbitUser = resp.data.fitbitUser;
             })
-            //se qualcosa va male
-            .catch(err => {
-                console.log(err);
+            
+            //se qualcosa va male alert di errore
+            .catch(()=>{
                 alert(this.$store.state.status);
-            });
+            })
+
         },
         
         //cancella token e username di fitbit se presenti nel backend
         fitbitLogout(){
             this.$store
-            //avvio chiamata API (gestita da vuex)
-            .dispatch("API_DELETE", fitbitUserUrl )
-            //se tutto va bene
+            .dispatch("API_DELETE", fitbitURL)
+            
+            //se tutto va bene aggiorna i dati locali
             .then( () => {
-                alert("Account Fitbit dissociato")
+                this.fitbitUser = undefined;
             })
-            //se qualcosa va male
-            .catch(err => {
-                console.log(err);
+            
+            //se qualcosa va male alert di errore
+            .catch(()=>{
                 alert(this.$store.state.status);
-            });
+            })
         },
     
     },
     created() {
         //decommentare solo quando il backend salva i dati nel db
         /* this.getFitbitInfo(); */
+
+        //quando l'utente viene ridiretto da fitbit questo si attiva
+        if(!this.fitbitConnected && this.$route.query.code){
+            /* this.fitbitLogin(); */
+        }
     },
     computed: {
 
