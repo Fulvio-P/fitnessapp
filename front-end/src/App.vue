@@ -2,17 +2,20 @@
   <div id="app">
     <ShySideNavbar :avoidroutes="['/', '/login']" />
     <router-view />
+    <WebsocketInbox ref="inbox" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import ShySideNavbar from "@/components/ShySideNavbar";
+import WebsocketInbox from "@/components/WebsocketInbox";
 
 export default {
   name: "App",
   components: {
-    ShySideNavbar
+    ShySideNavbar,
+    WebsocketInbox
   },
   /* Da quando la pagina viene creata tutte le rispote che axios
   intecetta se sono errori di non autorizzazione fanno logout e
@@ -33,6 +36,7 @@ export default {
     //mettendolo qui, tutta l'applicazione può ricevere i messaggi, indipendentemente dalla route corrente
     this.$options.sockets.onmessage = (msg) => {
       console.log(msg);
+      this.$refs.inbox.msgobj = JSON.parse(msg.data);
     }
   }
 };
@@ -57,6 +61,11 @@ export default {
   --nord13: #ebcb8b;
   --nord14: #a3be8c;
   --nord15: #b48ead;
+
+  /* servono anche queste così posso applicare trasparenza*/
+  --nord8rgb: 136, 192, 208;
+  --nord11rgb: 191, 97, 106;
+  --nord14rgb: 163, 190, 140;
 }
 
 #app {
