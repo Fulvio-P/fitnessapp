@@ -15,6 +15,12 @@ if (token) {
   axios.defaults.headers.common["Authorization"] = "Bearer " + token;
 }
 
+//websocket setup
+//c'è la possibilità di integrazione con vuex (vd. readme github),
+//ma prima voglio fare un prototipo funzionante
+import VueNativeSock from 'vue-native-websocket';
+Vue.use(VueNativeSock, 'ws://localhost:5000/echo', { format: 'json' });
+
 new Vue({
   router,
   store,
