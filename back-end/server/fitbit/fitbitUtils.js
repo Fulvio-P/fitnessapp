@@ -1,6 +1,14 @@
 require('dotenv').config();
 const axios = require('axios');
-const db = require("../../db/index");
+
+
+
+/*
+    README:
+    Questo modulo include le funzioni che sono utili per comunicare con fitbit,
+    ma fanno solo cose semplici e non toccano il database
+*/
+
 
 
 
@@ -59,10 +67,6 @@ function requestRefresh(fitbitRefresh){
         }))
     })
 }
-
-
-
-////////////////////////////////// AUTHENTICATION //////////////////////////////////
 
 //Chiede a fitbit di rispondere con i token
 function requestToken(authCode){
@@ -129,15 +133,6 @@ function get(apiURL, token){
     })
     
 }
-
-
-
-
-
-
-
-
-
 
 
 

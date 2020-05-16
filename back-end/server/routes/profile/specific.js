@@ -1,8 +1,7 @@
 const express = require('express');
 const db = require("../../db/index");
 const utils = require("../../globalutils");
-const fitbitUtils = require("./fitbitUtils");
-const axios = require('axios');
+const fitbit = require("../../fitbit/fitbit");
 
 require('dotenv').config();
 
@@ -91,32 +90,16 @@ router.put("/height", async (req, res) => {
 router.put("/fitbit", async(req,res) => {
     
     let authCode = req.body.authCode;
-    fitbitUtils.requestToken(authCode)
+    let userId = req.user.id;
 
-    //la richiesta è andata bene
-    .then(async(fitbitRes)=>{
-        //estraggo i dati dalla risposta
-        let fitbitToken = fitbitRes.data.access_token;
-        let fitbitRefresh = fitbitRes.data.refresh_token;
-        //provo a salvare i token nel database
-        let what = {
-            fitbittoken: fitbitToken,
-            fitbitrefresh: fitbitRefresh
-        }
-        try {
-            await db.editAdditionalInfo(req.user.id, what);
-        } catch (err) {
-            console.error(`postgres error no. ${err.code}: ${err.message}`);
-            return res.status(500).send("Internal Database Error");
-        }
-        //invio risposta al server
-        return res.status(200).send("Token fitbit memorizzati");
+    fitbit.authenticate(userId, authCode)
+
+    .then((message)=>{
+        return res.status(200).send(message);
     })
 
-    //qualcosa è andato male, messaggio di errore per il front-end
-    .catch((fitbitErr)=>{
-        console.log(fitbitErr.response.data.errors);
-        return res.status(500).send('API call failed');
+    .catch((error)=>{
+        return res.status(500).send(error);
     })
 
 })
