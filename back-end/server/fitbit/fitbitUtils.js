@@ -6,7 +6,8 @@ const axios = require('axios');
 /*
     README:
     Questo modulo include le funzioni che sono utili per comunicare con fitbit,
-    ma fanno solo cose semplici e non toccano il database
+    ma fanno solo cose semplici e non toccano il database e trattano i dati il
+    minimo necessario
 */
 
 
@@ -28,18 +29,13 @@ function makeBasicHeader(){
 
 
 
-/*  
- Dato che questa funzione ha bisogno di sapere per quale utente sta venendo
- usata è opportuno chiamarla per gestire l'errore di token scaduto all'interno
- di una richiesta axios che deve prima prendere il fitbitRefresh dal database,
- poi sarà di nuovo chi la chiama a gestire la risposta di fitbit
-*/
+
 //Chiede a fitbit di avere un nuovo token dato il refresh
 function requestRefresh(fitbitRefresh){
     return new Promise((resolve,reject) =>{
 
         //preparo i dati per la richista verso fitbit
-        let basicHeader = fitUtils.makeBasicHeader();
+        let basicHeader = makeBasicHeader();
         let tokenURI = 'https://api.fitbit.com/oauth2/token';
         
         let headers = {
@@ -50,6 +46,7 @@ function requestRefresh(fitbitRefresh){
             'grant_type=refresh_token&'+
             'refresh_token='+fitbitRefresh;
         ;
+
 
         //tutto pronto inviamo il messaggio con axios
         axios.post(
@@ -85,6 +82,7 @@ function requestToken(authCode){
             'client_id='+client_id+'&'+
             'grant_type=authorization_code&'+
             'redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fprofile&'+
+            'expires_in=3600&'+
             'code='+authCode
         ;
 
@@ -118,8 +116,6 @@ function get(apiURL, token){
             'Authorization': bearerHeader
         }
 
-        //DEBUG
-        console.log(headers);
 
         //tutto pronto inviamo il messaggio con axios
         axios.get(

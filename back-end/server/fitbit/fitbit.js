@@ -7,9 +7,6 @@ const utils = require('./fitbitUtils');
     Questo modulo usa le funzioni semplici di fitbitUtils combinandole
     ed espone servizi più complessi che interagiscono con il database
 
-    COMMENTO WARNING:
-    per il momento sto stampando gli errori qui, potrebbe essere oppurtuno
-    spostare la stampa a livelli superiori o inferiori 
 */
 
 
@@ -67,19 +64,11 @@ function authenticate(userId, authCode){
     una nuova richiesta al server all'url, questo metodo non viene
     esposto, ma viene usato dalle funzioni di questo modulo
 
-    COMMENTO WARNING: 
-    request function è fatta per essere una util.get oppure una tra
-    le ipotetiche util.post util.put o util.delet (che però il nostro
-    token di base non ci permette di usare) adesso in teoria visto che
-    JavaScript se ne frega degli argomenti quando retry viene usata senza
-    request payload lo considera undefined, il che non ci importa perchè
-    poi quando lo passiamo come argomento extra alla requestFunction che
-    non lo vuole viene semplicemente scartato
+    requestFunction è il metodo da usare per riprrovare dopo aver
+    aggiornato i token, request payload è opzionale e serve nel caso
+    si abbiano da fare Post o Put (anche se di base non sono previste
+    in questa applicazione)
 
-    COMMENTO WARNING:
-    questa funzione ha un .then detro un .then il che potrebbe dare dei
-    problemi dato che di solito i then si mettono in fila NECESSITA DI 
-    TEST ACCURATI
 */
 function retry(userId, requestFunction, requestURL, requestPayload){
 
@@ -87,24 +76,24 @@ function retry(userId, requestFunction, requestURL, requestPayload){
 
         //provo a recuperare il refresh dal database
         try {
-            var refreshToken = await db.getAdditionalInfo(userId,'fitbitRefresh')
+            var dbRes = await db.getAdditionalInfo(userId,'fitbitRefresh')
         } catch (error) {
             console.error(`postgres error no. ${err.code}: ${err.message}`);
             reject("Internal Database Error");
         }
-        if(!refreshToken) reject("Refresh Token Not Found");
+        if(!dbRes) reject("Refresh Token Not Found");
+        let refreshToken = dbRes.fitbitrefresh;
 
-
-
+        
         //provo a ottnere nuovi token da fitbit
         utils.requestRefresh(refreshToken)
 
+
         //fallimento: fitbit invia un errore
         .catch(error=>{
-
             //stampo errore e inoltro messaggio
             console.error(error.response.data.errors);
-            reject("Token Refresh Failed")
+            reject("Token Refresh Failed");
 
         })
 
@@ -171,9 +160,9 @@ function retry(userId, requestFunction, requestURL, requestPayload){
     usarlo per autenticare la richiesta dei dati, se il token è scaduto
     si riprova la richiesta dopo un refresh
 
-    COMMENTO WARNING: la navigazione delle risposte di errore per controllare
-    quale sia il problema si basa sulla documentazione fitbit che spesso
-    non è chiarissima VA TESTATA APPROFONDITAMENTE
+    COMMENTO EFFICIENZA: si potrebbe generalizzare questa funziona passando
+    la funzione da usare e un eventuale payload come parrametri ma per il
+    momento non facciamo che get quindi non serve
 */
 
 function get(userId, requestURL){
@@ -206,7 +195,7 @@ function get(userId, requestURL){
             if(error.response.data.errors[0].errorType === "expired_token"){
 
                 //siamo qui perchè il token è scaduto riproviamo
-                retry(userId, utils.get)
+                retry(userId, utils.get, requestURL)
 
                 //successo: la retry ha ottenuto i dati
                 .then(retryResponse => {
