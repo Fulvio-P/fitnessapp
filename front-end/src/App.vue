@@ -2,59 +2,52 @@
   <div id="app">
     <ShySideNavbar :avoidroutes="['/', '/login']" />
     <router-view />
+    <WebsocketInbox ref="inbox" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import ShySideNavbar from "@/components/ShySideNavbar";
+import WebsocketInbox from "@/components/WebsocketInbox";
 
 export default {
   name: "App",
   components: {
-    ShySideNavbar
+    ShySideNavbar,
+    WebsocketInbox
   },
   /* Da quando la pagina viene creata tutte le rispote che axios
   intecetta se sono errori di non autorizzazione fanno logout e
   lo ridirigono alla pagina di login */
-  created: () => {
-
-
-    /*
-      BUG: l'inteceptor non funziona, riesce a vadere gli errori,
-      ma l'unica cosa che legge sono i messaggi che scriviamo del
-      tipo "Token Expired", non so se il problema è del backend
-      che non inserisce abbastanza info oppure qui che non si legge
-      bene il codice di errore, un fix brutto nel caso e fare i
-      confronti con i nostri messaggi di errore al posto di 401 
-    */
-
-    //versione 1
-    /* axios.interceptors.response.use(undefined, err => {
+  mounted() {
+    axios.interceptors.response.use(undefined, err => {
       return new Promise(() => {
-        console.log(err.status);
-        if (err.status === 401) { //qui la condizione era un po' piu severa
-          console.log("Err intercepted")
+        console.log(JSON.stringify(err))
+        if (err.message.includes('401') && err.config && !err.config.__isRetryRequest) {
           this.$store.dispatch("AUTH_LOGOUT");
           this.$router.push("/login");
         }
         throw err;
       });
-    }); */
-
-    //versione 2
-    axios.interceptors.response.use(
-      function (response) {
-        return response
-      }, 
-      function (error) {
-        console.log(error.status)
-        if (error.status === 401) {
-          this.$store.dispatch("AUTH_LOGOUT");
-          this.$router.push("/login");
-        }
-      return Promise.reject(error)
-    })
+    });
+    //mettiamo su un listener per i websocket
+    //mettendolo qui, tutta l'applicazione può ricevere i messaggi, indipendentemente dalla route corrente
+    this.$options.sockets.onmessage = (msg) => {
+      console.log(msg);
+      this.$refs.inbox.msgobj = JSON.parse(msg.data);
+    }
+    //un listener anche per la chiusura della connessione da parte del server
+    this.$options.sockets.onclose = () => {
+      this.$disconnect();
+    }
+    //può capitare che l'utente entri direttamente nell'area protetta senza essere passato
+    //per la pagina di login, se c'è ancora un token valido in localstorage.
+    //in tal caso, non c'è stata la connessione automatica col login che sta in vuex,
+    //quindi tocca connettersi manualmente
+    if (this.$store.state.token) {   //sembra che vuex sia caricato correttamente a questo punto
+      this.$connectwithtoken(this.$store.state.token)  //funzione definita da me in main.js
+    }
   }
 };
 </script>
@@ -78,6 +71,11 @@ export default {
   --nord13: #ebcb8b;
   --nord14: #a3be8c;
   --nord15: #b48ead;
+
+  /* servono anche queste così posso applicare trasparenza*/
+  --nord8rgb: 136, 192, 208;
+  --nord11rgb: 191, 97, 106;
+  --nord14rgb: 163, 190, 140;
 }
 
 #app {

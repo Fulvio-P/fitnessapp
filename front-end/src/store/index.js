@@ -101,6 +101,8 @@ export default new Vuex.Store({
             //imposto il token come header di default
             axios.defaults.headers.common["Authorization"] = "Bearer " + token;
             commit("AUTH_SUCCESS", token);
+            //apro il websocket, this._vm accede all'istanza Vue
+            this._vm.$connectwithtoken(this.state.token)  //funzione definita da me in main.js
             resolve(resp);
           })
 
@@ -121,6 +123,8 @@ export default new Vuex.Store({
       return new Promise(resolve => {
         commit("AUTH_LOGOUT");
         localStorage.removeItem("user-token");
+        //chiudo il websocket, this._vm accede all'istanza Vue
+        this._vm.$disconnect();
         resolve();
       });
     },

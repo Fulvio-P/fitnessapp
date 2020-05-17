@@ -54,7 +54,12 @@ export default {
 
         //se tutto va bene provo ridirico al login
         .then(() => {
-          this.$router.push("/login");
+          //this.$router.push("/login");
+          //provo login automatico
+          return this.$store.dispatch("AUTH_REQUEST", { username, password })
+        })
+        .then(() => {
+          this.$router.push("/charts");
         })
 
         //se qualcosa va male i campi sono resettati

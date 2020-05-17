@@ -8,6 +8,7 @@ const cors = require('cors');
 const app = express();
 
 //middleware
+var expressWs = require('express-ws')(app);   //basta scrivere questa riga. Non c'è bisogno di usare expressWs altrove.
 app.use(bodyParser.json());
 //cattura errori dal bodyParser
 app.use((err, req, res, next) => {   //https://stackoverflow.com/questions/15819337/catch-express-bodyparser-error
@@ -41,6 +42,9 @@ app.use("/api/profile", profile);
 
 const opinion = require("./routes/opinion");
 app.use("/opinion", opinion);
+
+const fitbitsync = require("./routes/fitbitsync");
+app.use("/ws/fitbitsync", fitbitsync);
 
 //starting server
 const port = process.env.PORT || 5000;
