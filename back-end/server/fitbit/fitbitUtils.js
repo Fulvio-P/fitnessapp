@@ -117,11 +117,17 @@ function get(apiURL, token){
         let headers = {
             'Authorization': bearerHeader
         }
+
+        //DEBUG
+        console.log(headers);
+
         //tutto pronto inviamo il messaggio con axios
-        axios.post(
+        axios.get(
             apiURL,
             {headers: headers}
         )
+
+        
         
         //qualsiasi sia l'esito se la vede il chiamante
         .then(response=>{

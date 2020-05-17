@@ -87,7 +87,7 @@ function retry(userId, requestFunction, requestURL, requestPayload){
 
         //provo a recuperare il refresh dal database
         try {
-            var refreshToken = db.getAdditionalInfo(userId,'fitbitRefresh')
+            var refreshToken = await db.getAdditionalInfo(userId,'fitbitRefresh')
         } catch (error) {
             console.error(`postgres error no. ${err.code}: ${err.message}`);
             reject("Internal Database Error");
@@ -178,18 +178,17 @@ function retry(userId, requestFunction, requestURL, requestPayload){
 
 function get(userId, requestURL){
 
-    return new Promise((resolve, reject)=>{
+    return new Promise( async (resolve, reject)=>{
 
         //provo a recuperare il token dal database
         try {
-            var accessToken = db.getAdditionalInfo(userId,'fitbitToken')
+            var dbRes = await db.getAdditionalInfo(userId,'fitbitToken')
         } catch (error) {
             console.error(`postgres error no. ${err.code}: ${err.message}`);
             reject("Internal Database Error");
         }
-        if(!accessToken) reject("Access Token Not Found");
-
-
+        if(!dbRes) reject("Access Token Not Found");
+        const accessToken = dbRes.fitbittoken
 
         
         //uso il token per eseguire una get

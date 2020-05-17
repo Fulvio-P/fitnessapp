@@ -333,6 +333,9 @@ async function getAdditionalInfo(id, what) {
         "WHERE id=$1",
         [id]
     );
+    
+    /* //DEBUG
+    console.log("DB result: "+JSON.stringify(res.rows[0])); */
     return res.rows[0];
 }
 

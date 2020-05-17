@@ -97,13 +97,42 @@ router.put("/fitbit", async(req,res) => {
 
     fitbit.authenticate(userId, authCode)
 
-    .then((message)=>{
-        return res.status(200).send(message);
-    })
-
+    //fallimento: fitbit ha risposto con un errore
     .catch((error)=>{
         return res.status(500).send(error);
     })
+
+    //successo i token sono stati inseriti correttamente
+    .then(()=>{
+        
+        //DEBUG
+        /* console.log('token acquisiti, provo a prendere il nome utente') */
+
+        fitbit.get(userId,"https://api.fitbit.com/1/user/-/profile.json")
+        
+        //successo: fitbit restituisce i dati utente
+        .then( async (response)=>{
+
+            //provo a inserire il nome utente nel database
+            let what ={
+                "fitbituser":response.data.user.displayName
+            };
+            try {
+                db.editAdditionalInfo(userId, what);
+            } catch (err) {
+                console.error(`postgres error no. ${err.code}: ${err.message}`);
+                return res.status(500).send("Internal Database Error");
+            }
+
+            return res.status(200).send("Account Fitbit Collegato")
+        })
+
+        .catch( error =>{
+            return res.status(500).send(error);
+        })
+    })
+
+    
 
 })
 
@@ -163,8 +192,7 @@ router.delete("/fitbit", async(req, res) => {
     }
 
     //invio conferma come risposta
-    deleted.username = req.user.username;
-    return res.status(200).json(deleted);
+    return res.status(200).send("Account scollegato")
 });
 
 module.exports = router;

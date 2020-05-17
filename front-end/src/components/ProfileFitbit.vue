@@ -57,7 +57,7 @@ export default {
             .then((res)=>{
                 alert(res.data);
                 //se tutto va bene recupero username per farlo vedere
-                /* this.getFitbitInfo(); */
+                this.getFitbitInfo();
             })
 
             //se qualcosa va male alert di errore
@@ -75,7 +75,7 @@ export default {
             
             //se tutto va bene aggiorna i dati locali
             .then(resp => {
-                this.fitbitUser = resp.data.fitbitUser;
+                this.fitbitUser = resp.data.fitbituser;
             })
             
             //se qualcosa va male alert di errore
@@ -104,7 +104,7 @@ export default {
     },
     created() {
         //decommentare solo quando il backend salva i dati nel db
-        /* this.getFitbitInfo(); */
+        this.getFitbitInfo();
 
         //quando l'utente viene ridiretto da fitbit questo si attiva
         if(!this.fitbitConnected && this.$route.query.code){
