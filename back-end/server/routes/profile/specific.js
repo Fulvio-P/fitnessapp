@@ -9,19 +9,6 @@ const router = express.Router();
 
 //la JWT è già stata controllata in global.js
 
-
-/*
-    COMMENTO MODULARITÀ:
-    Secondo me sarebbe più ordinato se  tutte le funzioni general fossero
-    spostate in un modulo separato e ritornassero promesse in modo che i
-    messaggi di errore siano gestiti direttamente dalle funzioni router
-*/
-
-
-
-
-
-
 ///////////////////////////////////// GET /////////////////////////////////////
 
 //recupera una info di un utente, null se non ce l'ha
