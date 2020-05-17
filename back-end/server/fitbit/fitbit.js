@@ -236,4 +236,5 @@ function get(userId, requestURL){
 
 module.exports = {
     authenticate,
+    get,
 }
