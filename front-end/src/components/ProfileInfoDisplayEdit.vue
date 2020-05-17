@@ -176,8 +176,15 @@ export default {
 }
 .pide-confirm-btn {
   background-color: var(--nord14);
+  transition: 500ms
+}
+.pide-confirm-btn:hover {
+  filter: hue-rotate(-15deg) brightness(110%)  /*schiarisce e diventa un po' giallino*/
 }
 .pide-delete-btn {
   background-color: var(--nord11);
+}
+.pide-delete-btn:hover {
+  background-color: var(--nord12);
 }
 </style>
