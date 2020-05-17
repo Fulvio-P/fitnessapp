@@ -1,5 +1,5 @@
 <template>
-    <div id="box" v-bind:class="classBindings">
+    <div id="box" v-bind:class="classBindings" class="sidebar-margin">
         <p>{{ msgobj.message }}</p>
         <b-button
             @click="hide"
@@ -54,7 +54,7 @@ export default {
 .col-err {
     background-color: rgba(var(--nord11rgb), 0.8);
 }
-#box:not(.col-succ):not(.col-err) {  /*non dovrebbe succedere, ma se succede evitiamo situazioni imbarazzanti*/
-    background-color: rgba(var(--nord8rgb), 0.8);  /*e poi potrebbe pure servire, chissà*/
+#box:not(.col-succ):not(.col-err) {  /*include il type "info" e tutti gli altri type, nel malaugurato caso in cui ce ne arrivi uno anomalo*/
+    background-color: rgba(var(--nord8rgb), 0.8);
 }
 </style>
