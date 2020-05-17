@@ -14,15 +14,23 @@ function trySend(ws, msg) {
     try {
         ws.send(msg);
     } catch (err) {
-        console.error(`ws error: ${err.message}`);
+        console.error(`ws.send error: ${err.message}`);
+    }
+}
+//non si sa mai...
+function tryClose(ws) {
+    try {
+        ws.close();
+    } catch (err) {
+        console.error(`ws.close error: ${err.message}`);
     }
 }
 
 //la funzione in globalutils è una funzione middleware che guarda la request,
 //qui è inutile
-function verifyTokenInMessage(ws, msg) {
+function verifyTokenInQuery(ws, query) {
     try {
-        var decoded = jwt.verify(msg.token, jwtSecret);
+        var decoded = jwt.verify(query.token, jwtSecret);
     }
     catch (err) {
         console.error(`jwt ${err.name}: ${err.message}`);   //non sono sicuro che vogliamo rimandare al client il messaggio d'errore di jwt
@@ -46,16 +54,30 @@ function verifyTokenInMessage(ws, msg) {
 }
 
 router.ws("/", function(ws, req) {
-    //se ci riuscissimo potremmo autenticare la connessione una volta all'inizio
-    //è irrilevante didatticamente, ma "realisticamente" sarebbe utile contro attacchi DoS
+
+    /*
+      il modo in cui funzionerà l'autenticazione è: invia il token nella querystring.
+      i browser non fanno caching delle URL ws, quindi non c'è lo stesso
+      rischio di caching che c'è in HTTP, e tolto questo una querystring è
+      equivalente a un header (che l'api ws nativa non fa usare).
+    */
+
+    //i ws possono avere uno stato: questa variabile user si può usare (e modificare con side-effect? in realtà non ci ho ancora provato, ma non dovrebbe servirci)
+    //nei vari gestori del ws, ed è indipendente per ogni ws aperto
+    var user = verifyTokenInQuery(ws, req.query);  //abbiamo la req.query normale di express a disposizione
+    if (!user) {
+        trySend(ws, JSON.stringify({
+            type: "error",
+            message: "Autenticazione fallita"
+        }));
+        tryClose(ws)
+    } else {
+        console.log(user.username+" ws connected");
+    }
 
     ws.on('message', function(msg) {
-        console.log("and websocket got...");
-        console.log(msg)
+        console.log(`${user.username} ws: ${msg}`)
         msg = JSON.parse(msg);
-
-        var user = verifyTokenInMessage(ws, msg);
-        if (!user) return;
 
         if (msg.action!="fitbitsync") {
             return trySend(ws, JSON.stringify({
@@ -64,13 +86,26 @@ router.ws("/", function(ws, req) {
             }));
         }
 
+        //una sorta di ack che la richiesta è stata presa in carico
+        trySend(ws, JSON.stringify({
+            type: "info",
+            message: "Sincronizzazione avviata..."
+        }));
+
         console.log("TODO do all the fitbit stuff");
         
-        return trySend(ws, JSON.stringify({
-            type: "success",
-            message: "Sincronizzazione riuscita!"
-        }));
+        setTimeout(() => {   //tempo di work farlocco
+            return trySend(ws, JSON.stringify({
+                type: "success",
+                message: "Sincronizzazione riuscita!"
+            }));
+        }, 1000);
+        
     });
+
+    ws.on("close", ()=>{
+        console.log(user.username+" ws disconnected");
+    })
 });
 
 module.exports = router;

@@ -65,7 +65,7 @@ export default {
     richiediFitbitsync() {
       try {
         this.$socket.sendObj({
-          token: this.$store.state.token,
+          //l'autemticazione è spostata all'apertura della connessione, non serve più inviare il token qui
           action: "fitbitsync"
         });
       } catch (err) {   //in realtà da lato vue non sembra lanciare errori, ma comunque è sempre meglio un try-catch in più che uno in meno

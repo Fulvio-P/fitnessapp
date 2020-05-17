@@ -37,6 +37,17 @@ export default {
       console.log(msg);
       this.$refs.inbox.msgobj = JSON.parse(msg.data);
     }
+    //un listener anche per la chiusura della connessione da parte del server
+    this.$options.sockets.onclose = () => {
+      this.$disconnect();
+    }
+    //può capitare che l'utente entri direttamente nell'area protetta senza essere passato
+    //per la pagina di login, se c'è ancora un token valido in localstorage.
+    //in tal caso, non c'è stata la connessione automatica col login che sta in vuex,
+    //quindi tocca connettersi manualmente
+    if (this.$store.state.token) {   //sembra che vuex sia caricato correttamente a questo punto
+      this.$connectwithtoken(this.$store.state.token)  //funzione definita da me in main.js
+    }
   }
 };
 </script>

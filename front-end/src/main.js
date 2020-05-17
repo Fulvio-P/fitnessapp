@@ -19,7 +19,9 @@ if (token) {
 //c'è la possibilità di integrazione con vuex (vd. readme github),
 //ma prima voglio fare un prototipo funzionante
 import VueNativeSock from 'vue-native-websocket';
-Vue.use(VueNativeSock, 'ws://localhost:5000/ws/fitbitsync', { format: 'json' });
+Vue.use(VueNativeSock, 'ws://localhost:5000/ws/fitbitsync?token=pippo', {  //url irrilevante perché durante la connessione manuale vorrò una querystring col token
+  connectManually: true
+});
 /*
 i benefici del format:json sono SOLO due:
  - permette di usare sendObj che fa stringify automatico
@@ -28,6 +30,11 @@ E BASTA.
 In particolare, NON ha effetto sulla risposta ricevuta dai listener.
 E non esiste una funzione simile per express-ws.
 */
+
+//definiamo una funzione globale, visto che dobbiamo connetterci in due punti diversi
+Vue.prototype.$connectwithtoken = function(token) {
+  this.$connect('ws://localhost:5000/ws/fitbitsync?token='+token, { format: 'json' });
+};
 
 new Vue({
   router,
