@@ -10,10 +10,10 @@ const router = express.Router();
  */
 router.use(utils.verifyJWT);
 
-//fornisce username e tutte le info addizionali dell'utente autenticato
+//fornisce username e le info addizionali (esclusi i token) dell'utente autenticato
 router.get("/", async (req, res) => {
     try {
-        var info = await db.getAdditionalInfo(req.user.id, "*");
+        var info = await db.getAdditionalInfo(req.user.id, "email, altezza, fitbituser");
     } catch (err) {
         console.error(`postgres error no. ${err.code}: ${err.message}`);   //non sono sicuro che vogliamo rimandare al client il messaggio d'errore di postgres
         return res.status(500).send("Internal Database Error");
@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
     return res.status(200).json(info);
 });
 
-//modifica più info addizionali contemporaneamente (NON username o password)
+//modifica più info addizionali contemporaneamente (username, password e dati fitbit non vengono toccati)
 router.patch("/", async (req, res) => {
     //estraiamo manualmente le singole proprietà permesse perché la funzione che fa la query ha bisogno di concatenare i nomi delle proprietà direttamente alla query, e non voglio injection
     var args = {};
