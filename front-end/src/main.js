@@ -17,7 +17,7 @@ if (token) {
 
 //websocket setup
 //c'è la possibilità di integrazione con vuex (vd. readme github),
-//ma prima voglio fare un prototipo funzionante
+//ma sono solo trigger automatici a certe mutazioni, non credo ci interessi
 import VueNativeSock from 'vue-native-websocket';
 Vue.use(VueNativeSock, 'ws://localhost:5000/ws/fitbitsync?token=pippo', {  //url irrilevante perché durante la connessione manuale vorrò una querystring col token
   connectManually: true
