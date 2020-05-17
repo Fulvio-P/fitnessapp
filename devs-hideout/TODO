@@ -4,7 +4,7 @@ Cose da fare (Priorità decrescente):
 
 -Implementare possibilità di cambiare nome utente e password: (Francesco) 
   [ø] Mettere funzione di cancellazione account nel backend
-  [ ] Mettere pulsante di cancellazione account nel frontend
+  [ø] Mettere pulsante di cancellazione account nel frontend
 
 -Documentazione installazione, uso API e casi di prova (Fulvio)
 
