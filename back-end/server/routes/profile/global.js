@@ -55,6 +55,27 @@ router.patch("/", async (req, res) => {
     res.status(200).json(toSend);
 });
 
+//elimina COMPLETAMENTE e DEFINITIVAMENTE l'account dell'utente e TUTTI i dati associati.
+//richiede di inviare la querystring "?sure=true" per evitare di colpire accidentalmente
+//questo endpoint.
+//I token appartenenti a un utente cancellato non vengono automaticamente invalidati,
+//il comportamento dovuto al loro uso è indefinito ma safe e idempotente.
+//(le get danno vuoto, le post danno ID not found, le put e delete danno entry inesistente)
+router.delete("/", async (req, res) => {
+    if (!req.query.sure) {
+        return res.status(400).send("Are you sure about this?");
+    }
+    try {
+        await db.deleteAccount(req.user.id);
+    } catch (err) {
+        //dovrebbe essere impossibile rompere vincoli con questa operazione
+        console.error(`postgres error no. ${err.code}: ${err.message}`);
+        return res.status(500).send("Internal Database Error");
+    }
+    //se la query è andata bene...
+    return res.status(204).send();
+})
+
 //metto le route specifiche in un altro file per evitare cluttering di questo,
 //questa dichiarazione è in questo punto per farle dopo la verifica del JWT
 //e dopo aver controllato le route di questo file

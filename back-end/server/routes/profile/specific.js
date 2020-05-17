@@ -137,59 +137,6 @@ router.put("/fitbit", async(req,res) => {
 
 })
 
-router.put("/username", async (req, res) => {
-    //al momento se permettiamo quest'operazione c'è una discrepanza coi dati codificati nel token
-    return res.status(403).send("This functionality is currently disabled");
-
-    if (!req.body.username) {  //prende anche ""
-        return res.status(400).send("Username expected");
-    }
-    try {
-        var edited = db.editUsername(req.user.id, req.body.username)
-    } catch (err) {
-        console.error(`postgres error no. ${err.code}: ${err.message}`);
-        switch (err.code) {
-            case "22001": //quando una stringa è più lunga del limite dato nella definizione VARCHAR
-                return res.status(413).send("Username too long");
-            case "23505": //errore violazione vincolo UNIQUE / PRIMARY KEY
-                return res.status(500).send("Username already exists");
-            case "23502": //violaz. NOT NULL
-                return res.status(400).send("Non dovresti vedere questo messaggio. Dovrei averlo già gestito...");
-            default:
-                return res.status(500).send("Internal Database Error");
-        }
-    }
-    //se la query è andata bene...
-    if (!edited) {
-        //allora non è stata modificata alcuna riga, quindi non è mai esistita una misura con quegli id e ts
-        return res.status(404).send("User ID not found");
-    }
-    return res.status(200).send(edited);
-});
-
-router.put("/password", async (req, res) => {
-    //al momento se permettiamo quest'operazione c'è una discrepanza coi dati codificati nel token
-    return res.status(403).send("This functionality is currently disabled");
-
-    if (!req.body.password) {  //prende anche ""
-        return res.status(400).send("Password expected");
-    }
-    try {
-        db.editPassword(req.user.id, req.body.password)
-    } catch (err) {
-        console.error(`postgres error no. ${err.code}: ${err.message}`);
-        switch (err.code) {
-            case "22001": //quando una stringa è più lunga del limite dato nella definizione VARCHAR
-                return res.status(413).send("Password too long");
-            case "23502": //violaz. NOT NULL
-                return res.status(400).send("Non dovresti vedere questo messaggio. Dovrei essermene già preso cura...");
-            default:
-                return res.status(500).send("Internal Database Error");
-        }
-    }
-    return res.status(204).send();
-});
-
 
 
 

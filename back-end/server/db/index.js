@@ -66,28 +66,16 @@ async function getUserByName(username) {
     return queryRes.rows[0];
 }
 
-//cambia lo username di un utente e lo restituisce
-async function editUsername(id, newName) {
-    var queryRes = await pool.query(
-        "UPDATE utente "+
-        "SET username=$2 "+
-        "WHERE id=$1 "+
-        "RETURNING username;",
-        [id, newName]
-    );
-    return queryRes.rows[0];
-}
-
-//cambia la password di un utente, hashandola (e NON la restituisce   :)
-async function editPassword(id, newPass) {
-    let salt = bcrypt.genSaltSync(10);
-    var hashedPass = bcrypt.hashSync(newPass, salt);
-    await pool.query(
-        "UPDATE utente "+
-        "SET password=$2 "+
-        "WHERE id=$1;",
-        [id, hashedPass]
-    );
+//elimina completamente e permanentemente un account e tutti i dati a esso associati.
+async function deleteAccount(id) {
+    await doTransaction(async client=>{
+        await client.query("DELETE FROM infoAddizionali WHERE id=$1;", [id]);
+        await client.query("DELETE FROM misuraPeso WHERE id=$1;", [id]);
+        await client.query("DELETE FROM misuraCalorie WHERE id=$1;", [id]);
+        await client.query("DELETE FROM cibo WHERE id=$1;", [id]);
+        await client.query("DELETE FROM attivita WHERE id=$1;", [id]);
+        await client.query("DELETE FROM utente WHERE id=$1;", [id]);
+    });
 }
 
 
@@ -644,8 +632,7 @@ module.exports = {
     addUser,
     getUserByName,
     getUserById,
-    editUsername,
-    editPassword,
+    deleteAccount,
     getRangeMisurePeso,
     getAllMisurePeso,
     getOneMisuraPeso,
