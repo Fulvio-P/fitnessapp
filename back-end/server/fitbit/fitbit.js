@@ -170,7 +170,65 @@ function retry(userId, requestFunction, requestURL, requestPayload){
     dato un userId e un URL si prova a prendere il token dal database e
     usarlo per autenticare la richiesta dei dati, se il token è scaduto
     si riprova la richiesta dopo un refresh
+
+    COMMENTO WARNING: la navigazione delle risposte di errore per controllare
+    quale sia il problema si basa sulla documentazione fitbit che spesso
+    non è chiarissima VA TESTATA APPROFONDITAMENTE
 */
+
+function get(userId, requestURL){
+
+    return new Promise((resolve, reject)=>{
+
+        //provo a recuperare il token dal database
+        try {
+            var accessToken = db.getAdditionalInfo(userId,'fitbitToken')
+        } catch (error) {
+            console.error(`postgres error no. ${err.code}: ${err.message}`);
+            reject("Internal Database Error");
+        }
+        if(!accessToken) reject("Access Token Not Found");
+
+
+
+        
+        //uso il token per eseguire una get
+        utils.get(requestURL, accessToken)
+
+        //successo: fitbit ha risposto con i dati
+        .then(response => {
+            resolve(response)
+        })
+
+        //fallimento: fitbit ha risposto con un errore
+        .catch(error => {
+            
+            console.error(error.response.data.errors);
+            if(error.response.data.errors[0].errorType === "expired_token"){
+
+                //siamo qui perchè il token è scaduto riproviamo
+                retry(userId, utils.get)
+
+                //successo: la retry ha ottenuto i dati
+                .then(retryResponse => {
+                    resolve(retryResponse)
+                })
+
+                //fallimento: anche la retry da errore
+                .catch(retryError=>{
+                    reject(retryError)
+                })
+
+            } else {
+
+                //l'errore non è dovuto a token scaduto
+                reject(error)
+            }
+        })
+
+
+    })
+}
 
 
 
