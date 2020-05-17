@@ -3,10 +3,7 @@ Cose da fare (Priorità decrescente):
 -chiamate API per fitbitsync (Fulvio)
 
 -Implementare possibilità di cambiare nome utente e password: (Francesco) 
-  [X] Fare funzioni che gestiscono la richiesta nel backend
-  [X] Aggiungere righe apposite nelle impostazioni utente
-  [ ] Cancellare modifica username/password
-  [ ] Mettere funzione di cancellazione account nel backend
+  [ø] Mettere funzione di cancellazione account nel backend
   [ ] Mettere pulsante di cancellazione account nel frontend
 
 -Documentazione installazione, uso API e casi di prova (Fulvio)
