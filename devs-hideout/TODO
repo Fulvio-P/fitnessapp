@@ -2,9 +2,9 @@ Cose da fare (Priorità decrescente):
 
 -chiamate API per fitbitsync (Fulvio)
 
--Implementare possibilità di cambiare nome utente e password: (Francesco)
-  [ ] Fare funzioni che gestiscono la richiesta nel backend
-  [ ] Aggiungere righe apposite nelle impostazioni utente
+-Implementare possibilità di cambiare nome utente e password: (Francesco) (in sospeso)
+  [.] Fare funzioni che gestiscono la richiesta nel backend
+  [.] Aggiungere righe apposite nelle impostazioni utente
 
 -Documentazione installazione, uso API e casi di prova (Fulvio)
 
