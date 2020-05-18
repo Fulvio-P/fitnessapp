@@ -486,7 +486,8 @@ function generateInsertOptionals(data, descrizione) {
     return [plusInsert, plusValues, plusParams];
 }
 
-//come quella sopra, ma generica.
+//genera stringhe e array da aggiungere alle query UPDATE per cibo e attività per gestire
+//correttamente i parametri opzionali (pg non ha una keyword DEFAULT da usare, purtroppo).
 //passare come parametro un oggetto con nome_proprietà:valore_proprietà
 //per ogni proprietà da modificare.
 //startFrom è il numero da cui cominciare per generare i placeholder $
