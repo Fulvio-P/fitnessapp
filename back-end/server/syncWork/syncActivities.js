@@ -21,7 +21,7 @@ function sync(userId){
         
         //Imposto i parrametri della richiesta
         let requestUrl ='https://api.fitbit.com/1/user/-/activities/list.json?'+
-                        'afterDate='+ lastChecked
+                        'afterDate='+ lastChecked +
                         '&offset=0'+
                         '&limit=100'+
                         '&sort=asc'
@@ -31,13 +31,12 @@ function sync(userId){
         //Provo a ottenere i dati da fitbit
         fitbit.get(userId, requestUrl)
 
-        //fallimento: fitbit ha inviato un messaggio di errore
-        .catch(error => {
-            rerject(error);
-        })
 
         //successo: fitbit ha risposto con dati
         .then( response =>{
+
+            //TEST
+            console.log(response.data);
 
             //Ciclo sulle varie attività nella risposta
             //Per ogni attività creo un rercord nel database
@@ -50,5 +49,14 @@ function sync(userId){
             resolve("activities_synced")
 
         })
+
+        //fallimento: fitbit ha inviato un messaggio di errore
+        .catch(error => {
+            reject(error);
+        })
     })
+}
+
+module.exports = {
+    sync,
 }
