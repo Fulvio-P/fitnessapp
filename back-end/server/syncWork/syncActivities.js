@@ -11,12 +11,17 @@ const db = require('../db/index');
 
 function sync(userId){
 
-    return new Promise((resolve, reject)=>{
+    return new Promise(async (resolve, reject)=>{
 
         //Recupero la data di partenza dal database
-        //TODO: capire come e dove salvare la data per avere il giusto formato
-        //COMMENTO DEV: per il momento test hardcoded
-        let lastChecked = '2020-05-16T10:00:00'
+        let dbRes;
+        try {
+            dbRes = await db.getAdditionalInfo(userId, 'lastFitbitUpdate');
+        } catch (error) {
+            reject("Internal Datbase Error");
+        }
+        
+        let lastChecked = dbRes.lastfitbitupdate
 
         
         //Imposto i parrametri della richiesta
@@ -33,7 +38,7 @@ function sync(userId){
 
 
         //successo: fitbit ha risposto con dati
-        .then( response =>{
+        .then( async response =>{
             
 
 
@@ -41,24 +46,31 @@ function sync(userId){
             //Ciclo sulle varie attività nella risposta
             activities.forEach(activity => {
                 //TEST
-                const usefulData ={
-                    nome: activity.activityName,
-                    calout: activity.calories,
-                    data: activity.startTime.split('T')[0],
-                    lastFitbit: activity.lastModified.split('.')[0]
+        
+                    let nome = activity.activityName,
+                        calout = activity.calories,
+                        data = activity.startTime.split('T')[0],
+                        lastFitbit = activity.lastModified.split('.')[0]
+                    ;
+                if(lastFitbit != lastChecked){
+                    console.log(nome); 
                 }
-                console.log(usefulData);  
+                
                 //Per ogni attività creo un rercord nel database
                 
-                lastChecked = usefulData.lastFitbit;
+                lastChecked = lastFitbit;
             });
             
 
 
-
-            //Accedo al database per aggiornare last checked all'ora attuale
-            //TEST
-            console.log(lastChecked);
+        
+            //Accedo al database per aggiornare last checked all'ora del record più recente
+            let what = {lastfitbitupdate: lastChecked};
+            try {
+                await db.editAdditionalInfo(userId, what);
+            } catch (error) {
+                reject("Internal Database Error")
+            }
             //una volta finito tutto
             resolve("activities_synced")
 
