@@ -52,17 +52,16 @@ function sync(userId){
                     lastFitbit = activity.lastModified.split('.')[0]
                 ;
                 
-                console.debug('Esamino '+nome+lastFitbit)
+                
                 //Questo controllo serve ad escludere record già considerati
                 if(lastFitbit != lastChecked){
                     
                     //Per ogni attività creo un rercord nel database
                     try {
-                        var dbDone = await db.addAttivita(userId, data, nome, calout, 'Attività importata da Fitbit');
+                        await db.addAttivita(userId, data, nome, calout, 'Attività importata da Fitbit');
                     } catch (error) {
                         reject("Internal Datbase Error");
                     }
-                    console.log(dbDone);
 
                 }
                 
@@ -79,7 +78,6 @@ function sync(userId){
                 reject("Internal Database Error")
             }
             //una volta finito tutto
-            console.debug(lastChecked);
             resolve("activities_synced")
 
         })
