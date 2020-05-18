@@ -105,7 +105,7 @@ router.ws("/", function(ws, req) {
         .catch((error)=>{
             console.error(error);
             return trySend(ws, JSON.stringify({
-                type: "fail",
+                type: "error",
                 message: "Sincronizzazione fallita :("
             }));
         })
