@@ -44,24 +44,31 @@ function sync(userId){
 
             const activities =  response.data.activities
             //Ciclo sulle varie attività nella risposta
-            activities.forEach(activity => {
-                //TEST
+            for( activity of activities){
         
-                    let nome = activity.activityName,
-                        calout = activity.calories,
-                        data = activity.startTime.split('T')[0],
-                        lastFitbit = activity.lastModified.split('.')[0]
-                    ;
+                let nome = activity.activityName,
+                    calout = activity.calories,
+                    data = activity.startTime.split('T')[0],
+                    lastFitbit = activity.lastModified.split('.')[0]
+                ;
+                
+                console.debug('Esamino '+nome+lastFitbit)
+                //Questo controllo serve ad escludere record già considerati
                 if(lastFitbit != lastChecked){
-                    console.log(nome); 
+                    
+                    //Per ogni attività creo un rercord nel database
+                    try {
+                        var dbDone = await db.addAttivita(userId, data, nome, calout, 'Attività importata da Fitbit');
+                    } catch (error) {
+                        reject("Internal Datbase Error");
+                    }
+                    console.log(dbDone);
+
                 }
                 
-                //Per ogni attività creo un rercord nel database
-                
                 lastChecked = lastFitbit;
-            });
+            };
             
-
 
         
             //Accedo al database per aggiornare last checked all'ora del record più recente
@@ -72,6 +79,7 @@ function sync(userId){
                 reject("Internal Database Error")
             }
             //una volta finito tutto
+            console.debug(lastChecked);
             resolve("activities_synced")
 
         })

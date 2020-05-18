@@ -272,6 +272,7 @@ async function addAttivita(id, data, nome, calout, descrizione) {
             [id, nome, calout].concat(plusParams)
         );
         await addOrSubtractCalories(client, id, res.rows[0].data, 0, calout);
+        console.debug('Aggiuta '+nome);
         return res.rows[0];
     });
 }
@@ -298,6 +299,7 @@ async function editAttivita(id, ts, data, nome, calout, descrizione) {
         );
         await addOrSubtractCalories(client, id, vecch.rows[0].data, 0, -vecch.rows[0].calout);
         await addOrSubtractCalories(client, id, nuov.rows[0].data, 0, nuov.rows[0].calout);
+
         return nuov.rows[0];
     });
 }
