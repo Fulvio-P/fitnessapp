@@ -98,7 +98,7 @@ router.put("/:ts", async (req, res) => {
     } catch (err) {
         console.error(`postgres error no. ${err.code}: ${err.message}`);
         switch (err.code) {
-            case "23505": //violaz. UNIQUE / PRIMARY KEY, impossibile perché questa chiamata non modifica id o data.
+            case "23505": //violaz. UNIQUE / PRIMARY KEY, impossibile perché questa chiamata non modifica id o ts.
             case "23503": //violaz. FOREIGN KEY, impossibile perché idem
                 return res.status(500).send("Non dovresti vedere questo messaggio. Aaahh, che imbarazzo!!");
             case "23502": //violaz. NOT NULL

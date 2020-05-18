@@ -10,7 +10,8 @@ Cose da fare (Priorità decrescente):
 
 -sistemazione dev-stuff (Francesco)
   [ø] Coerenza utenti di test
-  [ ] (vd. db/index riga 498)
+  [ø] Ho deciso di eliminare totalmente gli argomenti opzionali da peso e attività
+      perché sono richieste PUT, che ammettono solo un rimpiazzo completo
 
 
 Cose da fare per flexare:
