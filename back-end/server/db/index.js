@@ -272,7 +272,7 @@ async function addAttivita(id, data, nome, calout, descrizione) {
             [id, nome, calout].concat(plusParams)
         );
         await addOrSubtractCalories(client, id, res.rows[0].data, 0, calout);
-        console.debug('Aggiuta '+nome);
+        
         return res.rows[0];
     });
 }
@@ -336,8 +336,7 @@ async function getAdditionalInfo(id, what) {
         [id]
     );
     
-    /* //DEBUG
-    console.log("DB result: "+JSON.stringify(res.rows[0])); */
+    
     return res.rows[0];
 }
 
