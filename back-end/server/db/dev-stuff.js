@@ -101,7 +101,7 @@ async function initDB(testUsers) {
     if(testUsers){
         //user di default
         await addTestUser("AkihikoSanada", "polydeuces", 'a.sanada@gekkoukan.edu', 175);   //un utente completo, il protagonista dei test che andrò a fare sul frontend
-        await addTestUser("CassiusBright", "estelle1184");  //ha misure di peso, non di calorie
+        await addTestUser("CassiusBright", "estelle1186");  //ha misure di peso, non di calorie
         await addTestUser("ChieSatonaka", "tomoe", 'c.satonaka@yasogami.edu');        //ha misure di calorie, non di peso
         await addTestUser("EdelgardVonHresvelg", "blackeagle", undefined, 158);    //ha una misura di entrambi, e dimostra che il tipo NUMERIC accetta anche i decimali
         console.log(await index.setPeso("AkihikoSanada", new Date("2020-04-25"), 80));
@@ -111,6 +111,11 @@ async function initDB(testUsers) {
         console.log(await index.setPeso("CassiusBright", new Date("2020-04-26"), 70));
         console.log(await index.setPeso("CassiusBright", new Date("2020-04-27"), 75));
         console.log(await index.setPeso("EdelgardVonHresvelg", new Date("2020-04-27"), 60.005));
+        //purtroppo non posso usare le funzioni che aggiungono peso/attività
+        //e modificano le calorie allo stesso tempo perché verrebbero
+        //eseguite troppo velocemente e le entry avrebbero tutte lo stesso timestamp,
+        //setto tutto separatamente ma in modo coerente
+        //tanto comunque questo script viene usato solo per inizializzazione
         console.log(await index.setCalorie("AkihikoSanada", new Date("2020-04-25"), 100, 100));
         console.log(await index.setCalorie("AkihikoSanada", new Date("2020-04-26"), 50, 0));
         console.log(await index.setCalorie("AkihikoSanada", new Date("2020-04-27"), 0, 60));
@@ -122,30 +127,19 @@ async function initDB(testUsers) {
         //perché sono troppo veloci e le entry hanno tutte lo stesso timestamp
         await pool.query(
             "INSERT INTO cibo(id, created, data, nome, calin) VALUES "+
-            "(1, '2020-05-01', '2020-05-01', 'pollo', 300), "+
-            "(1, '2020-05-02', '2020-05-02', 'sushi', 250), "+
-            "(1, '2020-05-03', '2020-05-03', 'uova', '350'), "+
-            "(1, '2020-05-04', '2020-05-04', 'fagioli', 200), "+
-            "(3, '2020-05-05', '2020-05-05', 'carne', 999), "+
-            "(4, '2020-05-06', '2020-05-06', 'gratin veloce di pesce', 200.5);"
+            "(1, '2020-04-25', '2020-04-25', 'pollo', 100), "+
+            "(1, '2020-04-26', '2020-04-26', 'sushi', 50), "+
+            "(3, '2020-04-25', '2020-04-25', 'bistecca', 100), "+
+            "(3, '2020-04-26', '2020-04-26', 'mezza bistecca', 50), "+
+            "(4, '2020-04-27', '2020-04-27', 'gratin veloce di pesce', 150.25);"
         );
         await pool.query(
             "INSERT INTO attivita(id, created, data, nome, calout) VALUES "+
-            "(1, '2020-05-01', '2020-05-01', 'boxe', 200), "+
-            "(1, '2020-05-02', '2020-05-02', 'tartarus',500), "+
-            "(1, '2020-05-03', '2020-05-03', 'boxe', 200), "+
-            "(1, '2020-05-04', '2020-05-04', 'tartarus', 500), "+
-            "(1, '2020-05-05', '2020-05-05', 'boxe e tartarus (contemporaneamente)', 700), "+
-            "(2, '2020-05-04', '2020-05-04', 'allenam. combatt. bastone con Estelle', 300), "+
-            "(2, '2020-05-05', '2020-05-05', 'pesca con Joshua', 50), "+
-            "(2, '2020-05-06', '2020-05-06', 'lavoro con la gilda', 400), "+
-            "(3, '2020-05-01', '2020-05-01', 'kung fu', 200), "+
-            "(3, '2020-05-04', '2020-05-04', 'esplorazione castello', 999), "+
-            "(4, '2020-05-01', '2020-05-01', 'esercitazione ascia', 200.5), "+
-            "(4, '2020-05-02', '2020-05-02', 'esercitazione comando', 200.5), "+
-            "(4, '2020-05-03', '2020-05-03', 'esercitazione armatura', 200.5), "+
-            "(4, '2020-05-04', '2020-05-04', 'allenamento con Byleth', 200.5), "+
-            "(4, '2020-05-06', '2020-05-06', 'incarico mensile', 350.75);"
+            "(1, '2020-04-25', '2020-04-25', 'esplorazione tartarus',100), "+
+            "(1, '2020-04-27', '2020-04-27', 'boxe', 60), "+
+            "(3, '2020-04-25', '2020-04-25', 'esplorazione castello', 100), "+
+            "(3, '2020-04-27', '2020-04-27', 'kung fu', 60), "+
+            "(4, '2020-04-27', '2020-04-27', 'esercitazione ascia', 200.5);"
         );
         console.log("Tutto OK, Ctrl+C per uscire");
     }
