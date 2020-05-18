@@ -74,6 +74,7 @@ function retry(userId, requestFunction, requestURL, requestPayload){
 
     return new Promise( async (resolve, reject) =>{
 
+        console.debug('Riprovo');
         //provo a recuperare il refresh dal database
         try {
             var dbRes = await db.getAdditionalInfo(userId,'fitbitRefresh')

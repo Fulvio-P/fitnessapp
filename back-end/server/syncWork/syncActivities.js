@@ -34,17 +34,31 @@ function sync(userId){
 
         //successo: fitbit ha risposto con dati
         .then( response =>{
+            
 
-            //TEST
-            console.log(response.data);
 
+            const activities =  response.data.activities
             //Ciclo sulle varie attività nella risposta
-            //Per ogni attività creo un rercord nel database
+            activities.forEach(activity => {
+                //TEST
+                const usefulData ={
+                    nome: activity.activityName,
+                    calout: activity.calories,
+                    data: activity.startTime.split('T')[0],
+                    lastFitbit: activity.lastModified.split('.')[0]
+                }
+                console.log(usefulData);  
+                //Per ogni attività creo un rercord nel database
+                
+                lastChecked = usefulData.lastFitbit;
+            });
+            
 
 
 
             //Accedo al database per aggiornare last checked all'ora attuale
-
+            //TEST
+            console.log(lastChecked);
             //una volta finito tutto
             resolve("activities_synced")
 
