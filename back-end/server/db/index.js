@@ -674,6 +674,10 @@ module.exports = {
     getAdditionalInfo,
     editAdditionalInfo,
     deleteOneAdditionalInfo,
+    addClient,
+    getClientById,
+    getClientByUser,
+    deleteClient,
     addOpinione,
     
     //Funzioni test
