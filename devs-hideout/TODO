@@ -1,20 +1,10 @@
 Cose da fare (Priorità decrescente):
 
--chiamate API per fitbitsync (Fulvio)
+-Documentazione installazione, uso API e casi di prova
 
--Implementare possibilità di cambiare nome utente e password: (Francesco) 
-  [ø] Mettere funzione di cancellazione account nel backend
-  [ø] Mettere pulsante di cancellazione account nel frontend
+-quando passiamo in produzione, trasformare tutte le url hardcoded in url locali
 
--Documentazione installazione, uso API e casi di prova (Fulvio)
-
--sistemazione dev-stuff (Francesco)
-  [ø] Coerenza utenti di test
-  [ø] Ho deciso di eliminare totalmente gli argomenti opzionali da peso e attività
-      perché sono richieste PUT, che ammettono solo un rimpiazzo completo
-
-
-Cose da fare per flexare:
+-implementare oauth
 -mirage?
 -Dare la possibilità di mettere una descrizione personalizzata anche
  nel form OFF (apparirebbe dopo quella pregenerata)
