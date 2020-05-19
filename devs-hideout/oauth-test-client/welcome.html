@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>LoremFit: benvenuto</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+        <script>
+            function buttonThings() {
+                const regex = /([?]|&)token=([^&]*)/;
+                const matches = window.location.search.match(regex);
+                if (matches==null) {
+                    document.getElementById("username").innerHTML = "Parametro token mancante";
+                    return;
+                }
+                const token=matches[2];
+                axios.get(
+                    "http://localhost:5000/api/food",
+                    {
+                        headers: {
+                            Authorization: "Bearer " + token
+                        }
+                    }
+                ).then(resp=>{
+                    document.getElementById("username").innerHTML = resp.data.username;
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <h1>Benvenuto in LoremFit!</h1>
+        <p>Sit amet per aver fatto il login con FitnessApp</p>
+        <button onclick="buttonThings()">Clicca qui per sapere il tuo username su FitnessApp</button>
+        <p id="username"></p>
+    </body>
+</html>
