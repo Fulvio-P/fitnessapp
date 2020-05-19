@@ -34,15 +34,20 @@
       </b-form>
     </p>
 
-    <b-button router-link to="/">Annulla</b-button>
-
     <b-overlay :show="this.$store.getters.isLoading" no-wrap> </b-overlay>
+
   </div>
 </template>
 
 <script>
 export default {
   name: "LoginDialog",
+  /**
+   * Una funzione che RESTITUISCE UNA PROMESSA che rappresenta la
+   * richiesta da fare per fare login E l'azione da intraprendere in caso di successo.
+   * Gli errori invece vengono gestiti qui.
+   */
+  props: ["loginAction"],
   data() {
     return {
       username: "",
@@ -54,12 +59,7 @@ export default {
       //recupero username e password dal form
       const { username, password } = this;
       //avvio autenticazione (gestita da vuex)
-      this.$store
-        .dispatch("AUTH_REQUEST", { username, password })
-        //se tutto va bene redirect sulla pagina dei chart
-        .then(() => {
-          this.$router.push("/charts");
-        })
+      this.loginAction(username, password)
         //se qualcosa va male i campi sono resettati
         .catch(() => {
           this.username = "";
