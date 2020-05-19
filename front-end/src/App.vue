@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <ShySideNavbar :avoidroutes="['/', '/login']" />
+    <ShySideNavbar :avoidroutes="['/', '/login', '/oauth']" />
     <router-view />
     <WebsocketInbox ref="inbox" />
   </div>
