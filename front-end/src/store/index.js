@@ -12,7 +12,11 @@ export default new Vuex.Store({
 
     //stati usati per il login vero
     token: localStorage.getItem("user-token") || "", //JWT conservato anche se localstorage non disponibile
-    status: "" //status interno della applicazione per richieste di login, regitrazione e altre API
+    status: "", //status interno della applicazione per richieste di login, regitrazione e altre API
+    socket: {
+      isConnected: false, //questo stato non viene mai usato, ma potrebbe servire quindi lo tengo
+      loading: false,
+    }
   },
 
   getters: {
@@ -22,6 +26,10 @@ export default new Vuex.Store({
       state.status == "loading" ||
       state.status == "reg-loading" ||
       state.status == "api-loading"
+    ,
+    isSocketConneted: state => state.socket.isConnected,
+    isSocketLoading: state => state.socket.loading,
+    
   },
 
   mutations: {
@@ -82,6 +90,24 @@ export default new Vuex.Store({
         // Something happened in setting up the request that triggered an Error
         state.status = error.message;
       }
+    },
+
+    /* Mutazioni Websocket */
+
+    //COMMENTO: ONOPEN e ONCLOSE non sono usate per il momento
+    //          però potrebbero essere utili quindi le tengo
+    SOCKET_ONOPEN (state)  {
+      /* Vue.prototype.$socket = event.currentTarget */ 
+      state.socket.isConnected = true
+    },
+    SOCKET_ONCLOSE (state)  {
+      state.socket.isConnected = false
+    },
+    SOCKET_ONMESSAGE (state)  {
+      state.socket.loading = false
+    },
+    SOCKET_ONSEND (state) {
+      state.socket.loading = true
     }
   },
 
@@ -233,6 +259,22 @@ export default new Vuex.Store({
             reject(error);
           });
       });
+    },
+
+
+    /* Azioni websocket */
+    FITBIT_SYNC({ commit }, socket) {
+      try {
+        socket.sendObj({
+        //l'autemticazione è spostata all'apertura della connessione, non serve più inviare il token qui
+        action: "fitbitsync"
+        });
+        commit("SOCKET_ONSEND");
+      } catch (err) {   //in realtà da lato vue non sembra lanciare errori, ma comunque è sempre meglio un try-catch in più che uno in meno
+        console.error("and the ws error is...");
+        console.error(err);
+        alert("Errore durante l'invio della richiesta di sincronizzazione");
+      }
     }
   },
 

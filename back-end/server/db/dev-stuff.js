@@ -36,7 +36,8 @@ async function initDB(testUsers) {
             "altezza SMALLINT, "+             //in centimetri (limite superiore: 32768)
             "fitbitToken VARCHAR(1024), "+    //i token fitbit possono essere fino a 1024 byte
             "fitbitRefresh VARCHAR(1024), "+
-            "fitbitUser VARCHAR(100)"+        //non sono sicuro del limite per questo ma 100 caratteri dovrebbero essere abbastanza 
+            "fitbitUser VARCHAR(100) ,"+      //non sono sicuro del limite per questo ma 100 caratteri dovrebbero essere abbastanza 
+            "lastFitbitUpdate VARCHAR(19) DEFAULT '2010-01-01T00:00:00' "+   //le stringhe rappresentano date nel formato yyyy-mm-ddThh:mm:ss     
             //eventuali altre
             ");"
     );

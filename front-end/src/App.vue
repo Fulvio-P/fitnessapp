@@ -35,6 +35,9 @@ export default {
     //mettendolo qui, tutta l'applicazione può ricevere i messaggi, indipendentemente dalla route corrente
     this.$options.sockets.onmessage = (msg) => {
       console.log(msg);
+      if(JSON.parse(msg.data).type == "success"){
+        this.$store.commit('SOCKET_ONMESSAGE');
+      }
       this.$refs.inbox.msgobj = JSON.parse(msg.data);
     }
     //un listener anche per la chiusura della connessione da parte del server

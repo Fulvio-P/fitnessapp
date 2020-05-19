@@ -4,6 +4,8 @@
         <div v-show="fitbitConnected">
             <p> Hai eseguito l'acesso a FitBit come {{fitbitUser}} </p>
             <b-button @click="fitbitLogout" > Dissocia </b-button>
+            <p> Premi questo bottone per importare attività da Fitbit</p>
+            <FitbitSyncBtn />
         </div>
         <div v-show="!fitbitConnected">
             <p> Associa un account FitBit per ottenere la possibilità di importare gli allenamenti </p>
@@ -13,7 +15,7 @@
 </template>
 
 <script>
-
+import FitbitSyncBtn from "@/components/FitbitSyncBtn.vue";
 const clientID = process.env.VUE_APP_FITBIT_ID;
 const callbackURL = "http://localhost:8080/profile";
 
@@ -29,6 +31,9 @@ const fitbitURL = "http://localhost:5000/api/profile/fitbit"
 
 
 export default {
+    components: {
+        FitbitSyncBtn,
+    },
     data() {
         return {
             fitbitUser: undefined,

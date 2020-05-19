@@ -2,6 +2,7 @@ const express = require('express');
 const db = require("../db/index");
 const utils = require("../globalutils");
 const jwt = require('jsonwebtoken');
+const sync = require('../syncWork/syncActivities');
 
 const router = express.Router();
 const jwtSecret = process.env.JWT_SECRET;
@@ -92,14 +93,22 @@ router.ws("/", function(ws, req) {
             message: "Sincronizzazione avviata..."
         }));
 
-        console.log("TODO do all the fitbit stuff");
-        
-        setTimeout(() => {   //tempo di work farlocco
+        /* console.log("TODO do all the fitbit stuff"); */
+
+        sync.sync(user.id)
+        .then(()=>{
             return trySend(ws, JSON.stringify({
                 type: "success",
                 message: "Sincronizzazione riuscita!"
             }));
-        }, 1000);
+        })
+        .catch((error)=>{
+            console.error(error);
+            return trySend(ws, JSON.stringify({
+                type: "error",
+                message: "Sincronizzazione fallita :("
+            }));
+        })
         
     });
 

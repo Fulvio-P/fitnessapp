@@ -20,7 +20,8 @@ if (token) {
 //ma sono solo trigger automatici a certe mutazioni, non credo ci interessi
 import VueNativeSock from 'vue-native-websocket';
 Vue.use(VueNativeSock, 'ws://localhost:5000/ws/fitbitsync?token=pippo', {  //url irrilevante perché durante la connessione manuale vorrò una querystring col token
-  connectManually: true
+  connectManually: true,   //connessioni gestite manualmente
+  store: store,
 });
 /*
 i benefici del format:json sono SOLO due:

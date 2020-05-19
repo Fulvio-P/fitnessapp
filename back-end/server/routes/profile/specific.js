@@ -106,8 +106,7 @@ router.put("/fitbit", async(req,res) => {
     //successo i token sono stati inseriti correttamente
     .then(()=>{
         
-        //DEBUG
-        /* console.log('token acquisiti, provo a prendere il nome utente') */
+        
 
         fitbit.get(userId,"https://api.fitbit.com/1/user/-/profile.json")
         
