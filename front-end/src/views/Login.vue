@@ -4,7 +4,7 @@
     <b-container>
       <b-row>
         <b-col></b-col>
-        <b-col sm><LoginDialogInternal /></b-col>
+        <b-col sm><LoginDialogOAuth /></b-col>
         <b-col></b-col>
       </b-row>
     </b-container>
@@ -12,12 +12,12 @@
 </template>
 
 <script>
-import LoginDialogInternal from "@/components/LoginDialogInternal.vue";
+import LoginDialogOAuth from "@/components/LoginDialogOAuth.vue";
 
 export default {
   name: "Login",
   components: {
-    LoginDialogInternal
+    LoginDialogOAuth
   }
 };
 </script>
