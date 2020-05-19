@@ -50,6 +50,11 @@ const routes = [
     beforeEnter: ifNotAuthenticated
   },
   {
+    path: "/oauth",
+    name: "OAuth",
+    component: () => import("../views/OAuth.vue"),
+  },
+  {
     path: "/charts",
     name: "Charts",
     component: () => import("../views/Charts.vue"),

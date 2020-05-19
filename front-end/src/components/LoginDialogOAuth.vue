@@ -4,6 +4,13 @@
     <div>
       E il tuo ClientID è: {{ this.$route.query.id }} <br />
       E la tua CallbackURL è: {{ this.$route.query.callback }}
+      <b-card style="background-color:var(--nord15);">
+        TODO:
+        <ul>
+          <li>Controllare CallbackURL nel backend</li>
+          <li>Dire alla ShySideNavbar di evitare la route /oauth</li>
+        </ul>
+      </b-card>
     </div>
   </div>
 </template>
@@ -18,7 +25,6 @@ export default {
   extends: LoginDialog,
   methods: {
     oAuthLogin(username, password) {
-      alert("Ho fatto il controllo callback url?!");
       return this.$store
         .dispatch("API_POST", {
           url: "http://localhost:5000/api/user/oauth",
