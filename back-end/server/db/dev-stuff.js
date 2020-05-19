@@ -91,6 +91,7 @@ async function initDB(testUsers) {
         "CREATE TABLE developer ("+
             "id integer NOT NULL REFERENCES utente(id), "+
             "clientid SERIAL PRIMARY KEY, "+
+            "clientname VARCHAR(100), "+
             "redirect VARCHAR(200)"+
         ");"      
     )
