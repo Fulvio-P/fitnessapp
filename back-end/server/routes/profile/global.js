@@ -10,10 +10,10 @@ const router = express.Router();
  */
 router.use(utils.verifyJWT);
 
-//fornisce username e tutte le info addizionali dell'utente autenticato
+//fornisce username e le info addizionali (esclusi i token) dell'utente autenticato
 router.get("/", async (req, res) => {
     try {
-        var info = await db.getAdditionalInfo(req.user.id, "*");
+        var info = await db.getAdditionalInfo(req.user.id, "email, altezza, fitbituser");
     } catch (err) {
         console.error(`postgres error no. ${err.code}: ${err.message}`);   //non sono sicuro che vogliamo rimandare al client il messaggio d'errore di postgres
         return res.status(500).send("Internal Database Error");
@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
     return res.status(200).json(info);
 });
 
-//modifica più info addizionali contemporaneamente (NON username o password)
+//modifica più info addizionali contemporaneamente (username, password e dati fitbit non vengono toccati)
 router.patch("/", async (req, res) => {
     //estraiamo manualmente le singole proprietà permesse perché la funzione che fa la query ha bisogno di concatenare i nomi delle proprietà direttamente alla query, e non voglio injection
     var args = {};
@@ -54,6 +54,27 @@ router.patch("/", async (req, res) => {
     }
     res.status(200).json(toSend);
 });
+
+//elimina COMPLETAMENTE e DEFINITIVAMENTE l'account dell'utente e TUTTI i dati associati.
+//richiede di inviare la querystring "?sure=true" per evitare di colpire accidentalmente
+//questo endpoint.
+//I token appartenenti a un utente cancellato non vengono automaticamente invalidati,
+//il comportamento dovuto al loro uso è indefinito ma safe e idempotente.
+//(le get danno vuoto, le post danno ID not found, le put e delete danno entry inesistente)
+router.delete("/", async (req, res) => {
+    if (!req.query.sure) {
+        return res.status(400).send("Are you sure about this?");
+    }
+    try {
+        await db.deleteAccount(req.user.id);
+    } catch (err) {
+        //dovrebbe essere impossibile rompere vincoli con questa operazione
+        console.error(`postgres error no. ${err.code}: ${err.message}`);
+        return res.status(500).send("Internal Database Error");
+    }
+    //se la query è andata bene...
+    return res.status(204).send();
+})
 
 //metto le route specifiche in un altro file per evitare cluttering di questo,
 //questa dichiarazione è in questo punto per farle dopo la verifica del JWT

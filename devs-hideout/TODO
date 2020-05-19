@@ -1,33 +1,21 @@
 Cose da fare (Priorità decrescente):
 
--Integrazione FitBit (Fulvio):
-  -Ottenere il token oAuth
-  -Fare funzioni che gestiscono i dati nel back end
-  -Impostare la comunicazione tra backend e front end
-  -Aggiungere pulsanti per sincronizzazione nel front end
+-chiamate API per fitbitsync (Fulvio)
 
--Prototipo Rabbit (Francesco):
-  (in qualsiasi ordine)
-  [ ] Implementare Rabbit lato client
-  [ ] Implementare Rabbit lato server (con work placeholder)
+-Implementare possibilità di cambiare nome utente e password: (Francesco) 
+  [ø] Mettere funzione di cancellazione account nel backend
+  [ø] Mettere pulsante di cancellazione account nel frontend
 
--Sviluppo Feed (Solo se FitBit non usa già messaggi):
-  -Creare possibilità di inviare al server richieste di generare messaggi (pulsante vantati)
-  -Implementare creazione di messaggi da parte del server
-  -Implementare ricezione di messaggi da parte del front end
-  -FLEX: implemantare un sistema di follower
+-Documentazione installazione, uso API e casi di prova (Fulvio)
 
--Implementare possibilità di cambiare nome utente e password:
-  -Fare funzioni che gestiscono la richiesta nel backend
-  -Aggiungere righe apposite nelle impostazioni utente
+-sistemazione dev-stuff (Francesco)
+  [ø] Coerenza utenti di test
+  [ø] Ho deciso di eliminare totalmente gli argomenti opzionali da peso e attività
+      perché sono richieste PUT, che ammettono solo un rimpiazzo completo
 
-
-Priorità minore:
--Documentazione installazione, uso API e casi di prova
--Coerenza utenti di test
--Dare la possibilità di mettere una descrizione personalizzata anche
- nel form OFF (apparirebbe dopo quella pregenerata)
 
 Cose da fare per flexare:
 -mirage?
+-Dare la possibilità di mettere una descrizione personalizzata anche
+ nel form OFF (apparirebbe dopo quella pregenerata)
 -Aggiungere la linea obbiettivo sui grafici

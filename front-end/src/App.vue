@@ -2,31 +2,55 @@
   <div id="app">
     <ShySideNavbar :avoidroutes="['/', '/login']" />
     <router-view />
+    <WebsocketInbox ref="inbox" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import ShySideNavbar from "@/components/ShySideNavbar";
+import WebsocketInbox from "@/components/WebsocketInbox";
 
 export default {
   name: "App",
   components: {
-    ShySideNavbar
+    ShySideNavbar,
+    WebsocketInbox
   },
   /* Da quando la pagina viene creata tutte le rispote che axios
   intecetta se sono errori di non autorizzazione fanno logout e
   lo ridirigono alla pagina di login */
-  created: () => {
+  mounted() {
     axios.interceptors.response.use(undefined, err => {
       return new Promise(() => {
-        if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+        console.log(JSON.stringify(err))
+        if (err.message.includes('401') && err.config && !err.config.__isRetryRequest) {
           this.$store.dispatch("AUTH_LOGOUT");
           this.$router.push("/login");
         }
         throw err;
       });
     });
+    //mettiamo su un listener per i websocket
+    //mettendolo qui, tutta l'applicazione può ricevere i messaggi, indipendentemente dalla route corrente
+    this.$options.sockets.onmessage = (msg) => {
+      console.log(msg);
+      if(JSON.parse(msg.data).type == "success"){
+        this.$store.commit('SOCKET_ONMESSAGE');
+      }
+      this.$refs.inbox.msgobj = JSON.parse(msg.data);
+    }
+    //un listener anche per la chiusura della connessione da parte del server
+    this.$options.sockets.onclose = () => {
+      this.$disconnect();
+    }
+    //può capitare che l'utente entri direttamente nell'area protetta senza essere passato
+    //per la pagina di login, se c'è ancora un token valido in localstorage.
+    //in tal caso, non c'è stata la connessione automatica col login che sta in vuex,
+    //quindi tocca connettersi manualmente
+    if (this.$store.state.token) {   //sembra che vuex sia caricato correttamente a questo punto
+      this.$connectwithtoken(this.$store.state.token)  //funzione definita da me in main.js
+    }
   }
 };
 </script>
@@ -50,6 +74,11 @@ export default {
   --nord13: #ebcb8b;
   --nord14: #a3be8c;
   --nord15: #b48ead;
+
+  /* servono anche queste così posso applicare trasparenza*/
+  --nord8rgb: 136, 192, 208;
+  --nord11rgb: 191, 97, 106;
+  --nord14rgb: 163, 190, 140;
 }
 
 #app {
