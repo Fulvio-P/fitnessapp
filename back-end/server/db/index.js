@@ -66,6 +66,18 @@ async function getUserByName(username) {
     return queryRes.rows[0];
 }
 
+//elimina completamente e permanentemente un account e tutti i dati a esso associati.
+async function deleteAccount(id) {
+    await doTransaction(async client=>{
+        await client.query("DELETE FROM infoAddizionali WHERE id=$1;", [id]);
+        await client.query("DELETE FROM misuraPeso WHERE id=$1;", [id]);
+        await client.query("DELETE FROM misuraCalorie WHERE id=$1;", [id]);
+        await client.query("DELETE FROM cibo WHERE id=$1;", [id]);
+        await client.query("DELETE FROM attivita WHERE id=$1;", [id]);
+        await client.query("DELETE FROM utente WHERE id=$1;", [id]);
+    });
+}
+
 
 ////////////////////////////////////  PESO  //////////////////////////////////////////
 
@@ -208,14 +220,13 @@ async function editCibo(id, ts, data, nome, calin, descrizione) {
     if (vecch.rows.length<1) {
         return undefined;    //se non troviamo nulla è meglio che smettiamo subito prima di avere problemi indesiderati durante la transazione
     }
-    const [plusSet, plusParams] = generateUpdateOptionals(data, descrizione);
     return await doTransaction(async client => {
         var nuov = await client.query(
             "UPDATE cibo "+
-            "SET nome=$3, calin=$4"+plusSet+" "+
+            "SET nome=$3, calin=$4, data=$5, descrizione=$6 "+
             "WHERE id=$1 AND created=$2 "+
             "RETURNING created, data, nome, calin, descrizione;",
-            [id, ts, nome, calin].concat(plusParams)
+            [id, ts, nome, calin, data, descrizione]
         );
         await addOrSubtractCalories(client, id, vecch.rows[0].data, -vecch.rows[0].calin, 0);
         await addOrSubtractCalories(client, id, nuov.rows[0].data, nuov.rows[0].calin, 0);
@@ -288,14 +299,13 @@ async function editAttivita(id, ts, data, nome, calout, descrizione) {
     if (vecch.rows.length<1) {
         return undefined;    //se non troviamo nulla è meglio che smettiamo subito prima di avere problemi indesiderati durante la transazione
     }
-    const [plusSet, plusParams] = generateUpdateOptionals(data, descrizione);
     return await doTransaction(async client => {
         var nuov = await client.query(
             "UPDATE attivita "+
-            "SET nome=$3, calout=$4"+plusSet+" "+
+            "SET nome=$3, calout=$4, data=$5, descrizione=$6 "+
             "WHERE id=$1 AND created=$2 "+
             "RETURNING created, data, nome, calout, descrizione;",
-            [id, ts, nome, calout].concat(plusParams)
+            [id, ts, nome, calout, data, descrizione]
         );
         await addOrSubtractCalories(client, id, vecch.rows[0].data, 0, -vecch.rows[0].calout);
         await addOrSubtractCalories(client, id, nuov.rows[0].data, 0, nuov.rows[0].calout);
@@ -479,24 +489,6 @@ function generateInsertOptionals(data, descrizione) {
 
 //genera stringhe e array da aggiungere alle query UPDATE per cibo e attività per gestire
 //correttamente i parametri opzionali (pg non ha una keyword DEFAULT da usare, purtroppo).
-//questa funzione è estremamente specifica e, allo stato attuale, NON PORTABILE
-//è una funzione solo perché viene usata IDENTICA in cibo e attività
-//se vogliamo provare a farne una versione generica, forse potremmo considerare il ciclo for...in
-//per poter passare un oggetto come parametro e iterare sulle sue proprietà...
-function generateUpdateOptionals(data, descrizione) {
-    const theArray = [[data, ", data"], [descrizione, ", descrizione"]].filter(a=>a[0]);  //prende i non-undefined
-    const plusParams = theArray.map(a=>a[0]);
-    const nomi = theArray.map(a=>a[1]);
-    const dollari = ["=$5", "=$6"];
-    // adesso facciamo praticamente una specie di zip di nomi e dollari
-    var plusSet = "";
-    for (let i=0; i<nomi.length; i++) {
-        plusSet += nomi[i] + dollari[i];
-    }
-    return [plusSet, plusParams];
-}
-
-//come quella sopra, ma generica.
 //passare come parametro un oggetto con nome_proprietà:valore_proprietà
 //per ogni proprietà da modificare.
 //startFrom è il numero da cui cominciare per generare i placeholder $
@@ -621,6 +613,7 @@ module.exports = {
     addUser,
     getUserByName,
     getUserById,
+    deleteAccount,
     getRangeMisurePeso,
     getAllMisurePeso,
     getOneMisuraPeso,

@@ -37,6 +37,20 @@ router.get("/fitbit", async (req, res) => {
     return await generalGet(req, res, "fitbituser");
 });
 
+router.get("/username", async (req, res) => {
+    try {
+        var user = await db.getUserById(req.user.id);
+    } catch (err) {
+        console.error(`postgres error no. ${err.code}: ${err.message}`);   //non sono sicuro che vogliamo rimandare al client il messaggio d'errore di postgres
+        return res.status(500).send("Internal Database Error");
+    }
+    if (!user) {
+        return res.status(404).send("User ID not found");
+    }
+    var toSend = { username: user.username };
+    return res.status(200).json(toSend);
+});
+
 
 
 
