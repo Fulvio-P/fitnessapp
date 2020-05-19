@@ -28,7 +28,12 @@ export default {
       return this.$store
         .dispatch("API_POST", {
           url: "http://localhost:5000/api/user/oauth",
-          payload: { id, callback, username, password }
+          payload: {
+            id: this.$route.query.id,
+            callback: this.$route.query.callback,
+            username,
+            password
+          }
         })
         //se tutto va bene redirect sulla callbackURL con il token in querystring
         .then(resp => {
