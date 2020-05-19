@@ -37,7 +37,7 @@ export default {
         })
         //se tutto va bene redirect sulla callbackURL con il token in querystring
         .then(resp => {
-          window.location.href = this.callback+"?token="+resp.data.token;
+          window.location.href = this.$route.query.callback+"?token="+resp.data.token;
         })
     }
   }
