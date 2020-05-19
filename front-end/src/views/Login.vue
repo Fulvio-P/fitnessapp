@@ -12,12 +12,12 @@
 </template>
 
 <script>
-import LoginDialogOAuth from "@/components/LoginDialogOAuth.vue";
+import LoginDialogInternal from "@/components/LoginDialogInternal.vue";
 
 export default {
   name: "Login",
   components: {
-    LoginDialogOAuth
+    LoginDialogInternal
   }
 };
 </script>
