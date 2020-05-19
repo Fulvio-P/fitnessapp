@@ -86,6 +86,15 @@ async function initDB(testUsers) {
         ");"
     );
 
+    //Tabella App oAuth
+    await pool.query(
+        "CREATE TABLE developer ("+
+            "id integer NOT NULL REFERENCES utente(id), "+
+            "clientid SERIAL PRIMARY KEY, "+
+            "redirect VARCHAR(200)"+
+        ");"      
+    )
+
     //Tabella opinioni
     await pool.query("CREATE TABLE opinioni ("+
                         "created TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, "+
@@ -172,6 +181,11 @@ async function destroyDB() {
         await pool.query("DROP TABLE infoAddizionali;");
     } catch (err) {
         console.error("errore destroyDB(infoAddizionali): "+err.message);
+    }
+    try {
+        await pool.query("DROP TABLE developer;");
+    } catch (err) {
+        console.error("errore destroyDB(developer): "+err.message);
     }
     try {
         await pool.query("DROP TABLE utente;");
