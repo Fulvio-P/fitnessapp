@@ -17,8 +17,7 @@
     
     <!-- Fitbit -->
     <ProfileFitbit />
-    <h1>Sincronizzazione FitBit</h1>
-    <FitbitSyncBtn />
+    
 
     <!-- Logout -->
     <h1>Logout</h1>
@@ -28,14 +27,12 @@
 
 <script>
 import ProfileInfoDisplayEdit from "@/components/ProfileInfoDisplayEdit.vue";
-import FitbitSyncBtn from "@/components/FitbitSyncBtn.vue";
 import ProfileFitbit from "@/components/ProfileFitbit.vue";
 
 export default {
   name: "ProfilePage",
   components: {
     ProfileInfoDisplayEdit,
-    FitbitSyncBtn,
     ProfileFitbit
   },
   data() {
