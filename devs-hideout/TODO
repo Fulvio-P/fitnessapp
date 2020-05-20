@@ -7,10 +7,10 @@ Cose da fare (Priorità decrescente):
         activities
         profile
     Francesco:
-        auth
-        calories
-        weight
-        food (+ food-off)
+        [ ] auth
+        [ ] calories
+        [ ] weight
+        [ ] food (+ food-off)
 
 memento: staimo usando stoplight
 
