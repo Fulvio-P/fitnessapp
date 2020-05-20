@@ -15,7 +15,6 @@ router.get("/", async(req, res)=>{
     const username = req.user.username;
     const internal = req.user.internalToken;
 
-    console.debug(internal);
     //le proprie applicazioni sono visualizzabili solo dal front end
     if(!internal){
         return res.status(403).send("Forbidden");
