@@ -17,6 +17,15 @@
     
     <!-- Fitbit -->
     <ProfileFitbit />
+
+
+    <!-- Devloper -->
+    <h1>Gestisci le tue applicazioni</h1>
+    <p>
+      Regitra la tua applicazione per usare le API di FitnessApp 
+      usando oAuth 2 (è supportato solo il workflow inplicit code grant)
+    </p>
+    <b-button router-link to="/developer">Vai alla pagina developer</b-button>
     
 
     <!-- Logout -->

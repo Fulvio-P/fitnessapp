@@ -62,6 +62,15 @@ router.patch("/", async (req, res) => {
 //il comportamento dovuto al loro uso è indefinito ma safe e idempotente.
 //(le get danno vuoto, le post danno ID not found, le put e delete danno entry inesistente)
 router.delete("/", async (req, res) => {
+
+
+    //il proprio account è cancellabile solo dal front end
+    const internal = req.user.internalToken;
+    if(!internal){
+        return res.status(403).send("Forbidden");
+    }
+    
+    
     if (!req.query.sure) {
         return res.status(400).send("Are you sure about this?");
     }

@@ -53,7 +53,7 @@ router.post("/", async (req, res)=>{
     try {
         var added = await db.addClient(
             req.user.id,
-            req.body.clientName,
+            req.body.clientname,
             req.body.redirect,
         );
     } catch (error) {
