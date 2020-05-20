@@ -121,7 +121,13 @@ router.post('/login', async (req, res) => {
 
 //POST api/user/oauth : riceve i dati e ritorna un id se corretti
 router.post('/oauth', async (req, res) => {
-    console.log("TODO controllo callback url")
+    const client = await db.getClientById(req.body.id);
+    if (!client) {
+        return res.status(404).send("Client ID not found");
+    }
+    if (client.redirect != req.body.callback) {
+        return res.status(400).send("Incorrect callback URL");
+    }
     await genericLogin(req, res, false);
 });
 
