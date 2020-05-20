@@ -6,7 +6,6 @@
       :items="items"
       :fields="fields"
       striped
-      hover
       responsive
       thead-class="hidden"
     >
@@ -14,23 +13,42 @@
         <ProfileInfoDisplayEdit :infoname="row.item.head" />
       </template>
     </b-table>
+
+    <b-container fluid class="profile-container">
+      <b-row>
+        <b-col>
+          <!-- Fitbit -->
+          <ProfileFitbit />
+        </b-col>
+
+        <b-col>
+          <!-- Devloper -->
+          <h1>Sviluppatori</h1>
+          <b-button router-link to="/developer">Pagina developer</b-button>
+          <p>
+            Regitra la tua applicazione per usare le API di FitnessApp 
+            usando oAuth 2 (è supportato solo il workflow implicit code grant)
+          </p>
+        </b-col>
+
+        <b-col>
+          <!-- Logout -->
+          <h1>Logout</h1>
+          <b-button @click="logout()">
+            <BIconBoxArrowLeft />
+            Logout
+          </b-button>
+        </b-col>
+      </b-row>
+    </b-container>
     
-    <!-- Fitbit -->
-    <ProfileFitbit />
-
-
-    <!-- Devloper -->
-    <h1>Gestisci le tue applicazioni</h1>
-    <p>
-      Regitra la tua applicazione per usare le API di FitnessApp 
-      usando oAuth 2 (è supportato solo il workflow inplicit code grant)
-    </p>
-    <b-button router-link to="/developer">Vai alla pagina developer</b-button>
     
 
-    <!-- Logout -->
-    <h1>Logout</h1>
-    <b-button @click="logout()">Clicca qui per effettuare il logout</b-button>
+
+    
+    
+
+    
 
     <!-- Eliminazione account -->
     <h1 class="pericolo">Pericolo!</h1>
@@ -42,13 +60,15 @@
 import ProfileInfoDisplayEdit from "@/components/ProfileInfoDisplayEdit.vue";
 import ProfileFitbit from "@/components/ProfileFitbit.vue";
 import DeleteAccountBtn from "@/components/DeleteAccountBtn.vue";
+import { BIconBoxArrowLeft } from "bootstrap-vue";
 
 export default {
   name: "ProfilePage",
   components: {
     ProfileInfoDisplayEdit,
     ProfileFitbit,
-    DeleteAccountBtn
+    DeleteAccountBtn,
+    BIconBoxArrowLeft
   },
   data() {
     return {
@@ -74,8 +94,13 @@ export default {
   font-weight: bold;
   width: 10%;
 }
+
 .pericolo {
   margin-top: 5em;
   color: var(--nord11);
+}
+
+.profile-container {
+  text-align: center;
 }
 </style>

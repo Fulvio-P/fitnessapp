@@ -1,10 +1,11 @@
 <template>
   <div class="text-center">
+    <b-card class="card">
+      <p>Un'applicazione vuole accedere ai tuoi dati su FitnessApp</p>
+    </b-card>
+    
     <LoginDialog :loginAction="oAuthLogin"/>
-    <div>
-      E il tuo ClientID è: {{ this.$route.query.id }} <br />
-      E la tua RedirectURL è: {{ this.$route.query.redirect }}
-    </div>
+    
   </div>
 </template>
 
@@ -38,5 +39,9 @@ export default {
 </script>
 
 <style scoped>
-
+.card {
+  margin-bottom: 1em;
+  background-color: var(--nord6);
+  filter: brightness(103%)
+}
 </style>
