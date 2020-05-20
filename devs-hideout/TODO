@@ -4,7 +4,6 @@ Cose da fare (Priorità decrescente):
 
 -quando passiamo in produzione, trasformare tutte le url hardcoded in url locali
 
--implementare oauth
 -mirage?
 -Dare la possibilità di mettere una descrizione personalizzata anche
  nel form OFF (apparirebbe dopo quella pregenerata)
