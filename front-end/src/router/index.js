@@ -77,7 +77,13 @@ const routes = [
     name: "Profile",
     component: () => import("../views/Profile.vue"),
     beforeEnter: ifAuthenticated
-  }
+  },
+  {
+    path: "/developer",
+    name: "Developer",
+    component: () => import("../views/Developer.vue"),
+    beforeEnter: ifAuthenticated
+  },
 ];
 
 const router = new VueRouter({
