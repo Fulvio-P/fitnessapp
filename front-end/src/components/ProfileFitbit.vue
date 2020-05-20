@@ -2,14 +2,23 @@
     <div>
         <h1>Account FitBit</h1>
         <div v-show="fitbitConnected">
-            <p> Hai eseguito l'acesso a FitBit come {{fitbitUser}} </p>
-            <b-button @click="fitbitLogout" > Dissocia </b-button>
-            <p> Premi questo bottone per importare attività da Fitbit</p>
-            <FitbitSyncBtn />
+            <b-container fluid>
+                <b-row>
+                    <b-col>
+                        <FitbitSyncBtn />
+                    </b-col>
+                    <b-col>
+                        <b-button @click="fitbitLogout">Dissocia</b-button>
+                    </b-col>
+                </b-row>
+            </b-container>
+
+            <p> Hai eseguito l'acesso a FitBit come: <br /> {{fitbitUser}} </p>
+
         </div>
         <div v-show="!fitbitConnected">
-            <p> Associa un account FitBit per ottenere la possibilità di importare gli allenamenti </p>
             <b-button v-bind:href="authURI" > Associa </b-button>
+            <p> Associa un account FitBit per ottenere la possibilità di importare gli allenamenti </p>
         </div>
     </div>
 </template>

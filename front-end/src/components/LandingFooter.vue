@@ -12,6 +12,10 @@
           <a href="https://github.com/Fulvio-P/fitnessapp" class="git-hub">
             Pagina GitHub
           </a>
+          <br />
+          <router-link to="/about" class="git-hub">
+            Documentazione API
+          </router-link>
         </b-col>
         <b-col sm class="footer-section contact-form">
           <h1>Contattaci</h1>

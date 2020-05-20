@@ -1,17 +1,17 @@
 <template>
   <LoginViewGeneric>
-    <LoginDialogInternal />
+    <LoginDialogOAuth />
   </LoginViewGeneric>
 </template>
 
 <script>
-import LoginDialogInternal from "@/components/LoginDialogInternal.vue";
+import LoginDialogOAuth from "@/components/LoginDialogOAuth.vue";
 import LoginViewGeneric from "@/components/LoginViewGeneric.vue";
 
 export default {
-  name: "Login",
+  name: "OAuth",
   components: {
-    LoginDialogInternal,
+    LoginDialogOAuth,
     LoginViewGeneric
   }
 };

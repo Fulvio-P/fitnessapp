@@ -392,11 +392,50 @@ async function deleteOneAdditionalInfo(id, what) {
 
 
 
+////////////////////////////////////  DEVELOPER  //////////////////////////////////////////
 
+//aggiunge una nuova applicazione client alla tabella developer
+async function addClient(id, clientname, redirect){
+    var res = await pool.query(
+        "INSERT INTO developer(id, clientname, redirect) "+
+        "VALUES ($1, $2, $3) "+
+        "RETURNING id, clientid, clientname, redirect",
+        [id, clientname, redirect]
+    );
+    return res.rows[0];
+}
 
+//seleziona una applicazione client tramite il suo id
+async function getClientById(clientid){
+    var res = await pool.query(
+        "SELECT * "+
+        "FROM developer "+
+        "WHERE clientid=$1",
+        [clientid]
+    )
+    return res.rows[0];
+}
 
+async function getClientByUser(id){
+    var res = await pool.query(
+        "SELECT * "+
+        "FROM developer "+
+        "WHERE id=$1",
+        [id]
+    )
+    return res.rows;
+}
 
-
+//elimina una applicazione client dato id di utente e client,
+async function deleteClient(id, clientid){
+    var res = await pool.query(
+        "DELETE FROM developer "+
+        "WHERE id=$1 AND clientid=$2 "+
+        "RETURNING id, clientid, clientname, redirect;",
+        [id, clientid]
+    );
+    return res.rows[0];
+}
 
 
 
@@ -635,6 +674,10 @@ module.exports = {
     getAdditionalInfo,
     editAdditionalInfo,
     deleteOneAdditionalInfo,
+    addClient,
+    getClientById,
+    getClientByUser,
+    deleteClient,
     addOpinione,
     
     //Funzioni test

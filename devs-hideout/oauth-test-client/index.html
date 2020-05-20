@@ -1,0 +1,26 @@
+<!--
+    Per testare: lanciare il Live Server di VSC
+    (
+        se il browser che si auto-apre crasha, riprovare con Firefox normale
+        url da copincollare per convenienza:
+        http://localhost:5500/devs-hideout/oauth-test-client/
+    )
+-->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>LoremFit</title>
+        <script>
+            function buttonStuff() {
+                const redirect = window.location.origin+window.location.pathname + "welcome.html";
+                window.location.href = "http://localhost:8080/oauth?id=2&redirect="+redirect;
+            }
+        </script>
+    </head>
+    <body>
+        <h1>LoremFit</h1>
+        <p>Collega il tuo account FitnessApp per adipisci elit</p>
+        <button onclick="buttonStuff()">Login con FitnessApp</button>
+    </body>
+</html>

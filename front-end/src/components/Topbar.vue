@@ -1,35 +1,19 @@
 <template>
   <div class="topbar">
     <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand router-link to="/">Fitness App</b-navbar-brand>
+      <b-navbar-brand router-link to="/">FitnessApp</b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-
-      <!-- Qeusta pagina va eliminata -->
       <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav>
-          <b-nav-item router-link to="/about">About</b-nav-item>
-        </b-navbar-nav>
+
+        <!--eventuali elementi non allineati a destra (ora nessuno)-->
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <b-nav-item
             router-link
             to="/login"
-            v-if="!$store.state.isUserLoggedIn"
-            >Log in</b-nav-item
           >
-
-          <!-- Questo pulsante deve essere eliminato -->
-          <!-- <b-nav-item
-            v-if="$store.state.isUserLoggedIn"
-            router-link
-            to="/profile"
-            >Profile</b-nav-item
-          > -->
-
-          <!-- Questo pulsante va spostato come item della sidebar della pagina del profilo oppure come dropdown del pulsate profilo -->
-          <b-nav-item v-if="$store.state.isUserLoggedIn" @click="logout">
-            Log out
+            Log in
           </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
@@ -46,11 +30,6 @@ export default {
         this.$router.push("/");
       });
     }
-
-    //overlay disattivato per il momento
-    /* displayOverlay() {
-      this.$store.dispatch("displayLoginDialog", true);
-    } */
   }
 };
 </script>

@@ -49,10 +49,15 @@ router.post('/register', async (req, res) => {
 
 
 
-
-
-//POST api/user/login : riceve i dati e ritorna un id se corretti
-router.post('/login', async (req, res) => {
+//contiene tutta la logica di login.
+//la metto fuori perché i due endpoint seguenti dovranno svolgere la
+//medesima operazione, ma con valori diversi dell'argomento internalToken,
+//che vengono hardcodati nei rispettivi endpoint
+//internalToken è true se il login è stato effettuato su FitnessApp
+//(e non per un altro servizio tramite OAuth).
+//un token interno dà permessi particolari che non vogliamo rendere
+//disponibili a terza perti (tipo cancellare l'account).
+async function genericLogin(req, res, internalToken) {
 
     /* Estraggo i dati dalla richesta */
     let username = req.body.username;
@@ -85,6 +90,11 @@ router.post('/login', async (req, res) => {
 
 
 
+    //aggiungo alle info da inserire nel token il valore internalToken
+    user.internalToken = internalToken;
+
+
+
 
     /* Creazione del token */
     const token = jwt.sign(user,jwtSecret,{
@@ -100,7 +110,25 @@ router.post('/login', async (req, res) => {
         'token':token
     });
 
+}
+
+
+
+//POST api/user/login : riceve i dati e ritorna un id se corretti
+router.post('/login', async (req, res) => {
+    await genericLogin(req, res, true);
 });
 
+//POST api/user/oauth : riceve i dati e ritorna un id se corretti
+router.post('/oauth', async (req, res) => {
+    const client = await db.getClientById(req.body.id);
+    if (!client) {
+        return res.status(404).send("Client ID not found");
+    }
+    if (client.redirect != req.body.redirect) {
+        return res.status(400).send("Incorrect redirect URL");
+    }
+    await genericLogin(req, res, false);
+});
 
 module.exports = router;
