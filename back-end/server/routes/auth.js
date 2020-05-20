@@ -125,8 +125,8 @@ router.post('/oauth', async (req, res) => {
     if (!client) {
         return res.status(404).send("Client ID not found");
     }
-    if (client.redirect != req.body.callback) {
-        return res.status(400).send("Incorrect callback URL");
+    if (client.redirect != req.body.redirect) {
+        return res.status(400).send("Incorrect redirect URL");
     }
     await genericLogin(req, res, false);
 });

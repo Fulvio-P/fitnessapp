@@ -3,14 +3,7 @@
     <LoginDialog :loginAction="oAuthLogin"/>
     <div>
       E il tuo ClientID è: {{ this.$route.query.id }} <br />
-      E la tua CallbackURL è: {{ this.$route.query.callback }}
-      <b-card style="background-color:var(--nord15);">
-        TODO:
-        <ul>
-          <li>Controllare CallbackURL nel backend</li>
-          <li>Dire alla ShySideNavbar di evitare la route /oauth</li>
-        </ul>
-      </b-card>
+      E la tua RedirectURL è: {{ this.$route.query.redirect }}
     </div>
   </div>
 </template>
@@ -30,14 +23,14 @@ export default {
           url: "http://localhost:5000/api/user/oauth",
           payload: {
             id: this.$route.query.id,
-            callback: this.$route.query.callback,
+            redirect: this.$route.query.redirect,
             username,
             password
           }
         })
-        //se tutto va bene redirect sulla callbackURL con il token in querystring
+        //se tutto va bene redirect sulla redirectURL con il token in querystring
         .then(resp => {
-          window.location.href = this.$route.query.callback+"?token="+resp.data.token;
+          window.location.href = this.$route.query.redirect+"?token="+resp.data.token;
         })
     }
   }

@@ -13,8 +13,8 @@
         <title>LoremFit</title>
         <script>
             function buttonStuff() {
-                const callback = window.location.origin+window.location.pathname + "welcome.html";
-                window.location.href = "http://localhost:8080/oauth?id=2&callback="+callback;
+                const redirect = window.location.origin+window.location.pathname + "welcome.html";
+                window.location.href = "http://localhost:8080/oauth?id=2&redirect="+redirect;
             }
         </script>
     </head>
