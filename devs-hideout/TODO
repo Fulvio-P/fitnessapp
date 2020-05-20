@@ -1,6 +1,24 @@
 Cose da fare (Priorità decrescente):
 
 -Documentazione installazione, uso API e casi di prova
+    Fulvio:
+        developer
+        opinion
+        activities
+        profile
+    Francesco:
+        auth
+        calories
+        weight
+        food (+ food-off)
+
+memento: staimo usando stoplight
+
+memento: in caso servano, questi progetti dovrebbero permettere di renderizzare
+il file .json risultante in Vue:
+    https://github.com/koumoul-dev/vue-openapi
+    https://github.com/mrin9/OpenAPI-Viewer
+    https://github.com/OAIE/oaie-sketch
 
 -quando passiamo in produzione, trasformare tutte le url hardcoded in url locali
 
