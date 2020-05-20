@@ -1,0 +1,81 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Un titolo",
+    "version": "1.0",
+    "description": "Una descrizione",
+    "license": {
+      "name": "MIT"
+    },
+    "contact": {
+      "name": "Fulvio"
+    }
+  },
+  "tags": [
+    {
+      "name": "opinioni",
+      "description": "Raccolta messaggi agli sviluppatori"
+    }
+  ],
+  "servers": [
+    {
+      "url": "http://localhost:5000"
+    }
+  ],
+  "paths": {
+    "/opinion": {
+      "post": {
+        "summary": "Invia un messaggio agli sviluppatori",
+        "operationId": "post-opinion",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "description": "Testo ricevuto dalla post"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "description": "Permette di inviare messaggi agli sviluppatori.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "testo": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "testo"
+                ]
+              },
+              "examples": {}
+            }
+          },
+          "description": "Il campo email deve contenere l'indirizzo presso cui si vuole ricevere la risposta, testo contiene il corpo del messaggio."
+        },
+        "tags": [
+          "opinioni"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {}
+  }
+}
