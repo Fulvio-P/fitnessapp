@@ -47,7 +47,7 @@ const fitbitsync = require("./routes/fitbitsync");
 app.use("/ws/fitbitsync", fitbitsync);
 
 const developer = require("./routes/developer");
-app.use("api/developer", developer);
+app.use("/api/developer", developer);
 
 //starting server
 const port = process.env.PORT || 5000;
