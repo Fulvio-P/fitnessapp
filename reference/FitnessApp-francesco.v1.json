@@ -1,0 +1,228 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "FitnessApp-francesco",
+    "version": "1.0",
+    "license": {
+      "name": "MIT"
+    },
+    "description": "lorem ipsum",
+    "contact": {
+      "name": "Nessuno"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "user",
+      "description": "Operazioni di autenticazione"
+    },
+    {
+      "name": "calories",
+      "description": "Dati sulle calorie ingerite e bruciate"
+    },
+    {
+      "name": "weight",
+      "description": "Dati e operazioni sul peso corporeo dell'utente"
+    },
+    {
+      "name": "food",
+      "description": "Dati e operazioni sui cibi consumati dall'utente"
+    }
+  ],
+  "paths": {
+    "/api/user/register": {
+      "post": {
+        "summary": "Registra nuovo utente",
+        "operationId": "post-api-user-register",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Utente già registrato"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "description": "Registra un nuovo utente con username e password dati nel corpo. Lo username non deve essere già stato registrato da un altro utente. Uso interno.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "username da assegnare al nuovo utente; non deve essere già stato registrato da qualcun altro"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "password da assegnare al nuovo utente"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password"
+                ]
+              },
+              "examples": {}
+            }
+          },
+          "description": "username e password da assegnare al nuovo utente"
+        },
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/api/users/login": {
+      "post": {
+        "summary": "Effettua login",
+        "tags": [
+          "user"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "bearer token"
+                    }
+                  },
+                  "required": [
+                    "token"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Username o password errati"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "post-api-users-login",
+        "description": "Effettua il login con username e password forniti. Fornisce un bearer token da mettere nell'header Authorization di tutte le richieste che chiedono autenticazione e che dura 5 ore. Uso interno.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "lo username con cui effettuare il login"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "la password con cui effettuare il login"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password"
+                ]
+              }
+            }
+          },
+          "description": "username e password con cui effettuare il login"
+        }
+      }
+    },
+    "/api/user/oauth": {
+      "post": {
+        "summary": "OAuth2",
+        "tags": [
+          "user"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "bearer token"
+                    }
+                  },
+                  "required": [
+                    "token"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Redirect URL fornita non combacia con quella registrata per l'applicazione"
+          },
+          "403": {
+            "description": "Username o password errati"
+          },
+          "404": {
+            "description": "Client ID non trovato"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "post-api-user(oauth",
+        "description": "Effettua il login OAuth2, secondo il flusso Implicit Code Grant. Fornire username e password dell'account da loggare, e Client ID e Redirect URL dell'applicazione. Fornisce un bearer token da mettere nell'header Authorization di tutte le richieste che chiedono autenticazione e che dura 5 ore. Uso interno.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "username dell'utente da registrare"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "password dell'utente da registrare"
+                  },
+                  "id": {
+                    "type": "string",
+                    "description": "id dell'applicazione"
+                  },
+                  "redirect": {
+                    "type": "string",
+                    "description": "password dell'applicazione"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password",
+                  "id",
+                  "redirect"
+                ]
+              }
+            }
+          },
+          "description": "Username e password dell'account da loggare, e Client ID e Redirect URL dell'applicazione."
+        }
+      },
+      "parameters": []
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}
