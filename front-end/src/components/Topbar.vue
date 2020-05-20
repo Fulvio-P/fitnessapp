@@ -30,11 +30,6 @@ export default {
         this.$router.push("/");
       });
     }
-
-    //overlay disattivato per il momento
-    /* displayOverlay() {
-      this.$store.dispatch("displayLoginDialog", true);
-    } */
   }
 };
 </script>

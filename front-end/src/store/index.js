@@ -8,7 +8,6 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    /* loginDialog: false, */ //Overlay disabilitato
 
     //stati usati per il login vero
     token: localStorage.getItem("user-token") || "", //JWT conservato anche se localstorage non disponibile
