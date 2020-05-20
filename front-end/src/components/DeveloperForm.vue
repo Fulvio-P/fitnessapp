@@ -51,6 +51,7 @@ export default {
                     alert("Applicazione registrata correttamente");
                     this.clientname = "";
                     this.redirect = "";
+                    this.$emit("posted")
                 })
                 //se qualcosa va male
                 .catch(() => {

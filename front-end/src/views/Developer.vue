@@ -2,10 +2,10 @@
     <div class="padding">
         <h1>Pagina developer</h1>
         <h3>Registra una nuova applicazione</h3>
-        <DeveloperForm />
+        <DeveloperForm @posted="updateTable" />
         <hr />
         <h3>Le tue applicazioni</h3>
-        <DeveloperTable />
+        <DeveloperTable ref="devTable" />
     </div>
 </template>
 
@@ -17,6 +17,11 @@ export default {
     components:{
         DeveloperForm,
         DeveloperTable
-    }    
+    },
+    methods: {
+        updateTable() {
+            this.$refs.devTable.getClients();
+        }
+    }
 }
 </script>
