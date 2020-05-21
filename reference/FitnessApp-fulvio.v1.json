@@ -15,6 +15,10 @@
     {
       "name": "opinioni",
       "description": "Raccolta messaggi agli sviluppatori"
+    },
+    {
+      "name": "developer",
+      "description": "Gestione Applicazioni oAuth"
     }
   ],
   "servers": [
@@ -72,10 +76,348 @@
           "opinioni"
         ]
       }
+    },
+    "/api/developer": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "description": "Username dell'utente autenticato"
+                    },
+                    "dataPoints": {
+                      "type": "array",
+                      "description": "Array di applicazioni registrate",
+                      "items": {
+                        "type": "object",
+                        "description": "Applicazione registrata",
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "description": "Id dell'utente"
+                          },
+                          "clientid": {
+                            "type": "number",
+                            "description": "Id dell'applicazione"
+                          },
+                          "clientname": {
+                            "type": "string",
+                            "description": "Nome applicazione"
+                          },
+                          "ridirect": {
+                            "type": "string",
+                            "description": "Redirect URL per la procedura oAuth"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "clientid",
+                          "clientname",
+                          "ridirect"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "dataPoints"
+                  ]
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "username": "AkihikoSanada",
+                      "dataPoints": [
+                        {
+                          "id": 1,
+                          "clientid": 9,
+                          "clientname": "string",
+                          "redirect": "http://example.com"
+                        },
+                        {
+                          "id": 1,
+                          "clientid": 10,
+                          "clientname": "pippo",
+                          "redirect": "http://example.com"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong Token or No token"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "operationId": "get-developers",
+        "description": "Recupera tutte le applicazioni dell'utente associato al token interno, questo path è usato solo nelle comunicazioni fra fron-end e back-end.",
+        "security": [
+          {
+            "Internal Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Internal Token",
+            "required": true
+          }
+        ]
+      },
+      "parameters": [],
+      "post": {
+        "summary": "",
+        "operationId": "post-api-developer",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "Id dell'utente autenticato"
+                    },
+                    "clientid": {
+                      "type": "integer",
+                      "description": "Id dell'applicazione"
+                    },
+                    "clientname": {
+                      "type": "string",
+                      "description": "Nome dell'applicazione"
+                    },
+                    "redirect": {
+                      "type": "string",
+                      "format": "uri",
+                      "description": "Redirect URL registrato"
+                    }
+                  },
+                  "required": [
+                    "clientid",
+                    "clientname",
+                    "redirect"
+                  ]
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "id": 1,
+                      "clientid": 10,
+                      "clientname": "Applicazione oAuth",
+                      "redirect": "http://example.com"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Non hai specificato tutti i campi obbligatori"
+          },
+          "401": {
+            "description": "Wrong Token or No token"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "User ID does not exist"
+          },
+          "413": {
+            "description": "String too long"
+          },
+          "429": {
+            "description": "Sei troppo veloce! RRiprova tra qualche secondo..."
+          }
+        },
+        "description": "Registra una nuova applicazione oAuth per l'utente correntemente autenticato, solo uso interno.",
+        "security": [
+          {
+            "Internal Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Internal Token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "",
+                "properties": {
+                  "clientname": {
+                    "type": "string",
+                    "description": "Nome dell'applicazione che si vuole registrare"
+                  },
+                  "redirect": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Redirect URL a da usare nella procedura oAuth"
+                  }
+                },
+                "required": [
+                  "clientname",
+                  "redirect"
+                ]
+              },
+              "examples": {
+                "example-1": {
+                  "value": {
+                    "clientname": "Applicazione oAuth",
+                    "redirect": "http://esempio.com/oauth"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Clientname contiene il nome dell'applicazione che si vuole registrare, redirect l'URL a cui quella applicazione vuole essere ridiretta dopo la procedura di oAuth"
+        },
+        "tags": [
+          "developer"
+        ]
+      },
+      "delete": {
+        "summary": "",
+        "operationId": "delete-api-developer",
+        "responses": {
+          "200": {
+            "description": "Viene inviata l'applicazione cancellata per conferma",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "clientid": {
+                      "type": "integer"
+                    },
+                    "clientname": {
+                      "type": "string"
+                    },
+                    "redirect": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "clientid",
+                    "clientname",
+                    "redirect"
+                  ]
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "id": 1,
+                      "clientid": 10,
+                      "clientname": "Applicazione oAuth",
+                      "redirect": "http://example.com"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Questa entry non esisteva neanche prima. Nessuna modifica."
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "description": "Cancella una applicazione registrata",
+        "security": [
+          {
+            "Internal Token": []
+          }
+        ],
+        "tags": [
+          "developer"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Internal Token",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "clientid",
+            "description": "Id dell'applicazione da eliminare",
+            "required": true
+          }
+        ]
+      }
     }
   },
   "components": {
     "schemas": {},
-    "securitySchemes": {}
-  }
+    "securitySchemes": {
+      "Bearer Token": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "http://localhost:5000/oauth",
+            "refreshUrl": "",
+            "scopes": {}
+          }
+        },
+        "description": ""
+      },
+      "Internal Token": {
+        "type": "openIdConnect",
+        "description": "",
+        "openIdConnectUrl": "http://localhost:5000/login"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer Token": []
+    },
+    {
+      "Internal Token": []
+    }
+  ]
 }
