@@ -8,8 +8,8 @@ Cose da fare (Priorità decrescente):
         profile
     Francesco:
         [ø] auth
-        [ ] calories
-        [ ] weight
+        [ø] calories
+        [ø] weight
         [ ] food (+ food-off)
 
 memento: staimo usando stoplight
