@@ -907,7 +907,9 @@
     "/api/profile/fitbit": {
       "get": {
         "summary": "Your GET endpoint",
-        "tags": [],
+        "tags": [
+          "profile"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -990,7 +992,10 @@
               }
             }
           }
-        }
+        },
+        "tags": [
+          "profile"
+        ]
       },
       "delete": {
         "summary": "",
@@ -1013,6 +1018,9 @@
             "name": "Authorization",
             "description": "Bearer Token"
           }
+        ],
+        "tags": [
+          "profile"
         ]
       }
     }
