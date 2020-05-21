@@ -413,15 +413,22 @@
                   "type": "object",
                   "properties": {
                     "email": {
-                      "type": "string",
-                      "format": "email"
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Indirizzo email"
                     },
                     "altezza": {
-                      "type": "integer",
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
                       "description": "altezza in cm"
                     },
                     "username": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Username dell'utente"
                     }
                   }
                 },
@@ -474,10 +481,16 @@
                   "type": "object",
                   "properties": {
                     "email": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Indirizzo email"
                     },
                     "altezza": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "Altezza in cm"
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "Username dell'utente"
                     }
                   }
                 }
@@ -573,6 +586,321 @@
             "name": "sure",
             "description": "Deve essere true per eliminare l'account"
           }
+        ]
+      }
+    },
+    "/api/profile/email": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [
+          "profile"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Indirizzo email",
+                      "format": "email"
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "Username associato"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User Not Found"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "operationId": "get-api-profile-email",
+        "description": "Recupera l'indirizzo email dell'utente autenticato",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      },
+      "put": {
+        "summary": "",
+        "operationId": "put-api-profile-email",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "description": "Username dell'utente"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "Nuovo valore dell'indirizzo email"
+                    }
+                  },
+                  "required": [
+                    "username",
+                    "email"
+                  ]
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "String Too Long"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "description": "Aggiorna l'indirizzo email per l'utente autenticato, nel caso non sia presente un indirizzo verrà inserito ",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Nuovo indirizzo email"
+                  }
+                },
+                "required": [
+                  "email"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "profile"
+        ]
+      },
+      "delete": {
+        "summary": "",
+        "operationId": "delete-api-profile-email",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "description": "Email cancellata",
+                      "format": "email"
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "Account associato"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "description": "Cancella indirizzo email associato all'account",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ],
+        "tags": [
+          "profile"
+        ]
+      }
+    },
+    "/api/profile/height": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [
+          "profile"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "altezza": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
+                      "description": "Altezza in cm"
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "Username dell'utente"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User Not Found"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "operationId": "get-api-profile-height",
+        "description": "Recupera l'altezza dell'utente autenticato",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      },
+      "put": {
+        "summary": "",
+        "operationId": "put-api-profile-height",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "description": "Username dell'utente"
+                    },
+                    "altezza": {
+                      "type": "integer",
+                      "description": "Altezza in cm"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "description": "Aggiorna l'altezza dell'utente, se non è presente la inserisce",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "altezza": {
+                    "type": "integer",
+                    "description": "Altezza in cm"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ],
+        "tags": [
+          "profile"
+        ]
+      },
+      "delete": {
+        "summary": "",
+        "operationId": "delete-api-profile-height",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "altezza": {
+                      "type": [
+                        "number",
+                        "null"
+                      ],
+                      "description": "Altezza appena eliminata"
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "Username dell'utente"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "description": "Elimina l'altetezza associata all'utente",
+        "tags": [
+          "profile"
         ]
       }
     }
