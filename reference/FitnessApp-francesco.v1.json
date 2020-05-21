@@ -8,7 +8,7 @@
     },
     "description": "lorem ipsum",
     "contact": {
-      "name": "Nessuno"
+      "name": "Francesco"
     }
   },
   "servers": [
@@ -82,7 +82,7 @@
         ]
       }
     },
-    "/api/users/login": {
+    "/api/user/login": {
       "post": {
         "summary": "Effettua login",
         "tags": [
@@ -115,7 +115,7 @@
             "description": "Errore interno"
           }
         },
-        "operationId": "post-api-users-login",
+        "operationId": "post-api-user-login",
         "description": "Effettua il login con username e password forniti. Fornisce un bearer token da mettere nell'header Authorization di tutte le richieste che chiedono autenticazione e che dura 5 ore. Uso interno.",
         "requestBody": {
           "content": {
@@ -141,7 +141,8 @@
           },
           "description": "username e password con cui effettuare il login"
         }
-      }
+      },
+      "parameters": []
     },
     "/api/user/oauth": {
       "post": {
@@ -182,7 +183,7 @@
             "description": "Errore interno"
           }
         },
-        "operationId": "post-api-user(oauth",
+        "operationId": "post-api-user-oauth",
         "description": "Effettua il login OAuth2, secondo il flusso Implicit Code Grant. Fornire username e password dell'account da loggare, e Client ID e Redirect URL dell'applicazione. Fornisce un bearer token da mettere nell'header Authorization di tutte le richieste che chiedono autenticazione e che dura 5 ore. Uso interno.",
         "requestBody": {
           "content": {
@@ -223,6 +224,31 @@
     }
   },
   "components": {
-    "schemas": {}
-  }
+    "schemas": {},
+    "securitySchemes": {
+      "Bearer Token": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "http://localhost:5000/oauth",
+            "refreshUrl": "",
+            "scopes": {}
+          }
+        }
+      },
+      "Internal Token": {
+        "type": "openIdConnect",
+        "openIdConnectUrl": "http://localhost:5000/login",
+        "description": ""
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer Token": []
+    },
+    {
+      "Internal Token": []
+    }
+  ]
 }
