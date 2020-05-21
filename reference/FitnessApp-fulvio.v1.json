@@ -903,6 +903,108 @@
           "profile"
         ]
       }
+    },
+    "/api/profile/fitbit": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "fitbituser": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Display name dell'account fitbit collegato"
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "Username utente FitnessApp"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User Not Found"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "operationId": "get-api-profile-fitbit",
+        "description": "Recupera il diplay name dell'account fibit collegato",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      },
+      "put": {
+        "summary": "",
+        "operationId": "put-api-profile-fitbit",
+        "responses": {
+          "200": {
+            "description": "Account Fitbit collegato"
+          },
+          "500": {
+            "description": "Internal Database Error OR Errore Fitbit"
+          }
+        },
+        "description": "Richiede al back-end di procurarsi nuovi token da fitbit con l'authentication code ottentuto dalla pagina di login di fitbit",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "authCode": {
+                    "type": "string",
+                    "description": "Authorization code fornito da Fitbit"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "",
+        "operationId": "delete-api-profile-fitbit",
+        "responses": {
+          "200": {
+            "description": "Account Scollegato"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "description": "Dissocia un eventuale account fibit rimuovendo tutti i dati relativi"
+      }
     }
   },
   "components": {
