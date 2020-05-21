@@ -1003,7 +1003,17 @@
             "description": "Internal Database Error"
           }
         },
-        "description": "Dissocia un eventuale account fibit rimuovendo tutti i dati relativi"
+        "description": "Dissocia un eventuale account fibit rimuovendo tutti i dati relativi",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token"
+          }
+        ]
       }
     }
   },
