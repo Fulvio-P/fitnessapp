@@ -236,31 +236,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "data": {
-                        "type": "string",
-                        "description": "La data a cui fa riferimento questo record"
-                      },
-                      "calin": {
-                        "type": "number",
-                        "description": "Calorie ingerite in questo giorno"
-                      },
-                      "calout": {
-                        "type": "number",
-                        "description": "Calorie consumate in questo giorno"
-                      },
-                      "bilancio": {
-                        "type": "number",
-                        "description": "Bilancio complessivo delle calorie in questo giorno: positivo se sono state ingerite più calorie, negativo se ne sono state consumate di più.\n[calin-calout]"
-                      }
-                    },
-                    "required": [
-                      "data",
-                      "calin",
-                      "calout",
-                      "bilancio"
-                    ]
+                    "$ref": "#/components/schemas/MisuraCalorie"
                   }
                 },
                 "examples": {}
@@ -323,31 +299,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "data": {
-                        "type": "string",
-                        "description": "La data a cui fa riferimento questo record"
-                      },
-                      "calin": {
-                        "description": "Calorie ingerite in questo giorno",
-                        "type": "number"
-                      },
-                      "calout": {
-                        "description": "Calorie consumate in questo giorno",
-                        "type": "number"
-                      },
-                      "bilancio": {
-                        "type": "string",
-                        "description": "Bilancio complessivo delle calorie in questo giorno: positivo se sono state ingerite più calorie, negativo se ne sono state consumate di più.\n[calin-calout]"
-                      }
-                    },
-                    "required": [
-                      "data",
-                      "calin",
-                      "calout",
-                      "bilancio"
-                    ]
+                    "$ref": "#/components/schemas/MisuraCalorie"
                   }
                 }
               }
@@ -416,31 +368,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "data": {
-                        "type": "string",
-                        "description": "La data a cui fa riferimento questo record"
-                      },
-                      "calin": {
-                        "type": "number",
-                        "description": "Calorie ingerite in questo giorno"
-                      },
-                      "calout": {
-                        "type": "number",
-                        "description": "Calorie consumate in questo giorno"
-                      },
-                      "bilancio": {
-                        "type": "string",
-                        "description": "Bilancio complessivo delle calorie in questo giorno: positivo se sono state ingerite più calorie, negativo se ne sono state consumate di più.\n[calin-calout]"
-                      }
-                    },
-                    "required": [
-                      "data",
-                      "calin",
-                      "calout",
-                      "bilancio"
-                    ]
+                    "$ref": "#/components/schemas/MisuraCalorie"
                   }
                 }
               }
@@ -489,17 +417,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "data": {
-                        "type": "string",
-                        "description": "La data a cui fa riferimento questa misura"
-                      },
-                      "peso": {
-                        "type": "number",
-                        "description": "Il peso misurato"
-                      }
-                    }
+                    "$ref": "#/components/schemas/MisuraPeso"
                   }
                 }
               }
@@ -545,21 +463,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "string",
-                      "description": "La data a cui fa riferimento questa misura"
-                    },
-                    "peso": {
-                      "type": "number",
-                      "description": "Il peso misurato"
-                    }
-                  },
-                  "required": [
-                    "data",
-                    "peso"
-                  ]
+                  "$ref": "#/components/schemas/MisuraPeso"
                 }
               }
             }
@@ -594,23 +498,15 @@
             },
             "in": "header",
             "name": "Authorization",
-            "description": "Bearer Token"
+            "description": "Bearer Token",
+            "required": true
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "peso": {
-                    "type": "number",
-                    "description": "Il peso misurato"
-                  }
-                },
-                "required": [
-                  "peso"
-                ]
+                "$ref": "#/components/schemas/InputPeso"
               }
             }
           },
@@ -643,21 +539,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "data": {
-                        "type": "string",
-                        "description": "La data a cui fa riferimento questa misura"
-                      },
-                      "peso": {
-                        "type": "number",
-                        "description": "Il peso misurato"
-                      }
-                    },
-                    "required": [
-                      "data",
-                      "peso"
-                    ]
+                    "$ref": "#/components/schemas/MisuraPeso"
                   }
                 }
               }
@@ -687,7 +569,8 @@
             },
             "in": "header",
             "name": "Authorization",
-            "description": "Bearer Token"
+            "description": "Bearer Token",
+            "required": true
           }
         ]
       },
@@ -702,21 +585,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "string",
-                      "description": "La data a cui fa riferimento questa misura"
-                    },
-                    "peso": {
-                      "type": "number",
-                      "description": "Il peso misurato"
-                    }
-                  },
-                  "required": [
-                    "data",
-                    "peso"
-                  ]
+                  "$ref": "#/components/schemas/MisuraPeso"
                 }
               }
             }
@@ -748,23 +617,15 @@
             },
             "in": "header",
             "name": "Authorization",
-            "description": "Bearer Token"
+            "description": "Bearer Token",
+            "required": true
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "peso": {
-                    "type": "number",
-                    "description": "Il nuovo peso"
-                  }
-                },
-                "required": [
-                  "peso"
-                ]
+                "$ref": "#/components/schemas/InputPeso"
               }
             }
           }
@@ -781,21 +642,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "string",
-                      "description": "La data a cui fa riferimento questa misura"
-                    },
-                    "peso": {
-                      "type": "number",
-                      "description": "Il peso misurato"
-                    }
-                  },
-                  "required": [
-                    "data",
-                    "peso"
-                  ]
+                  "$ref": "#/components/schemas/MisuraPeso"
                 }
               }
             }
@@ -824,7 +671,8 @@
             },
             "in": "header",
             "name": "Authorization",
-            "description": "Bearer Token"
+            "description": "Bearer Token",
+            "required": true
           }
         ]
       }
@@ -863,21 +711,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "data": {
-                        "type": "string",
-                        "description": "La data a cui fa riferimento questa misura"
-                      },
-                      "peso": {
-                        "type": "number",
-                        "description": "Il peso misurato"
-                      }
-                    },
-                    "required": [
-                      "data",
-                      "peso"
-                    ]
+                    "$ref": "#/components/schemas/MisuraPeso"
                   }
                 }
               }
@@ -907,14 +741,87 @@
             },
             "in": "header",
             "name": "Authorization",
-            "description": "Bearer Token"
+            "description": "Bearer Token",
+            "required": true
           }
         ]
       }
     }
   },
   "components": {
-    "schemas": {},
+    "schemas": {
+      "MisuraCalorie": {
+        "title": "MisuraCalorie",
+        "type": "object",
+        "description": "Un record che rappresenta calorie ingerite e consumate da un utente in un giorno.",
+        "properties": {
+          "data": {
+            "type": "string",
+            "description": "La data a cui fa riferimento questo record"
+          },
+          "calin": {
+            "type": "number",
+            "description": "Calorie ingerite in questo giorno"
+          },
+          "calout": {
+            "type": "number",
+            "description": "Calorie consumate in questo giorno"
+          },
+          "bilancio": {
+            "type": "number",
+            "description": "Bilancio complessivo delle calorie in questo giorno: positivo se sono state ingerite più calorie, negativo se ne sono state consumate di più.\n[calin-calout]"
+          }
+        },
+        "required": [
+          "data",
+          "calin",
+          "calout",
+          "bilancio"
+        ],
+        "x-tags": [
+          "calories"
+        ]
+      },
+      "MisuraPeso": {
+        "title": "MisuraPeso",
+        "type": "object",
+        "description": "Peso misurato da un utente in un giorno.",
+        "x-tags": [
+          "weight"
+        ],
+        "properties": {
+          "data": {
+            "type": "string",
+            "description": "La data a cui fa riferimento questa misura"
+          },
+          "peso": {
+            "type": "number",
+            "description": "La data a cui fa riferimento questa misura"
+          }
+        },
+        "required": [
+          "data",
+          "peso"
+        ]
+      },
+      "InputPeso": {
+        "title": "InputPeso",
+        "type": "object",
+        "description": "Il peso da dare come input alle chiamate POST e PUT.",
+        "properties": {
+          "peso": {
+            "type": "string",
+            "description": "Il nuovo peso misurato"
+          }
+        },
+        "required": [
+          "peso"
+        ],
+        "x-tags": [
+          "weight"
+        ]
+      }
+    },
     "securitySchemes": {
       "Bearer Token": {
         "type": "oauth2",
