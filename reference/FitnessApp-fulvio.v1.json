@@ -18,7 +18,11 @@
     },
     {
       "name": "developer",
-      "description": "Gestione Applicazioni oAuth"
+      "description": "Gestione applicazioni oAuth"
+    },
+    {
+      "name": "profile",
+      "description": "Gestione informazioni utente"
     }
   ],
   "servers": [
@@ -74,7 +78,8 @@
         },
         "tags": [
           "opinioni"
-        ]
+        ],
+        "security": []
       }
     },
     "/api/developer": {
@@ -174,7 +179,8 @@
         "parameters": [
           {
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
             },
             "in": "header",
             "name": "Authorization",
@@ -260,7 +266,8 @@
         "parameters": [
           {
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
             },
             "in": "header",
             "name": "Authorization",
@@ -371,7 +378,8 @@
         "parameters": [
           {
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
             },
             "in": "header",
             "name": "Authorization",
@@ -380,7 +388,7 @@
           },
           {
             "schema": {
-              "type": "string"
+              "type": "number"
             },
             "in": "query",
             "name": "clientid",
@@ -392,8 +400,10 @@
     },
     "/api/profile": {
       "get": {
-        "summary": "Your GET endpoint",
-        "tags": [],
+        "summary": "Profile",
+        "tags": [
+          "profile"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -403,10 +413,12 @@
                   "type": "object",
                   "properties": {
                     "email": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "email"
                     },
                     "altezza": {
-                      "type": "string"
+                      "type": "integer",
+                      "description": "altezza in cm"
                     },
                     "username": {
                       "type": "string"
@@ -436,7 +448,132 @@
           }
         },
         "operationId": "get-api-profile",
-        "description": "Recupera le info addizionali associate al profilo, ovvero indirizzo email e altezza"
+        "description": "Recupera le info addizionali associate al profilo, ovvero indirizzo email e altezza",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Aggiorna dati profilo",
+        "operationId": "patch-api-profile",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string"
+                    },
+                    "altezza": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "String Too Long"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "description": "Aggiorna campi delle informazioni aggiuntive passati nel body.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "Indirizzo email",
+                    "format": "email"
+                  },
+                  "altezza": {
+                    "type": "integer",
+                    "description": "altezza in cm"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "profile"
+        ]
+      },
+      "delete": {
+        "summary": "Cancella Account",
+        "operationId": "delete-api-profile",
+        "responses": {
+          "204": {
+            "description": "No Content (l'account è stato rimosso con successo)"
+          },
+          "400": {
+            "description": "Are you sure about this? (Manca il pametro sure)"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "tags": [
+          "profile"
+        ],
+        "description": "Cancella tutti i dati di un utente ed elimina il suo account, serve un token interno.",
+        "security": [
+          {
+            "Internal Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "sure",
+            "description": "Deve essere true per eliminare l'account"
+          }
+        ]
       }
     }
   },
