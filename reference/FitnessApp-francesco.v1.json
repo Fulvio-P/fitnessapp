@@ -746,6 +746,493 @@
           }
         ]
       }
+    },
+    "/api/food": {
+      "post": {
+        "summary": "Aggiungi log cibo",
+        "tags": [
+          "food"
+        ],
+        "responses": {
+          "201": {
+            "description": "Cibo creato con successo: esso viene restituito.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cibo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Non sono stati specificati tutti i parametri obbligatori nel body"
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "413": {
+            "description": "Una stringa è troppo lunga"
+          },
+          "429": {
+            "description": "Rallentare le richieste a circa 1/ms"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "post-api-food",
+        "description": "Aggiunge un cibo.",
+        "security": [
+          {
+            "Bearer Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "description": "Bearer Token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "string",
+                    "description": "Giorno in cui è stato consumato il cibo (default: oggi)"
+                  },
+                  "nome": {
+                    "type": "string",
+                    "description": "Nome del cibo consumato"
+                  },
+                  "calin": {
+                    "type": "number",
+                    "description": "Apporto calorico del cibo consumato"
+                  },
+                  "descrizione": {
+                    "type": "string",
+                    "description": "Descrizione personalizzata (max 500 caratteri) (default: niente)"
+                  }
+                },
+                "required": [
+                  "nome",
+                  "calin"
+                ]
+              }
+            }
+          },
+          "description": "Descrivere il cibo da aggiungere."
+        }
+      },
+      "get": {
+        "summary": "Ottieni log cibo (tutti)",
+        "tags": [
+          "food"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cibo"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "get-api-food",
+        "description": "Recupera tutti i cibi registrati dell'utente.",
+        "security": [
+          {
+            "Bearer Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/food/{data}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "data",
+          "in": "path",
+          "required": true,
+          "description": "La data da chiedere (YYYY-MM-DD)"
+        }
+      ],
+      "get": {
+        "summary": "Ottieni log cibo (data specifica)",
+        "tags": [
+          "food"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Cibo"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato, o nessun cibo trovato per la data specificata"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "get-api-food-data",
+        "description": "Recupera i cibi registrati dell'utente relativamente alla data specificata.\nLa data deve essere in formato YYYY-MM-DD.",
+        "security": [
+          {
+            "Bearer Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/food/{from}/{to}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "from",
+          "in": "path",
+          "required": true,
+          "description": "Inizio del range (incluso) (YYYY-MM-DD oppure -)"
+        },
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "to",
+          "in": "path",
+          "required": true,
+          "description": "Fine del range (incluso) (YYYY-MM-DD oppure -)"
+        }
+      ],
+      "get": {
+        "summary": "Ottieni log cibo (range di date)",
+        "tags": [
+          "food"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Cibo"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "get-api-food-from-to",
+        "description": "Recupera i cibi registrati dell'utente relativamente a giorni compresi tra le date from e to (incluse). Usare un trattino ('-') al posto di una delle date per indicare l'assenza di un limite da quel lato.\nLe date devono essere in formato YYYY-MM-DD.",
+        "security": [
+          {
+            "Bearer Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "description": "Bearer Token"
+          }
+        ]
+      }
+    },
+    "/api/food/{ts}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "ts",
+          "in": "path",
+          "required": true,
+          "description": "Timestamp del cibo bersaglio"
+        }
+      ],
+      "put": {
+        "summary": "Modifica log cibo",
+        "tags": [
+          "food"
+        ],
+        "responses": {
+          "200": {
+            "description": "Cibo modificato con successo: il nuovo record viene restituito",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cibo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Non tutti i parametri sono stati specificati"
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Nessun cibo trovato per il timestamp fornito"
+          },
+          "413": {
+            "description": "Una delle stringhe è troppo lunga"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "put-api-food-ts",
+        "description": "Modifica il cibo dell'utente identificato dal timestamp fornito.\nTutti i parametri devono essere specificati, anche quelli che non si vogliono modificare.\nSi consiglia di usare come ts il parametro created restituito dalle chiamate relative al cibo.",
+        "security": [
+          {
+            "Bearer Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "string",
+                    "description": "Nuova data di consumazione"
+                  },
+                  "nome": {
+                    "type": "string",
+                    "description": "Nuovo nome dele cibo"
+                  },
+                  "calin": {
+                    "type": "number",
+                    "description": "Nuovo apporto calorico"
+                  },
+                  "descrizione": {
+                    "type": "string",
+                    "description": "Nuova descrizione (max 500 caratteri)"
+                  }
+                },
+                "required": [
+                  "data",
+                  "nome",
+                  "calin",
+                  "descrizione"
+                ]
+              }
+            }
+          },
+          "description": "Fornire il nuovo stato del cibo."
+        }
+      },
+      "delete": {
+        "summary": "Elimina log cibo",
+        "tags": [
+          "food"
+        ],
+        "responses": {
+          "200": {
+            "description": "Cibo eliminato con successo: esso viene restituito",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cibo"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "token non valido o scaduto"
+          },
+          "404": {
+            "description": "Nessun cibo trovato al timestamp indicato"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "delete-api-food-ts",
+        "description": "Elimina il cibo dell'utente identificato dal timestamp fornito.\nQuest'operazione non può essere annullata.\nSi consiglia di usare come ts il parametro created restituito dalle chiamate relative al cibo.",
+        "security": [
+          {
+            "Bearer Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/food/off": {
+      "post": {
+        "summary": "Aggiungi cibo con Open Food Facts",
+        "tags": [
+          "food"
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cibo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Codice a barre non specificato"
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Uno dei seguenti:\n - La ricerca con O.F.F. non ha prodotto risultati\n - Utente non trovato"
+          },
+          "429": {
+            "description": "Rallentare le richieste a circa 1/ms"
+          },
+          "500": {
+            "description": "Errore interno (tutti gli errori che avvengono durante la chiamata a O.F.F. sono inclusi in questa categoria, tra gli altri)"
+          }
+        },
+        "operationId": "post-api-food-off",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "barcode": {
+                    "type": "integer",
+                    "description": "Il codice a barre del cibo consumato, usato per cercarlo su O.F.F."
+                  },
+                  "quantita": {
+                    "type": "number",
+                    "description": "Quantità consumata, in g, ml o altra unità appropriata. Usata per calcolare i dati nutrizionali della specifica consumazione. (Default: 100, o altra quantità indicata sull'etichetta)"
+                  },
+                  "data": {
+                    "type": "string",
+                    "description": "Data di consumazione del cibo. (Default: oggi)"
+                  }
+                },
+                "required": [
+                  "barcode"
+                ]
+              }
+            }
+          },
+          "description": "Specificare il codice a barre del cibo consumato, ed opzionalmente altre proprietà"
+        },
+        "description": "Aggiunge un cibo per l'utente recuperando i dati nutrizionali dal database di Open Food Facts tramite REST.",
+        "security": [
+          {
+            "Bearer Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "description": "Bearer Token"
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -819,6 +1306,43 @@
         ],
         "x-tags": [
           "weight"
+        ]
+      },
+      "Cibo": {
+        "title": "Cibo",
+        "type": "object",
+        "x-tags": [
+          "food"
+        ],
+        "description": "Un record che rappresenta un cibo registrato dall'utente.",
+        "properties": {
+          "created": {
+            "type": "string",
+            "description": "Timestamp di creazione di questo record. Usato come identificatore del record."
+          },
+          "data": {
+            "type": "string",
+            "description": "Giorno a cui fa riferimento questo record"
+          },
+          "nome": {
+            "type": "string",
+            "description": "Nome del cibo consumato"
+          },
+          "calin": {
+            "type": "number",
+            "description": "Apporto calorico del cibo"
+          },
+          "descrizione": {
+            "type": "string",
+            "description": "Descrizione personalizzata (max 500 caratteri)"
+          }
+        },
+        "required": [
+          "created",
+          "data",
+          "nome",
+          "calin",
+          "descrizione"
         ]
       }
     },
