@@ -389,6 +389,55 @@
           }
         ]
       }
+    },
+    "/api/profile": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string"
+                    },
+                    "altezza": {
+                      "type": "string"
+                    },
+                    "username": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "email": "a.sanada@gekkoukan.edu",
+                      "altezza": 175,
+                      "username": "AkihikoSanada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong Token or No token"
+          },
+          "404": {
+            "description": "User ID Not Found"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "operationId": "get-api-profile",
+        "description": "Recupera le info addizionali associate al profilo, ovvero indirizzo email e altezza"
+      }
     }
   },
   "components": {
