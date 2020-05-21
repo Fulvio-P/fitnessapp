@@ -267,6 +267,9 @@
               }
             }
           },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
           "404": {
             "description": "Utente non trovato"
           },
@@ -304,7 +307,7 @@
           "name": "data",
           "in": "path",
           "required": true,
-          "description": "La data da chiedere"
+          "description": "La data da chiedere (YYYY-MM-DD)"
         }
       ],
       "get": {
@@ -350,6 +353,9 @@
               }
             }
           },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
           "404": {
             "description": "Utente non trovato, oppure dati di questo giorno non trovati"
           },
@@ -358,7 +364,7 @@
           }
         },
         "operationId": "get-api-calories-data",
-        "description": "Recupera i dati delle calorie ingerite e bruciate dell'utente in un giorno specifico, se esitono.",
+        "description": "Recupera i dati delle calorie ingerite e bruciate dell'utente in un giorno specifico, se esitono.\nLa data deve essere in formato YYYY-MM-DD.",
         "security": [
           {
             "Bearer Token": []
@@ -385,7 +391,7 @@
           "name": "from",
           "in": "path",
           "required": true,
-          "description": "Inizio del range (incluso)"
+          "description": "Inizio del range (incluso) (YYYY-MM-DD oppure -)"
         },
         {
           "schema": {
@@ -394,7 +400,7 @@
           "name": "to",
           "in": "path",
           "required": true,
-          "description": "Fine del range (incluso)"
+          "description": "Fine del range (incluso) (YYYY-MM-DD oppure -)"
         }
       ],
       "get": {
@@ -440,6 +446,9 @@
               }
             }
           },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
           "404": {
             "description": "Utente non trovato"
           },
@@ -448,7 +457,444 @@
           }
         },
         "operationId": "get-api-calories-from-to",
-        "description": "Recupera i dati delle calorie ingerite e bruciate dell'utente relativi ai giorni compresi tra le date from e to (incluse). Usare un trattino ('-') al posto di una delle date per indicare l'assenza di un limite da quel lato.",
+        "description": "Recupera i dati delle calorie ingerite e bruciate dell'utente relativi ai giorni compresi tra le date from e to (incluse). Usare un trattino ('-') al posto di una delle date per indicare l'assenza di un limite da quel lato.\nLe date devono essere in formato YYYY-MM-DD.",
+        "security": [
+          {
+            "Bearer Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token"
+          }
+        ]
+      }
+    },
+    "/api/weight": {
+      "get": {
+        "summary": "Ottieni misure peso (tutte)",
+        "tags": [
+          "weight"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "string",
+                        "description": "La data a cui fa riferimento questa misura"
+                      },
+                      "peso": {
+                        "type": "number",
+                        "description": "Il peso misurato"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "get-api-weight",
+        "description": "Recupera tutte le misure di peso dell'utente.",
+        "security": [
+          {
+            "Bearer Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      },
+      "post": {
+        "summary": "Aggiungi misura peso",
+        "tags": [
+          "weight"
+        ],
+        "responses": {
+          "201": {
+            "description": "Misura aggiunta con successo: essa viene restituita",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "description": "La data a cui fa riferimento questa misura"
+                    },
+                    "peso": {
+                      "type": "number",
+                      "description": "Il peso misurato"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "peso"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Peso non specificato"
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "409": {
+            "description": "Misura peso già esistente per la data di oggi"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "post-api-weight",
+        "description": "Aggiunge una misura peso relativa alla data odierna.\nDà errore se tale misura è già presente: usare una PUT per modificarla.",
+        "security": [
+          {
+            "Bearer Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "peso": {
+                    "type": "number",
+                    "description": "Il peso misurato"
+                  }
+                },
+                "required": [
+                  "peso"
+                ]
+              }
+            }
+          },
+          "description": "Inserire il peso misurato"
+        }
+      }
+    },
+    "/api/weight/{data}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "data",
+          "in": "path",
+          "required": true,
+          "description": "La data bersaglio (YYYY-MM-DD)"
+        }
+      ],
+      "get": {
+        "summary": "Ottieni misura peso (data specifica)",
+        "tags": [
+          "weight"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "string",
+                        "description": "La data a cui fa riferimento questa misura"
+                      },
+                      "peso": {
+                        "type": "number",
+                        "description": "Il peso misurato"
+                      }
+                    },
+                    "required": [
+                      "data",
+                      "peso"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato, o misura peso del giorno specificato non trovata"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "get-api-weight-data",
+        "description": "Recupera la misura peso dell'utente relativa al giorno indicato, se esiste.\nLa data deve essere in formato YYYY-MM-DD.",
+        "security": [
+          {
+            "Bearer Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token"
+          }
+        ]
+      },
+      "put": {
+        "summary": "Modifica misura peso",
+        "tags": [
+          "weight"
+        ],
+        "responses": {
+          "200": {
+            "description": "Misura modificata con successo: la nuova misura viene restituita",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "description": "La data a cui fa riferimento questa misura"
+                    },
+                    "peso": {
+                      "type": "number",
+                      "description": "Il peso misurato"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "peso"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Peso non specificato"
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Misura peso inesistente per la data indicata"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "put-api-weight-data",
+        "description": "Modifica la misura peso relativa alla data specificata.\nSolo il peso misurato può essere modificato.\nLa data deve essere in formato YYYY-MM-DD.",
+        "security": [
+          {
+            "Bearer Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "peso": {
+                    "type": "number",
+                    "description": "Il nuovo peso"
+                  }
+                },
+                "required": [
+                  "peso"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Elimina misura peso",
+        "tags": [
+          "weight"
+        ],
+        "responses": {
+          "200": {
+            "description": "Misura peso eliminata con successo: essa viene restituita.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "description": "La data a cui fa riferimento questa misura"
+                    },
+                    "peso": {
+                      "type": "number",
+                      "description": "Il peso misurato"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "peso"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Misura peso inesistente per la data specificata"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "delete-api-weight-data",
+        "description": "Elimina la misura peso relativa alla data indicata.\nQuest'operazione non può essere annullata.\nLa data deve essere in formato YYYY-MM-DD.",
+        "security": [
+          {
+            "Bearer Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token"
+          }
+        ]
+      }
+    },
+    "/api/weight/{from}/{to}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "from",
+          "in": "path",
+          "required": true,
+          "description": "Inizio del range (incluso) (YYYY-MM-DD oppure -)"
+        },
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "to",
+          "in": "path",
+          "required": true,
+          "description": "Fine del range (incluso) (YYYY-MM-DD oppure -)"
+        }
+      ],
+      "get": {
+        "summary": "Ottieni misure peso (range di date)",
+        "tags": [
+          "weight"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "string",
+                        "description": "La data a cui fa riferimento questa misura"
+                      },
+                      "peso": {
+                        "type": "number",
+                        "description": "Il peso misurato"
+                      }
+                    },
+                    "required": [
+                      "data",
+                      "peso"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "get-api-weight-from-to",
+        "description": "Recupera le misure peso dell'utente relative ai giorni compresi tra le date from e to (incluse). Usare un trattino ('-') al posto di una delle date per indicare l'assenza di un limite da quel lato.\nLe date devono essere in formato YYYY-MM-DD.",
         "security": [
           {
             "Bearer Token": []
