@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button class="back-btn" v-router-link to="/profile">
+    <b-button class="back-btn" router-link to="/profile">
       <BIconChevronDoubleLeft />
       Indietro
     </b-button>
@@ -12,7 +12,7 @@
       <h3>Le tue applicazioni</h3>
       <DeveloperTable ref="devTable" />
     </div>
-    <b-button class="back-btn" v-router-link to="/profile">
+    <b-button class="back-btn" router-link to="/profile">
       <BIconChevronDoubleLeft />
       Indietro
     </b-button>
