@@ -31,7 +31,11 @@
         >
           Conferma
         </b-button>
-        <b-button v-if="isEditMode" @click="deleteInfo()" class="pide-button pide-delete-btn">
+        <b-button
+          v-if="isEditMode"
+          @click="deleteInfo()"
+          class="pide-button pide-delete-btn"
+        >
           Elimina
         </b-button>
         <b-button v-if="isEditMode" @click="toDispMode" class="pide-button">
@@ -103,7 +107,7 @@ export default {
           this.setDisplay(resp.data[this.infoname.toLowerCase()]);
         })
         //se qualcosa va male
-        .catch(err => {
+        .catch(() => {
           alert(this.$store.state.status);
         });
     },
@@ -128,7 +132,7 @@ export default {
             this.toDispMode();
           })
           //se qualcosa va male
-          .catch(err => {
+          .catch(() => {
             alert(this.$store.state.status);
           });
       }
@@ -143,12 +147,12 @@ export default {
           //avvio chiamata API (gestita da vuex)
           .dispatch("API_DELETE", profileUrl + translator[this.infoname])
           //se tutto va bene
-          .then(resp => {
+          .then(() => {
             this.getInfo();
             this.toDispMode();
           })
           //se qualcosa va male
-          .catch(err => {
+          .catch(() => {
             alert(this.$store.state.status);
           });
       }
@@ -170,10 +174,10 @@ export default {
 }
 .pide-confirm-btn {
   background-color: var(--nord14);
-  transition: 500ms
+  transition: 500ms;
 }
 .pide-confirm-btn:hover {
-  filter: hue-rotate(-15deg) brightness(110%)  /*schiarisce e diventa un po' giallino*/
+  filter: hue-rotate(-15deg) brightness(110%); /*schiarisce e diventa un po' giallino*/
 }
 .pide-delete-btn {
   background-color: var(--nord11);

@@ -23,7 +23,11 @@ export default {
   mounted() {
     axios.interceptors.response.use(undefined, err => {
       return new Promise(() => {
-        if (err.message.includes('401') && err.config && !err.config.__isRetryRequest) {
+        if (
+          err.message.includes("401") &&
+          err.config &&
+          !err.config.__isRetryRequest
+        ) {
           this.$store.dispatch("AUTH_LOGOUT");
           this.$router.push("/login");
         }
@@ -32,23 +36,24 @@ export default {
     });
     //mettiamo su un listener per i websocket
     //mettendolo qui, tutta l'applicazione può ricevere i messaggi, indipendentemente dalla route corrente
-    this.$options.sockets.onmessage = (msg) => {
+    this.$options.sockets.onmessage = msg => {
       const data = JSON.parse(msg.data);
-      if(data.type == "success" || data.type == "error"){
-        this.$store.commit('SOCKET_ONMESSAGE');
+      if (data.type == "success" || data.type == "error") {
+        this.$store.commit("SOCKET_ONMESSAGE");
       }
       this.$refs.inbox.msgobj = JSON.parse(msg.data);
-    }
+    };
     //un listener anche per la chiusura della connessione da parte del server
     this.$options.sockets.onclose = () => {
       this.$disconnect();
-    }
+    };
     //può capitare che l'utente entri direttamente nell'area protetta senza essere passato
     //per la pagina di login, se c'è ancora un token valido in localstorage.
     //in tal caso, non c'è stata la connessione automatica col login che sta in vuex,
     //quindi tocca connettersi manualmente
-    if (this.$store.state.token) {   //sembra che vuex sia caricato correttamente a questo punto
-      this.$connectwithtoken(this.$store.state.token)  //funzione definita da me in main.js
+    if (this.$store.state.token) {
+      //sembra che vuex sia caricato correttamente a questo punto
+      this.$connectwithtoken(this.$store.state.token); //funzione definita da me in main.js
     }
   }
 };

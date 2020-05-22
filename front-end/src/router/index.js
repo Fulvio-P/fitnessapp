@@ -52,7 +52,7 @@ const routes = [
   {
     path: "/oauth",
     name: "OAuth",
-    component: () => import("../views/OAuth.vue"),
+    component: () => import("../views/OAuth.vue")
   },
   {
     path: "/charts",
@@ -83,7 +83,7 @@ const routes = [
     name: "Developer",
     component: () => import("../views/Developer.vue"),
     beforeEnter: ifAuthenticated
-  },
+  }
 ];
 
 const router = new VueRouter({

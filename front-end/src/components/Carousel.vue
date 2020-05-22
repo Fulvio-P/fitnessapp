@@ -34,17 +34,15 @@ export default {
 </script>
 
 <style>
-
-#carousel-1{
+#carousel-1 {
   overflow: hidden;
   max-height: 95vh;
   display: flex;
   align-items: center;
 }
 @media only screen and (min-width: 600px) {
-.carousel-caption {
-  transform: translateY(-25%);
+  .carousel-caption {
+    transform: translateY(-25%);
+  }
 }
-}
-
 </style>

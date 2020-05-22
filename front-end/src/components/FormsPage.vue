@@ -5,8 +5,11 @@
       <b-tabs content-class="mt-3" card pills align="center" justified>
         <b-tab title="Cibo" active>
           <h5>
-            Inserisci questi dati per caricare il resto in automatico dal database di
-            <a href="https://it.openfoodfacts.org/" target="_blank">Open Food Facts</a>:
+            Inserisci questi dati per caricare il resto in automatico dal
+            database di
+            <a href="https://it.openfoodfacts.org/" target="_blank"
+              >Open Food Facts</a
+            >:
           </h5>
           <OFFForm />
           <hrWithText>OPPURE</hrWithText>

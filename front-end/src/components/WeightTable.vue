@@ -53,7 +53,7 @@ export default {
           this.items = this.fixDates(resp.data.dataPoints);
         })
         //se qualcosa va male
-        .catch(err => {
+        .catch(() => {
           alert(this.$store.state.status);
         });
     },
