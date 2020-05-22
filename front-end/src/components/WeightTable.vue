@@ -54,7 +54,6 @@ export default {
         })
         //se qualcosa va male
         .catch(err => {
-          console.log(err);
           alert(this.$store.state.status);
         });
     },

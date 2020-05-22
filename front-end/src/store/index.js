@@ -270,8 +270,6 @@ export default new Vuex.Store({
         });
         commit("SOCKET_ONSEND");
       } catch (err) {   //in realtà da lato vue non sembra lanciare errori, ma comunque è sempre meglio un try-catch in più che uno in meno
-        console.error("and the ws error is...");
-        console.error(err);
         alert("Errore durante l'invio della richiesta di sincronizzazione");
       }
     }

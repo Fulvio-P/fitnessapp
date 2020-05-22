@@ -55,7 +55,6 @@ export default {
         fitbitLogin(){
 
             //recupero payload dalla URL query
-            console.log(this.$route.query.code);
             const payload = {authCode: this.$route.query.code};
             //reset della route
             this.$router.push(this.$route.path)

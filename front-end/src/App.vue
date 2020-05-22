@@ -23,7 +23,6 @@ export default {
   mounted() {
     axios.interceptors.response.use(undefined, err => {
       return new Promise(() => {
-        console.log(JSON.stringify(err))
         if (err.message.includes('401') && err.config && !err.config.__isRetryRequest) {
           this.$store.dispatch("AUTH_LOGOUT");
           this.$router.push("/login");
@@ -34,7 +33,6 @@ export default {
     //mettiamo su un listener per i websocket
     //mettendolo qui, tutta l'applicazione può ricevere i messaggi, indipendentemente dalla route corrente
     this.$options.sockets.onmessage = (msg) => {
-      console.log(msg);
       const data = JSON.parse(msg.data);
       if(data.type == "success" || data.type == "error"){
         this.$store.commit('SOCKET_ONMESSAGE');

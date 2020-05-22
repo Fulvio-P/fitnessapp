@@ -100,12 +100,10 @@ export default {
         .dispatch("API_GET", profileUrl + translator[this.infoname])
         //se tutto va bene
         .then(resp => {
-          console.log(resp);
           this.setDisplay(resp.data[this.infoname.toLowerCase()]);
         })
         //se qualcosa va male
         .catch(err => {
-          console.log(err);
           alert(this.$store.state.status);
         });
     },
@@ -125,14 +123,12 @@ export default {
           })
           //se tutto va bene
           .then(resp => {
-            console.log(resp);
             //alla PUT faccio comunque tornare la nuova info, quindi la scrivo tranquillamente senza bisogno di un'altra GET
             this.setDisplay(resp.data[this.infoname.toLowerCase()]);
             this.toDispMode();
           })
           //se qualcosa va male
           .catch(err => {
-            console.log(err);
             alert(this.$store.state.status);
           });
       }
@@ -148,13 +144,11 @@ export default {
           .dispatch("API_DELETE", profileUrl + translator[this.infoname])
           //se tutto va bene
           .then(resp => {
-            console.log(resp);
             this.getInfo();
             this.toDispMode();
           })
           //se qualcosa va male
           .catch(err => {
-            console.log(err);
             alert(this.$store.state.status);
           });
       }
