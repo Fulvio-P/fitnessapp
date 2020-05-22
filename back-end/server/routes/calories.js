@@ -22,7 +22,7 @@ async function generalGet(req, res, from, to) {
         return res.status(404).send("User ID not found");
     }
     var toSend = {
-        id: req.user.id,
+        username: req.user.username,
         dataPoints: rows,
     };
     return toSend;
