@@ -23,6 +23,10 @@
     {
       "name": "profile",
       "description": "Gestione informazioni utente"
+    },
+    {
+      "name": "activities",
+      "description": "Gestione attività utente"
     }
   ],
   "servers": [
@@ -84,8 +88,10 @@
     },
     "/api/developer": {
       "get": {
-        "summary": "Your GET endpoint",
-        "tags": [],
+        "summary": "Applicazioni oAuth registrate",
+        "tags": [
+          "developer"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -191,7 +197,7 @@
       },
       "parameters": [],
       "post": {
-        "summary": "",
+        "summary": "Registra Applicazione  oAuth",
         "operationId": "post-api-developer",
         "responses": {
           "201": {
@@ -312,95 +318,11 @@
         "tags": [
           "developer"
         ]
-      },
-      "delete": {
-        "summary": "",
-        "operationId": "delete-api-developer",
-        "responses": {
-          "200": {
-            "description": "Viene inviata l'applicazione cancellata per conferma",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "integer"
-                    },
-                    "clientid": {
-                      "type": "integer"
-                    },
-                    "clientname": {
-                      "type": "string"
-                    },
-                    "redirect": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "clientid",
-                    "clientname",
-                    "redirect"
-                  ]
-                },
-                "examples": {
-                  "example-1": {
-                    "value": {
-                      "id": 1,
-                      "clientid": 10,
-                      "clientname": "Applicazione oAuth",
-                      "redirect": "http://example.com"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Questa entry non esisteva neanche prima. Nessuna modifica."
-          },
-          "500": {
-            "description": "Internal Database Error"
-          }
-        },
-        "description": "Cancella una applicazione registrata",
-        "security": [
-          {
-            "Internal Token": []
-          }
-        ],
-        "tags": [
-          "developer"
-        ],
-        "parameters": [
-          {
-            "schema": {
-              "type": "string",
-              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
-            },
-            "in": "header",
-            "name": "Authorization",
-            "description": "Bearer Internal Token",
-            "required": true
-          },
-          {
-            "schema": {
-              "type": "number"
-            },
-            "in": "query",
-            "name": "clientid",
-            "description": "Id dell'applicazione da eliminare",
-            "required": true
-          }
-        ]
       }
     },
     "/api/profile": {
       "get": {
-        "summary": "Profile",
+        "summary": "Dati profilo",
         "tags": [
           "profile"
         ],
@@ -541,57 +463,11 @@
           "profile"
         ]
       },
-      "delete": {
-        "summary": "Cancella Account",
-        "operationId": "delete-api-profile",
-        "responses": {
-          "204": {
-            "description": "No Content (l'account è stato rimosso con successo)"
-          },
-          "400": {
-            "description": "Are you sure about this? (Manca il pametro sure)"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "500": {
-            "description": "Internal Database Error"
-          }
-        },
-        "tags": [
-          "profile"
-        ],
-        "description": "Cancella tutti i dati di un utente ed elimina il suo account, serve un token interno.",
-        "security": [
-          {
-            "Internal Token": []
-          }
-        ],
-        "parameters": [
-          {
-            "schema": {
-              "type": "string",
-              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
-            },
-            "in": "header",
-            "name": "Authorization",
-            "description": "Bearer Token",
-            "required": true
-          },
-          {
-            "schema": {
-              "type": "boolean"
-            },
-            "in": "query",
-            "name": "sure",
-            "description": "Deve essere true per eliminare l'account"
-          }
-        ]
-      }
+      "parameters": []
     },
     "/api/profile/email": {
       "get": {
-        "summary": "Your GET endpoint",
+        "summary": "Email associata al profilo",
         "tags": [
           "profile"
         ],
@@ -642,7 +518,7 @@
         ]
       },
       "put": {
-        "summary": "",
+        "summary": "Aggiorna email",
         "operationId": "put-api-profile-email",
         "responses": {
           "200": {
@@ -712,7 +588,7 @@
         ]
       },
       "delete": {
-        "summary": "",
+        "summary": "Elimina email",
         "operationId": "delete-api-profile-email",
         "responses": {
           "200": {
@@ -755,11 +631,12 @@
         "tags": [
           "profile"
         ]
-      }
+      },
+      "parameters": []
     },
     "/api/profile/height": {
       "get": {
-        "summary": "Your GET endpoint",
+        "summary": "Altezza",
         "tags": [
           "profile"
         ],
@@ -809,7 +686,7 @@
         ]
       },
       "put": {
-        "summary": "",
+        "summary": "Aggiorna altezza",
         "operationId": "put-api-profile-height",
         "responses": {
           "200": {
@@ -868,7 +745,7 @@
         ]
       },
       "delete": {
-        "summary": "",
+        "summary": "Elimina altezza",
         "operationId": "delete-api-profile-height",
         "responses": {
           "200": {
@@ -902,11 +779,12 @@
         "tags": [
           "profile"
         ]
-      }
+      },
+      "parameters": []
     },
     "/api/profile/fitbit": {
       "get": {
-        "summary": "Your GET endpoint",
+        "summary": "Fitbit",
         "tags": [
           "profile"
         ],
@@ -956,7 +834,7 @@
         ]
       },
       "put": {
-        "summary": "",
+        "summary": "Associa profilo Fitbit",
         "operationId": "put-api-profile-fitbit",
         "responses": {
           "200": {
@@ -998,7 +876,7 @@
         ]
       },
       "delete": {
-        "summary": "",
+        "summary": "Cancella dati Fitbit",
         "operationId": "delete-api-profile-fitbit",
         "responses": {
           "200": {
@@ -1022,11 +900,571 @@
         "tags": [
           "profile"
         ]
+      },
+      "parameters": []
+    },
+    "/api/activities": {
+      "get": {
+        "summary": "Attività",
+        "tags": [
+          "activities"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "description": "Username utente autenticato"
+                    },
+                    "dataPoints": {
+                      "type": "array",
+                      "description": "Array di attività",
+                      "items": {
+                        "$ref": "#/components/schemas/activity"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "User ID Not Found"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "operationId": "get-api-activities",
+        "description": "Recupera tutte le attività dell'utente autenticato",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      },
+      "parameters": [],
+      "post": {
+        "summary": "Aggiungi attività",
+        "operationId": "post-api-activities",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/activity"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "413": {
+            "description": "Request Entity Too Large"
+          },
+          "429": {
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Aggiunge una nuova attività",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "string",
+                    "description": "Data attività"
+                  },
+                  "nome": {
+                    "type": "string",
+                    "description": "Nome attività"
+                  },
+                  "calout": {
+                    "type": "integer",
+                    "description": "Calorie bruciate"
+                  },
+                  "descrizione": {
+                    "type": "string",
+                    "description": "Info aggiuntive"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Attività da aggiungere"
+        },
+        "tags": [
+          "activities"
+        ]
+      }
+    },
+    "/api/developer/{clientid}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "clientid",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "delete": {
+        "summary": "Elimina una applicazione registrata",
+        "operationId": "delete-api-developer-clientid",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "Id utente"
+                    },
+                    "clientid": {
+                      "type": "integer",
+                      "description": "Id Applicazione rimossa"
+                    },
+                    "clientname": {
+                      "type": "string",
+                      "description": "Nome applicazione rimossa"
+                    },
+                    "ridirect": {
+                      "type": "string",
+                      "description": "Ridirect Applicazione rimossa"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "developer"
+        ],
+        "description": "Elimina l'applicazione client registrata con id clientid, solo uso interno",
+        "security": [
+          {
+            "Internal Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/profile/{sure}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "sure",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "delete": {
+        "summary": "Elimina profilo utente",
+        "operationId": "delete-api-profile-sure",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "profile"
+        ],
+        "description": "Cancella tutti i dati di un utente ed elimina il suo account, serve un token interno. Affinchè l'operazione vada a buon fine {sure} deve essere 'true'.",
+        "security": [
+          {
+            "Internal Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/activities/{ts}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "ts",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "put": {
+        "summary": "Modifica attività",
+        "operationId": "put-api-activities-ts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/activity"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "413": {
+            "description": "Request Entity Too Large"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "activities"
+        ],
+        "description": "Aggiorna l'attività identificata dal timestamp {ts}",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "string"
+                  },
+                  "nome": {
+                    "type": "string"
+                  },
+                  "calout": {
+                    "type": "integer"
+                  },
+                  "descizione": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "data",
+                  "nome",
+                  "calout",
+                  "descizione"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Elimina attività",
+        "operationId": "delete-api-activities-ts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/activity"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "activities"
+        ],
+        "description": "Elimina arrività identificata dal timestamp {ts}",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/activities/{data}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "data",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Attività (data specifica)",
+        "tags": [
+          "activities"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string"
+                    },
+                    "dataPoints": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/activity"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "operationId": "get-api-activities-data",
+        "description": "Richiede le attività relative al giorno {data}",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/activities/{from}/{to}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "from",
+          "in": "path",
+          "required": true
+        },
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "to",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Attività (range di date)",
+        "tags": [
+          "activities"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string"
+                    },
+                    "dataPoints": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/activity"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "operationId": "get-api-activities-from-to",
+        "description": "Richiede attività tra il giorno {from} a quello {to}, estremi inclusi",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "description": "Bearer Token"
+          }
+        ]
       }
     }
   },
   "components": {
-    "schemas": {},
+    "schemas": {
+      "activity": {
+        "title": "activity",
+        "type": "object",
+        "properties": {
+          "created": {
+            "type": "string",
+            "description": "Timestamp di creazione usato come chiave"
+          },
+          "data": {
+            "type": "string",
+            "description": "Data di riferimento"
+          },
+          "nome": {
+            "type": "string",
+            "description": "Nome attività"
+          },
+          "calout": {
+            "type": "integer",
+            "description": "Calorie bruciate"
+          },
+          "descrizione": {
+            "type": "string",
+            "description": "Informazioni aggiuntive"
+          }
+        },
+        "x-tags": [
+          "activities"
+        ],
+        "description": "Attività"
+      }
+    },
     "securitySchemes": {
       "Bearer Token": {
         "type": "oauth2",
