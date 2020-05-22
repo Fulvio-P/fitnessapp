@@ -11,9 +11,10 @@ router.post('/', async (req, res) => {
     } catch (err) {
         //in caso di errore manda un messaggio adeguato
         console.error(`postgres error no. ${err.code}: ${err.message}`);
+        return res.status(500).send('Internal Server Error');
     }
     //se tutto è andato bene invia conferma
-    res.status(201).send(req.body)
+    return res.status(201).send(req.body)
 })
 
 
