@@ -72,7 +72,14 @@
                   "password"
                 ]
               },
-              "examples": {}
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "username": "AkihikoSanada",
+                    "password": "polydeuces"
+                  }
+                }
+              }
             }
           },
           "description": "username e password da assegnare al nuovo utente"
@@ -104,6 +111,13 @@
                   "required": [
                     "token"
                   ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "token": "sdvjrweiot8qrqi3hf894hiu8fh389q.wieufh387gfodc8n48o.2ofh4hhweu8"
+                    }
+                  }
                 }
               }
             }
@@ -136,6 +150,14 @@
                   "username",
                   "password"
                 ]
+              },
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "username": "AkihikoSanada",
+                    "password": "polydeuces"
+                  }
+                }
               }
             }
           },
@@ -166,6 +188,13 @@
                   "required": [
                     "token"
                   ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "token": "sdvjrweiot8qrqi3hf894hiu8fh389q.wieufh387gfodc8n48o.2ofh4hhweu8"
+                    }
+                  }
                 }
               }
             }
@@ -200,7 +229,7 @@
                     "description": "password dell'utente da registrare"
                   },
                   "id": {
-                    "type": "string",
+                    "type": "number",
                     "description": "id dell'applicazione"
                   },
                   "redirect": {
@@ -214,6 +243,16 @@
                   "id",
                   "redirect"
                 ]
+              },
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "username": "AkihikoSanada",
+                    "password": "polydeuces",
+                    "id": 45323,
+                    "redirect": "http://gekkoufit.jp/fitnessapp-oauth-redirect/"
+                  }
+                }
               }
             }
           },
@@ -234,12 +273,35 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MisuraCalorie"
-                  }
+                  "$ref": "#/components/schemas/OutputCalorie"
                 },
-                "examples": {}
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "id": 1,
+                      "dataPoints": [
+                        {
+                          "data": "2020-04-24T22:00:00.000Z",
+                          "calin": 100,
+                          "calout": 100,
+                          "bilancio": 0
+                        },
+                        {
+                          "data": "2020-04-25T22:00:00.000Z",
+                          "calin": 50,
+                          "calout": 0,
+                          "bilancio": 50
+                        },
+                        {
+                          "data": "2020-04-26T22:00:00.000Z",
+                          "calin": 0,
+                          "calout": 60,
+                          "bilancio": -60
+                        }
+                      ]
+                    }
+                  }
+                }
               }
             }
           },
@@ -263,7 +325,8 @@
         "parameters": [
           {
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
             },
             "in": "header",
             "name": "Authorization",
@@ -297,9 +360,21 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MisuraCalorie"
+                  "$ref": "#/components/schemas/OutputCalorie"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "id": 1,
+                      "dataPoints": [
+                        {
+                          "data": "2020-04-24T22:00:00.000Z",
+                          "calin": 100,
+                          "calout": 100,
+                          "bilancio": 0
+                        }
+                      ]
+                    }
                   }
                 }
               }
@@ -325,7 +400,8 @@
         "parameters": [
           {
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
             },
             "in": "header",
             "name": "Authorization",
@@ -366,9 +442,33 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MisuraCalorie"
+                  "$ref": "#/components/schemas/OutputCalorie"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "id": 1,
+                      "dataPoints": [
+                        {
+                          "data": "2020-04-24T22:00:00.000Z",
+                          "calin": 100,
+                          "calout": 100,
+                          "bilancio": 0
+                        },
+                        {
+                          "data": "2020-04-25T22:00:00.000Z",
+                          "calin": 50,
+                          "calout": 0,
+                          "bilancio": 50
+                        },
+                        {
+                          "data": "2020-04-26T22:00:00.000Z",
+                          "calin": 0,
+                          "calout": 60,
+                          "bilancio": -60
+                        }
+                      ]
+                    }
                   }
                 }
               }
@@ -394,7 +494,8 @@
         "parameters": [
           {
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
             },
             "in": "header",
             "name": "Authorization",
@@ -415,9 +516,27 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MisuraPeso"
+                  "$ref": "#/components/schemas/OutputPeso"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "username": "AkihikoSanada",
+                      "dataPoints": [
+                        {
+                          "data": "2020-04-24T22:00:00.000Z",
+                          "peso": 80
+                        },
+                        {
+                          "data": "2020-04-25T22:00:00.000Z",
+                          "peso": 70
+                        },
+                        {
+                          "data": "2020-04-26T22:00:00.000Z",
+                          "peso": 75
+                        }
+                      ]
+                    }
                   }
                 }
               }
@@ -443,7 +562,8 @@
         "parameters": [
           {
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
             },
             "in": "header",
             "name": "Authorization",
@@ -464,6 +584,14 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MisuraPeso"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "data": "2020-05-21T22:00:00.000Z",
+                      "peso": 67
+                    }
+                  }
                 }
               }
             }
@@ -494,7 +622,8 @@
         "parameters": [
           {
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
             },
             "in": "header",
             "name": "Authorization",
@@ -507,6 +636,13 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/InputPeso"
+              },
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "peso": 67
+                  }
+                }
               }
             }
           },
@@ -537,9 +673,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MisuraPeso"
+                  "$ref": "#/components/schemas/OutputPeso"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "username": "AkihikoSanada",
+                      "dataPoints": [
+                        {
+                          "data": "2020-04-24T22:00:00.000Z",
+                          "peso": 80
+                        }
+                      ]
+                    }
                   }
                 }
               }
@@ -565,7 +711,8 @@
         "parameters": [
           {
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
             },
             "in": "header",
             "name": "Authorization",
@@ -586,6 +733,14 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MisuraPeso"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "data": "2020-05-21T22:00:00.000Z",
+                      "peso": 67
+                    }
+                  }
                 }
               }
             }
@@ -613,7 +768,8 @@
         "parameters": [
           {
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
             },
             "in": "header",
             "name": "Authorization",
@@ -626,6 +782,13 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/InputPeso"
+              },
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "peso": 67
+                  }
+                }
               }
             }
           }
@@ -643,6 +806,14 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MisuraPeso"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "data": "2020-05-21T22:00:00.000Z",
+                      "peso": 67
+                    }
+                  }
                 }
               }
             }
@@ -667,7 +838,8 @@
         "parameters": [
           {
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
             },
             "in": "header",
             "name": "Authorization",
@@ -709,9 +881,27 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MisuraPeso"
+                  "$ref": "#/components/schemas/OutputPeso"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "username": "AkihikoSanada",
+                      "dataPoints": [
+                        {
+                          "data": "2020-04-24T22:00:00.000Z",
+                          "peso": 80
+                        },
+                        {
+                          "data": "2020-04-25T22:00:00.000Z",
+                          "peso": 70
+                        },
+                        {
+                          "data": "2020-04-26T22:00:00.000Z",
+                          "peso": 75
+                        }
+                      ]
+                    }
                   }
                 }
               }
@@ -737,7 +927,8 @@
         "parameters": [
           {
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
             },
             "in": "header",
             "name": "Authorization",
@@ -760,6 +951,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Cibo"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "created": "2020-05-22T09:01:41.718Z",
+                      "data": "2020-05-21T22:00:00.000Z",
+                      "nome": "riso",
+                      "calin": 250,
+                      "descrizione": ""
+                    }
+                  }
                 }
               }
             }
@@ -793,7 +995,8 @@
         "parameters": [
           {
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
             },
             "in": "header",
             "name": "Authorization",
@@ -828,6 +1031,22 @@
                   "nome",
                   "calin"
                 ]
+              },
+              "examples": {
+                "Esempio 1": {
+                  "value": {
+                    "nome": "riso",
+                    "calin": "250"
+                  }
+                },
+                "Esempio 2": {
+                  "value": {
+                    "nome": "riso",
+                    "calin": "250",
+                    "data": "2020-04-01",
+                    "descrizione": "Il sapore era strano per qualche motivo..."
+                  }
+                }
               }
             }
           },
@@ -845,7 +1064,30 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Cibo"
+                  "$ref": "#/components/schemas/OutputCibo"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "username": "AkihikoSanada",
+                      "dataPoints": [
+                        {
+                          "created": "2020-04-25T00:00:00.000Z",
+                          "data": "2020-04-24T22:00:00.000Z",
+                          "nome": "pollo",
+                          "calin": 100,
+                          "descrizione": ""
+                        },
+                        {
+                          "created": "2020-04-26T00:00:00.000Z",
+                          "data": "2020-04-25T22:00:00.000Z",
+                          "nome": "sushi",
+                          "calin": 50,
+                          "descrizione": ""
+                        }
+                      ]
+                    }
+                  }
                 }
               }
             }
@@ -870,7 +1112,8 @@
         "parameters": [
           {
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
             },
             "in": "header",
             "name": "Authorization",
@@ -903,9 +1146,29 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Cibo"
+                  "$ref": "#/components/schemas/OutputCibo"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "username": "AkihikoSanada",
+                      "dataPoints": [
+                        {
+                          "created": "2020-04-25T00:00:00.000Z",
+                          "data": "2020-01-11T22:00:00.000Z",
+                          "nome": "pollo",
+                          "calin": 100,
+                          "descrizione": ""
+                        },
+                        {
+                          "created": "2020-04-26T00:00:00.000Z",
+                          "data": "2020-01-11T22:00:00.000Z",
+                          "nome": "sushi",
+                          "calin": 50,
+                          "descrizione": ""
+                        }
+                      ]
+                    }
                   }
                 }
               }
@@ -931,7 +1194,8 @@
         "parameters": [
           {
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
             },
             "in": "header",
             "name": "Authorization",
@@ -973,9 +1237,29 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Cibo"
+                  "$ref": "#/components/schemas/OutputCibo"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "username": "AkihikoSanada",
+                      "dataPoints": [
+                        {
+                          "created": "2020-04-25T00:00:00.000Z",
+                          "data": "2020-04-24T22:00:00.000Z",
+                          "nome": "pollo",
+                          "calin": 100,
+                          "descrizione": ""
+                        },
+                        {
+                          "created": "2020-04-26T00:00:00.000Z",
+                          "data": "2020-04-25T22:00:00.000Z",
+                          "nome": "sushi",
+                          "calin": 50,
+                          "descrizione": ""
+                        }
+                      ]
+                    }
                   }
                 }
               }
@@ -1001,7 +1285,8 @@
         "parameters": [
           {
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
             },
             "in": "header",
             "name": "Authorization",
@@ -1035,6 +1320,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Cibo"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "created": "2020-05-22T09:01:41.718Z",
+                      "data": "2020-05-21T22:00:00.000Z",
+                      "nome": "riso",
+                      "calin": 250,
+                      "descrizione": ""
+                    }
+                  }
                 }
               }
             }
@@ -1065,7 +1361,8 @@
         "parameters": [
           {
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
             },
             "in": "header",
             "name": "Authorization",
@@ -1102,6 +1399,16 @@
                   "calin",
                   "descrizione"
                 ]
+              },
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "nome": "riso",
+                    "calin": "250",
+                    "data": "2020-04-01",
+                    "descrizione": "Il sapore era strano per qualche motivo..."
+                  }
+                }
               }
             }
           },
@@ -1120,6 +1427,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Cibo"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "created": "2020-05-22T09:01:41.718Z",
+                      "data": "2020-05-21T22:00:00.000Z",
+                      "nome": "riso",
+                      "calin": 250,
+                      "descrizione": ""
+                    }
+                  }
                 }
               }
             }
@@ -1144,7 +1462,8 @@
         "parameters": [
           {
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
             },
             "in": "header",
             "name": "Authorization",
@@ -1167,6 +1486,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Cibo"
+                },
+                "examples": {
+                  "Esempio 1": {
+                    "value": {
+                      "created": "2020-05-22T09:06:42.967Z",
+                      "data": "2020-05-21T22:00:00.000Z",
+                      "nome": "Fusilli n°34",
+                      "calin": 351,
+                      "descrizione": "Quantità consumata: 100 unità\nCarboidrati: 69g\nProteine: 14g\nGrassi: 1.5g"
+                    }
+                  },
+                  "Esempio 2": {
+                    "value": {
+                      "created": "2020-05-22T09:10:06.825Z",
+                      "data": "2020-04-30T22:00:00.000Z",
+                      "nome": "Fusilli n°34",
+                      "calin": 175.5,
+                      "descrizione": "Quantità consumata: 50 unità\nCarboidrati: 34.5g\nProteine: 7g\nGrassi: 0.75g"
+                    }
+                  }
                 }
               }
             }
@@ -1210,6 +1549,20 @@
                 "required": [
                   "barcode"
                 ]
+              },
+              "examples": {
+                "Esempio 1": {
+                  "value": {
+                    "barcode": 8001250120342
+                  }
+                },
+                "Esempio 2": {
+                  "value": {
+                    "barcode": 8001250120342,
+                    "quantita": 50,
+                    "data": "2020-05-01"
+                  }
+                }
               }
             }
           },
@@ -1224,7 +1577,8 @@
         "parameters": [
           {
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
             },
             "in": "header",
             "name": "Authorization",
@@ -1267,7 +1621,15 @@
         ],
         "x-tags": [
           "calories"
-        ]
+        ],
+        "x-examples": {
+          "Esempio": {
+            "data": "2020-04-24T22:00:00.000Z",
+            "calin": 150,
+            "calout": 100,
+            "bilancio": 50
+          }
+        }
       },
       "MisuraPeso": {
         "title": "MisuraPeso",
@@ -1289,7 +1651,13 @@
         "required": [
           "data",
           "peso"
-        ]
+        ],
+        "x-examples": {
+          "Esempio": {
+            "data": "2020-04-24T22:00:00.000Z",
+            "peso": 80
+          }
+        }
       },
       "InputPeso": {
         "title": "InputPeso",
@@ -1306,7 +1674,12 @@
         ],
         "x-tags": [
           "weight"
-        ]
+        ],
+        "x-examples": {
+          "Esempio": {
+            "peso": 70
+          }
+        }
       },
       "Cibo": {
         "title": "Cibo",
@@ -1343,7 +1716,156 @@
           "nome",
           "calin",
           "descrizione"
+        ],
+        "x-examples": {
+          "Esempio": {
+            "created": "2020-05-22T08:36:02.411Z",
+            "data": "2020-05-21T22:00:00.000Z",
+            "nome": "Pasta",
+            "calin": 200,
+            "descrizione": "sugo di pomodori appena raccolti"
+          }
+        }
+      },
+      "OutputCalorie": {
+        "title": "OutputCalorie",
+        "type": "object",
+        "x-tags": [
+          "calories"
+        ],
+        "description": "L'oggetto mandato in output dalle GET sulle calorie.",
+        "x-examples": {
+          "Esempio": {
+            "id": 1,
+            "dataPoints": [
+              {
+                "data": "2020-04-24T22:00:00.000Z",
+                "calin": 100,
+                "calout": 100,
+                "bilancio": 0
+              },
+              {
+                "data": "2020-04-25T22:00:00.000Z",
+                "calin": 50,
+                "calout": 0,
+                "bilancio": 50
+              },
+              {
+                "data": "2020-04-26T22:00:00.000Z",
+                "calin": 0,
+                "calout": 60,
+                "bilancio": -60
+              }
+            ]
+          }
+        },
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Id dell'utente"
+          },
+          "dataPoints": {
+            "type": "array",
+            "description": "Array di misure di calorie",
+            "items": {
+              "$ref": "#/components/schemas/MisuraCalorie"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "dataPoints"
         ]
+      },
+      "OutputPeso": {
+        "title": "OutputPeso",
+        "type": "object",
+        "x-tags": [
+          "weight"
+        ],
+        "description": "L'oggetto mandato in output dalle GET sul peso.",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Lo username dell'utente"
+          },
+          "dataPoints": {
+            "type": "array",
+            "description": "Array contenente le misure di peso",
+            "items": {
+              "$ref": "#/components/schemas/MisuraPeso"
+            }
+          }
+        },
+        "required": [
+          "username",
+          "dataPoints"
+        ],
+        "x-examples": {
+          "Esempio": {
+            "username": "AkihikoSanada",
+            "dataPoints": [
+              {
+                "data": "2020-04-24T22:00:00.000Z",
+                "peso": 80
+              },
+              {
+                "data": "2020-04-25T22:00:00.000Z",
+                "peso": 70
+              },
+              {
+                "data": "2020-04-26T22:00:00.000Z",
+                "peso": 75
+              }
+            ]
+          }
+        }
+      },
+      "OutputCibo": {
+        "title": "OutputCibo",
+        "type": "object",
+        "x-tags": [
+          "food"
+        ],
+        "description": "L'oggetto mandato in output dalle GET sul cibo.",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Username dell'utente"
+          },
+          "dataPoints": {
+            "type": "array",
+            "description": "Array contenente i cibi richiesti",
+            "items": {
+              "$ref": "#/components/schemas/Cibo"
+            }
+          }
+        },
+        "required": [
+          "username",
+          "dataPoints"
+        ],
+        "x-examples": {
+          "Esempio": {
+            "username": "AkihikoSanada",
+            "dataPoints": [
+              {
+                "created": "2020-04-25T00:00:00.000Z",
+                "data": "2020-04-24T22:00:00.000Z",
+                "nome": "pollo",
+                "calin": 100,
+                "descrizione": ""
+              },
+              {
+                "created": "2020-04-26T00:00:00.000Z",
+                "data": "2020-04-25T22:00:00.000Z",
+                "nome": "sushi",
+                "calin": 50,
+                "descrizione": ""
+              }
+            ]
+          }
+        }
       }
     },
     "securitySchemes": {
