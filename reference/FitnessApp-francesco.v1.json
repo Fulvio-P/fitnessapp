@@ -86,7 +86,8 @@
         },
         "tags": [
           "user"
-        ]
+        ],
+        "security": []
       }
     },
     "/api/user/login": {
@@ -162,7 +163,8 @@
             }
           },
           "description": "username e password con cui effettuare il login"
-        }
+        },
+        "security": []
       },
       "parameters": []
     },
@@ -257,7 +259,8 @@
             }
           },
           "description": "Username e password dell'account da loggare, e Client ID e Redirect URL dell'applicazione."
-        }
+        },
+        "security": []
       },
       "parameters": []
     },
