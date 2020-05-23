@@ -37,25 +37,48 @@
   "paths": {
     "/opinion": {
       "post": {
-        "summary": "Invia un messaggio agli sviluppatori",
+        "summary": "01. Invia un messaggio agli sviluppatori",
         "operationId": "post-opinion",
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Messaggio inviato con successo: la risposta ne contiene una copia",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "description": "Testo ricevuto dalla post"
+                  "type": "object",
+                  "description": "Una copia del messaggio appena inviato",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "format": "email",
+                      "description": "email fornita"
+                    },
+                    "testo": {
+                      "type": "string",
+                      "description": "corpo del messaggio scritto"
+                    }
+                  },
+                  "required": [
+                    "email",
+                    "testo"
+                  ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "email": "a.sanada@gekkoukan.edu",
+                      "testo": "Ottima app, essenziale per mantenersi in forma giorno, notte, etc. La consiglierò a tutti i miei compagni!"
+                    }
+                  }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal Database Error"
+            "description": "Errore interno"
           }
         },
-        "description": "Permette di inviare messaggi agli sviluppatori.",
+        "description": "Permette di inviare un messaggio agli sviluppatori.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -64,10 +87,12 @@
                 "properties": {
                   "email": {
                     "type": "string",
-                    "format": "email"
+                    "format": "email",
+                    "description": "Email presso cui si vuole ricevere la risposta"
                   },
                   "testo": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Corpo del messaggio"
                   }
                 },
                 "required": [
@@ -75,7 +100,14 @@
                   "testo"
                 ]
               },
-              "examples": {}
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "email": "a.sanada@gekkoukan.edu",
+                    "testo": "Ottima app, essenziale per mantenersi in forma giorno, notte, etc. La consiglierò a tutti i miei compagni!"
+                  }
+                }
+              }
             }
           },
           "description": "Il campo email deve contenere l'indirizzo presso cui si vuole ricevere la risposta, testo contiene il corpo del messaggio."
@@ -88,7 +120,7 @@
     },
     "/api/developer": {
       "get": {
-        "summary": "Applicazioni oAuth registrate",
+        "summary": "01. Mostra applicazioni oAuth registrate",
         "tags": [
           "developer"
         ],
@@ -108,32 +140,7 @@
                       "type": "array",
                       "description": "Array di applicazioni registrate",
                       "items": {
-                        "type": "object",
-                        "description": "Applicazione registrata",
-                        "properties": {
-                          "id": {
-                            "type": "number",
-                            "description": "Id dell'utente"
-                          },
-                          "clientid": {
-                            "type": "number",
-                            "description": "Id dell'applicazione"
-                          },
-                          "clientname": {
-                            "type": "string",
-                            "description": "Nome applicazione"
-                          },
-                          "ridirect": {
-                            "type": "string",
-                            "description": "Redirect URL per la procedura oAuth"
-                          }
-                        },
-                        "required": [
-                          "id",
-                          "clientid",
-                          "clientname",
-                          "ridirect"
-                        ]
+                        "$ref": "#/components/schemas/ApplicazioneOAuth"
                       }
                     }
                   },
@@ -142,7 +149,7 @@
                   ]
                 },
                 "examples": {
-                  "example-1": {
+                  "Esempio": {
                     "value": {
                       "username": "AkihikoSanada",
                       "dataPoints": [
@@ -166,17 +173,17 @@
             }
           },
           "401": {
-            "description": "Wrong Token or No token"
+            "description": "Token non valido o scaduto"
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden: questo endpoint può essere usato solo con un token interno"
           },
           "500": {
             "description": "Internal Database Error"
           }
         },
         "operationId": "get-developers",
-        "description": "Recupera tutte le applicazioni dell'utente associato al token interno, questo path è usato solo nelle comunicazioni fra fron-end e back-end.",
+        "description": "Recupera tutte le applicazioni dell'utente associato al token interno. Questo path è usato solo nelle comunicazioni fra front-end e back-end.",
         "security": [
           {
             "Internal Token": []
@@ -197,42 +204,18 @@
       },
       "parameters": [],
       "post": {
-        "summary": "Registra Applicazione  oAuth",
+        "summary": "02. Registra Applicazione  oAuth",
         "operationId": "post-api-developer",
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Applicazione registrata con successo: La risposta contiene una copia dei dati relativi a essa",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "integer",
-                      "description": "Id dell'utente autenticato"
-                    },
-                    "clientid": {
-                      "type": "integer",
-                      "description": "Id dell'applicazione"
-                    },
-                    "clientname": {
-                      "type": "string",
-                      "description": "Nome dell'applicazione"
-                    },
-                    "redirect": {
-                      "type": "string",
-                      "format": "uri",
-                      "description": "Redirect URL registrato"
-                    }
-                  },
-                  "required": [
-                    "clientid",
-                    "clientname",
-                    "redirect"
-                  ]
+                  "$ref": "#/components/schemas/ApplicazioneOAuth"
                 },
                 "examples": {
-                  "example-1": {
+                  "Esempio": {
                     "value": {
                       "id": 1,
                       "clientid": 10,
@@ -251,7 +234,7 @@
             "description": "Wrong Token or No token"
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden: questo endpoint può essere usato solo con un token interno"
           },
           "404": {
             "description": "User ID does not exist"
@@ -263,7 +246,7 @@
             "description": "Sei troppo veloce! RRiprova tra qualche secondo..."
           }
         },
-        "description": "Registra una nuova applicazione oAuth per l'utente correntemente autenticato, solo uso interno.",
+        "description": "Registra una nuova applicazione oAuth per l'utente correntemente autenticato. Questo path è usato solo nelle comunicazioni fra front-end e back-end.",
         "security": [
           {
             "Internal Token": []
@@ -304,7 +287,7 @@
                 ]
               },
               "examples": {
-                "example-1": {
+                "Esempio": {
                   "value": {
                     "clientname": "Applicazione oAuth",
                     "redirect": "http://esempio.com/oauth"
@@ -322,13 +305,13 @@
     },
     "/api/profile": {
       "get": {
-        "summary": "Dati profilo",
+        "summary": "01. Ottieni dati profilo",
         "tags": [
           "profile"
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "OK: la risposta contiene solo le proprietà effettivamente definite nel profilo",
             "content": {
               "application/json": {
                 "schema": {
@@ -348,14 +331,24 @@
                       ],
                       "description": "altezza in cm"
                     },
+                    "fitbituser": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Username FitBit associato"
+                    },
                     "username": {
                       "type": "string",
                       "description": "Username dell'utente"
                     }
-                  }
+                  },
+                  "required": [
+                    "username"
+                  ]
                 },
                 "examples": {
-                  "example-1": {
+                  "Esempio": {
                     "value": {
                       "email": "a.sanada@gekkoukan.edu",
                       "altezza": 175,
@@ -367,17 +360,17 @@
             }
           },
           "401": {
-            "description": "Wrong Token or No token"
+            "description": "Token non valido o scaduto"
           },
           "404": {
-            "description": "User ID Not Found"
+            "description": "Utente non trovato"
           },
           "500": {
             "description": "Internal Database Error"
           }
         },
         "operationId": "get-api-profile",
-        "description": "Recupera le info addizionali associate al profilo, ovvero indirizzo email e altezza",
+        "description": "Recupera le info addizionali associate al profilo, ovvero indirizzo email, altezza e username FitBit associato, se presenti",
         "parameters": [
           {
             "schema": {
@@ -392,11 +385,11 @@
         ]
       },
       "patch": {
-        "summary": "Aggiorna dati profilo",
+        "summary": "06. Aggiorna dati profilo",
         "operationId": "patch-api-profile",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Modifica effettuata con successo: la risposta contiene i nuovi valori delle sole proprietà modificate.",
             "content": {
               "application/json": {
                 "schema": {
@@ -409,10 +402,24 @@
                     "altezza": {
                       "type": "number",
                       "description": "Altezza in cm"
-                    },
-                    "username": {
-                      "type": "string",
-                      "description": "Username dell'utente"
+                    }
+                  }
+                },
+                "examples": {
+                  "Esempio 1": {
+                    "value": {
+                      "email": "a.sanada@gekkoukan.edu"
+                    }
+                  },
+                  "Esempio 2": {
+                    "value": {
+                      "altezza": 175
+                    }
+                  },
+                  "Esempio 3": {
+                    "value": {
+                      "email": "a.sanada@gekkoukan.edu",
+                      "altezza": 175
                     }
                   }
                 }
@@ -420,13 +427,13 @@
             }
           },
           "413": {
-            "description": "String Too Long"
+            "description": "L'email fornita eccede il limite di caratteri"
           },
           "500": {
             "description": "Internal Database Error"
           }
         },
-        "description": "Aggiorna campi delle informazioni aggiuntive passati nel body.",
+        "description": "Aggiorna campi delle informazioni aggiuntive passati nel body. Solo email e altezza possono essere modificate in questo modo.",
         "parameters": [
           {
             "schema": {
@@ -455,19 +462,153 @@
                     "description": "altezza in cm"
                   }
                 }
+              },
+              "examples": {
+                "Esempio 1": {
+                  "value": {
+                    "email": "a.sanada@gekkoukan.edu"
+                  }
+                },
+                "Esempio 2": {
+                  "value": {
+                    "altezza": 175
+                  }
+                },
+                "Esempio 3": {
+                  "value": {
+                    "email": "a.sanada@gekkoukan.edu",
+                    "altezza": 175
+                  }
+                }
               }
             }
-          }
+          },
+          "description": "Specificare le proprietà che si vogliono modificare (le altre non sono obbligatorie)"
         },
         "tags": [
           "profile"
+        ]
+      },
+      "parameters": [],
+      "delete": {
+        "summary": "13. Elimina profilo utente",
+        "operationId": "delete-api-profile",
+        "responses": {
+          "204": {
+            "description": "Account eliminato con successo."
+          },
+          "400": {
+            "description": "Richiesta rifiutata per mancanza del query parameter \"sure\""
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "403": {
+            "description": "Forbidden: questo endpoint può essere usato solo con un token interno"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "description": "Cancella tutti i dati di un utente ed elimina il suo account, serve un token interno. \nL'eliminazione è definitiva e non può essere annullata.\nPer confermare l'operazione ed evitare di colpire questo endpoint per sbaglio, il query parameter 'sure' deve essere 'true'.",
+        "security": [
+          {
+            "Internal Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Internal Token",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "example": "true"
+            },
+            "in": "query",
+            "name": "sure",
+            "description": "Deve essere true per confermare l'operazione",
+            "required": true
+          }
+        ],
+        "tags": [
+          "profile"
+        ]
+      }
+    },
+    "/api/profile/username": {
+      "get": {
+        "summary": "02. Mostra username",
+        "tags": [
+          "profile"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "description": "Username dell'utente"
+                    }
+                  },
+                  "required": [
+                    "username"
+                  ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "username": "AkihikoSanada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "operationId": "get-api-profile-username",
+        "description": "Recupera lo username dell'utente autenticato.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          }
         ]
       },
       "parameters": []
     },
     "/api/profile/email": {
       "get": {
-        "summary": "Email associata al profilo",
+        "summary": "03. Mostra email associata al profilo",
         "tags": [
           "profile"
         ],
@@ -491,13 +632,31 @@
                       "type": "string",
                       "description": "Username associato"
                     }
+                  },
+                  "required": [
+                    "email",
+                    "username"
+                  ]
+                },
+                "examples": {
+                  "Esempio 1": {
+                    "value": {
+                      "email": "a.sanada@gekkoukan.edu",
+                      "username": "AkihikoSanada"
+                    }
+                  },
+                  "Esempio 2": {
+                    "value": {
+                      "email": null,
+                      "username": "AkihikoSanada"
+                    }
                   }
                 }
               }
             }
           },
           "404": {
-            "description": "User Not Found"
+            "description": "Utente non trovato"
           },
           "500": {
             "description": "Internal Database Error"
@@ -518,11 +677,11 @@
         ]
       },
       "put": {
-        "summary": "Aggiorna email",
+        "summary": "07. Aggiorna email",
         "operationId": "put-api-profile-email",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Modifica effettuata con successo: la risposta contiene il nuovo indirizzo email",
             "content": {
               "application/json": {
                 "schema": {
@@ -541,12 +700,20 @@
                     "username",
                     "email"
                   ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "email": "a.sanada@gekkoukan.edu",
+                      "username": "AkihikoSanada"
+                    }
+                  }
                 }
               }
             }
           },
           "413": {
-            "description": "String Too Long"
+            "description": "L'email fornita eccede il limite di caratteri"
           },
           "500": {
             "description": "Internal Database Error"
@@ -579,33 +746,56 @@
                 "required": [
                   "email"
                 ]
+              },
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "email": "a.sanada@gekkoukan.edu"
+                  }
+                }
               }
             }
-          }
+          },
+          "description": "Specificare il nuovo indirizzo email"
         },
         "tags": [
           "profile"
         ]
       },
       "delete": {
-        "summary": "Elimina email",
+        "summary": "10. Elimina email",
         "operationId": "delete-api-profile-email",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Email eliminmata con successo: la risposta contiene l'indirizzo appena eliminato",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "email": {
-                      "type": "string",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
                       "description": "Email cancellata",
                       "format": "email"
                     },
                     "username": {
                       "type": "string",
                       "description": "Account associato"
+                    }
+                  },
+                  "required": [
+                    "email",
+                    "username"
+                  ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "email": "a.sanada@gekkoukan.edu",
+                      "username": "AkihikoSanada"
                     }
                   }
                 }
@@ -636,7 +826,7 @@
     },
     "/api/profile/height": {
       "get": {
-        "summary": "Altezza",
+        "summary": "04. Mostra altezza",
         "tags": [
           "profile"
         ],
@@ -659,20 +849,32 @@
                       "type": "string",
                       "description": "Username dell'utente"
                     }
+                  },
+                  "required": [
+                    "altezza",
+                    "username"
+                  ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "altezza": 175,
+                      "username": "AkihikoSanada"
+                    }
                   }
                 }
               }
             }
           },
           "404": {
-            "description": "User Not Found"
+            "description": "Utente non trovato"
           },
           "500": {
             "description": "Internal Database Error"
           }
         },
         "operationId": "get-api-profile-height",
-        "description": "Recupera l'altezza dell'utente autenticato",
+        "description": "Recupera l'altezza (in cm) dell'utente autenticato",
         "parameters": [
           {
             "schema": {
@@ -686,11 +888,11 @@
         ]
       },
       "put": {
-        "summary": "Aggiorna altezza",
+        "summary": "08. Aggiorna altezza",
         "operationId": "put-api-profile-height",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Modifica effettuata con successo: la risposta contiene la nuova altezza",
             "content": {
               "application/json": {
                 "schema": {
@@ -703,6 +905,18 @@
                     "altezza": {
                       "type": "integer",
                       "description": "Altezza in cm"
+                    }
+                  },
+                  "required": [
+                    "username",
+                    "altezza"
+                  ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "altezza": 175,
+                      "username": "AkihikoSanada"
                     }
                   }
                 }
@@ -724,10 +938,21 @@
                     "type": "integer",
                     "description": "Altezza in cm"
                   }
+                },
+                "required": [
+                  "altezza"
+                ]
+              },
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "altezza": 175
+                  }
                 }
               }
             }
-          }
+          },
+          "description": "Inserire la nuova altezza (in cm)"
         },
         "parameters": [
           {
@@ -745,11 +970,11 @@
         ]
       },
       "delete": {
-        "summary": "Elimina altezza",
+        "summary": "11. Elimina altezza",
         "operationId": "delete-api-profile-height",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Eliminazione effettuata con successo: la risposta contiene l'altezza appena eliminata",
             "content": {
               "application/json": {
                 "schema": {
@@ -766,6 +991,18 @@
                       "type": "string",
                       "description": "Username dell'utente"
                     }
+                  },
+                  "required": [
+                    "altezza",
+                    "username"
+                  ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "altezza": 175,
+                      "username": "AkihikoSanada"
+                    }
                   }
                 }
               }
@@ -775,7 +1012,7 @@
             "description": "Internal Database Error"
           }
         },
-        "description": "Elimina l'altetezza associata all'utente",
+        "description": "Elimina l'altezza associata all'utente",
         "tags": [
           "profile"
         ]
@@ -784,7 +1021,7 @@
     },
     "/api/profile/fitbit": {
       "get": {
-        "summary": "Fitbit",
+        "summary": "05. Ottieni username Fitbit",
         "tags": [
           "profile"
         ],
@@ -807,20 +1044,31 @@
                       "type": "string",
                       "description": "Username utente FitnessApp"
                     }
+                  },
+                  "required": [
+                    "username"
+                  ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "fitbituser": "Akihiko S.",
+                      "username": "AkihikoSanada"
+                    }
                   }
                 }
               }
             }
           },
           "404": {
-            "description": "User Not Found"
+            "description": "Utente FitnessApp non trovato"
           },
           "500": {
             "description": "Internal Database Error"
           }
         },
         "operationId": "get-api-profile-fitbit",
-        "description": "Recupera il diplay name dell'account fibit collegato",
+        "description": "Recupera il display name dell'account fibit collegato",
         "parameters": [
           {
             "schema": {
@@ -834,17 +1082,17 @@
         ]
       },
       "put": {
-        "summary": "Associa profilo Fitbit",
+        "summary": "09. Associa profilo Fitbit",
         "operationId": "put-api-profile-fitbit",
         "responses": {
           "200": {
-            "description": "Account Fitbit collegato"
+            "description": "Account Fitbit collegato con successo"
           },
           "500": {
-            "description": "Internal Database Error OR Errore Fitbit"
+            "description": "Uno dei seguenti:\n - Errore interno\n - Errore durante la procedura oAuth con Fitbit"
           }
         },
-        "description": "Richiede al back-end di procurarsi nuovi token da fitbit con l'authentication code ottentuto dalla pagina di login di fitbit",
+        "description": "Richiede al back-end di procurarsi nuovi token da Fitbit con l'authentication code ottentuto dalla pagina di login di fitbit.\nPer ulteriori informazioni sulla procedura oAuth di Fitbit, visitare https://dev.fitbit.com/build/reference/web-api/oauth2/",
         "parameters": [
           {
             "schema": {
@@ -866,21 +1114,32 @@
                     "type": "string",
                     "description": "Authorization code fornito da Fitbit"
                   }
+                },
+                "required": [
+                  "authCode"
+                ]
+              },
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "authCode": "ksdncvlasinc83wenluhi"
+                  }
                 }
               }
             }
-          }
+          },
+          "description": "Indicare l'Authentication Code fornito da Fitbit"
         },
         "tags": [
           "profile"
         ]
       },
       "delete": {
-        "summary": "Cancella dati Fitbit",
+        "summary": "12. Cancella dati Fitbit",
         "operationId": "delete-api-profile-fitbit",
         "responses": {
           "200": {
-            "description": "Account Scollegato"
+            "description": "Account scollegato con successo"
           },
           "500": {
             "description": "Internal Database Error"
@@ -905,7 +1164,7 @@
     },
     "/api/activities": {
       "get": {
-        "summary": "Attività",
+        "summary": "01. Ottieni attività (tutte)",
         "tags": [
           "activities"
         ],
@@ -928,16 +1187,43 @@
                         "$ref": "#/components/schemas/activity"
                       }
                     }
+                  },
+                  "required": [
+                    "username",
+                    "dataPoints"
+                  ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "username": "AkihikoSanada",
+                      "dataPoints": [
+                        {
+                          "created": "2020-04-25T00:00:00.000Z",
+                          "data": "2020-04-24T22:00:00.000Z",
+                          "nome": "esplorazione tartarus",
+                          "calout": 100,
+                          "descrizione": ""
+                        },
+                        {
+                          "created": "2020-04-27T00:00:00.000Z",
+                          "data": "2020-04-26T22:00:00.000Z",
+                          "nome": "boxe",
+                          "calout": 60,
+                          "descrizione": ""
+                        }
+                      ]
+                    }
                   }
                 }
               }
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token non valido o scaduto"
           },
           "404": {
-            "description": "User ID Not Found"
+            "description": "Utente non trovato"
           },
           "500": {
             "description": "Internal Database Error"
@@ -959,36 +1245,47 @@
       },
       "parameters": [],
       "post": {
-        "summary": "Aggiungi attività",
+        "summary": "04. Aggiungi attività",
         "operationId": "post-api-activities",
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Attività registrata con successo: la risposta contiene i suoi dati",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/activity"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "created": "2020-05-23T11:12:10.514Z",
+                      "data": "2020-05-22T22:00:00.000Z",
+                      "nome": "torneo di boxe",
+                      "calout": 200,
+                      "descrizione": ""
+                    }
+                  }
                 }
               }
             }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Non sono stati specificati tutti i parametri obbligatri"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token non valido o scaduto"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Utente non trovato"
           },
           "413": {
-            "description": "Request Entity Too Large"
+            "description": "Una delle stringhe supera il limite di caratteri"
           },
           "429": {
-            "description": "Too Many Requests"
+            "description": "Rallentare le richieste a circa 1/ms"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Errore interno"
           }
         },
         "description": "Aggiunge una nuova attività",
@@ -1011,7 +1308,7 @@
                 "properties": {
                   "data": {
                     "type": "string",
-                    "description": "Data attività"
+                    "description": "Data attività (default: oggi)"
                   },
                   "nome": {
                     "type": "string",
@@ -1023,13 +1320,33 @@
                   },
                   "descrizione": {
                     "type": "string",
-                    "description": "Info aggiuntive"
+                    "description": "Info aggiuntive (max 500 caratteri) (default: niente)"
+                  }
+                },
+                "required": [
+                  "nome",
+                  "calout"
+                ]
+              },
+              "examples": {
+                "Esempio 1": {
+                  "value": {
+                    "nome": "torneo di boxe",
+                    "calout": 200
+                  }
+                },
+                "Esempio 2": {
+                  "value": {
+                    "data": "2020-06-03",
+                    "nome": "torneo di boxe",
+                    "calout": 200,
+                    "descrizione": "Terzo posto, molti degni avversari"
                   }
                 }
               }
             }
           },
-          "description": "Attività da aggiungere"
+          "description": "Descrivere l'attività da aggiungere"
         },
         "tags": [
           "activities"
@@ -1040,39 +1357,33 @@
       "parameters": [
         {
           "schema": {
-            "type": "string"
+            "type": "integer",
+            "example": 5651
           },
           "name": "clientid",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Id dell'applicazione"
         }
       ],
       "delete": {
-        "summary": "Elimina una applicazione registrata",
+        "summary": "03. Elimina una applicazione registrata",
         "operationId": "delete-api-developer-clientid",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Eliminazione completata con successo: la risposta contiene i dati dell'applocazione appena eliminata",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "integer",
-                      "description": "Id utente"
-                    },
-                    "clientid": {
-                      "type": "integer",
-                      "description": "Id Applicazione rimossa"
-                    },
-                    "clientname": {
-                      "type": "string",
-                      "description": "Nome applicazione rimossa"
-                    },
-                    "ridirect": {
-                      "type": "string",
-                      "description": "Ridirect Applicazione rimossa"
+                  "$ref": "#/components/schemas/ApplicazioneOAuth"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "id": 1,
+                      "clientid": 10,
+                      "clientname": "pippo",
+                      "redirect": "http://example.com"
                     }
                   }
                 }
@@ -1080,22 +1391,22 @@
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token non valido o scaduto"
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden: questo endpoint può essere usato solo con un token interno"
           },
           "404": {
-            "description": "Not Found"
+            "description": "L'applicazione specificata non esisteva neanche prima della richiesta"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Errore interno"
           }
         },
         "tags": [
           "developer"
         ],
-        "description": "Elimina l'applicazione client registrata con id clientid, solo uso interno",
+        "description": "Elimina l'applicazione client registrata con id clientid. Questo path è usato solo nelle comunicazioni fra front-end e back-end.",
         "security": [
           {
             "Internal Token": []
@@ -1104,7 +1415,8 @@
         "parameters": [
           {
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
             },
             "in": "header",
             "name": "Authorization",
@@ -1126,7 +1438,7 @@
         }
       ],
       "delete": {
-        "summary": "Elimina profilo utente",
+        "summary": "[MARCATO PER RIMOZIONE] Elimina profilo utente",
         "operationId": "delete-api-profile-sure",
         "responses": {
           "204": {
@@ -1151,7 +1463,7 @@
         "tags": [
           "profile"
         ],
-        "description": "Cancella tutti i dati di un utente ed elimina il suo account, serve un token interno. Affinchè l'operazione vada a buon fine {sure} deve essere 'true'.",
+        "description": "[sure è un query param, non un path param; ho copiato l'operazione al posto giusto]\nCancella tutti i dati di un utente ed elimina il suo account, serve un token interno. Affinchè l'operazione vada a buon fine {sure} deve essere 'true'.",
         "security": [
           {
             "Internal Token": []
@@ -1174,47 +1486,60 @@
       "parameters": [
         {
           "schema": {
-            "type": "string"
+            "type": "string",
+            "example": "2020-05-23T11:12:10.514Z"
           },
           "name": "ts",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Timestamp dell'attività bersaglio"
         }
       ],
       "put": {
-        "summary": "Modifica attività",
+        "summary": "05. Modifica attività",
         "operationId": "put-api-activities-ts",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Attività modificata con successo: la risposta contiene i nuovi dati",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/activity"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "created": "2020-05-23T11:12:10.514Z",
+                      "data": "2020-06-02T22:00:00.000Z",
+                      "nome": "torneo di boxe",
+                      "calout": 200,
+                      "descrizione": "Terzo posto, molti degni avversari"
+                    }
+                  }
                 }
               }
             }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Non sono stati specificati tutti i parametri obbligatori"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token non valido o scaduto"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Nessun'attività trovata per il timestamp fornito"
           },
           "413": {
-            "description": "Request Entity Too Large"
+            "description": "Una delle stringhe supera il limite di caratteri"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Errore interno"
           }
         },
         "tags": [
           "activities"
         ],
-        "description": "Aggiorna l'attività identificata dal timestamp {ts}",
+        "description": "Modifica l'attività dell'utente identificata dal timestamp fornito.\nTutti i parametri devono essere specificati, anche quelli che non si vogliono modificare.\nSi consiglia di usare come ts il parametro created restituito dalle chiamate relative alle attività.",
         "parameters": [
           {
             "schema": {
@@ -1233,16 +1558,20 @@
                 "type": "object",
                 "properties": {
                   "data": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Nuova data di svolgimento dell'attività (YYYY-MM-DD)"
                   },
                   "nome": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Nuovo nome"
                   },
                   "calout": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Nuove calorie consumate"
                   },
                   "descizione": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Nuova descrizione (max 500 caratteri)"
                   }
                 },
                 "required": [
@@ -1251,30 +1580,52 @@
                   "calout",
                   "descizione"
                 ]
+              },
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "data": "2020-06-03",
+                    "nome": "torneo di boxe",
+                    "calout": 200,
+                    "descrizione": "Terzo posto, molti degni avversari"
+                  }
+                }
               }
             }
-          }
+          },
+          "description": "Fornire il nuovo stato dell'attività."
         }
       },
       "delete": {
-        "summary": "Elimina attività",
+        "summary": "06. Elimina attività",
         "operationId": "delete-api-activities-ts",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Eliminazione effettuata con successo: la risposta contiene i dati dell'attività appena eliminata",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/activity"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "created": "2020-05-23T11:12:10.514Z",
+                      "data": "2020-06-02T22:00:00.000Z",
+                      "nome": "torneo di boxe",
+                      "calout": 200,
+                      "descrizione": "Terzo posto, molti degni avversari"
+                    }
+                  }
                 }
               }
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token non valido o scaduto"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Nessun'attività trovata al timestamp indicato"
           },
           "500": {
             "description": "Internal Server Error"
@@ -1283,7 +1634,7 @@
         "tags": [
           "activities"
         ],
-        "description": "Elimina arrività identificata dal timestamp {ts}",
+        "description": "Elimina arrività identificata dal timestamp fornito.\nQuest'operazione non può essere annullata.\nSi consiglia di usare come ts il parametro created restituito dalle chiamate relative alle attività.",
         "parameters": [
           {
             "schema": {
@@ -1301,15 +1652,17 @@
       "parameters": [
         {
           "schema": {
-            "type": "string"
+            "type": "string",
+            "example": "2020-04-27"
           },
           "name": "data",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "La data da chiedere (YYYY-MM-DD)"
         }
       ],
       "get": {
-        "summary": "Attività (data specifica)",
+        "summary": "02. Ottieni attività (data specifica)",
         "tags": [
           "activities"
         ],
@@ -1331,22 +1684,45 @@
                       }
                     }
                   }
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "username": "AkihikoSanada",
+                      "dataPoints": [
+                        {
+                          "created": "2020-04-25T00:00:00.000Z",
+                          "data": "2020-02-22T22:00:00.000Z",
+                          "nome": "esplorazione tartarus",
+                          "calout": 100,
+                          "descrizione": ""
+                        },
+                        {
+                          "created": "2020-04-27T00:00:00.000Z",
+                          "data": "2020-02-22T22:00:00.000Z",
+                          "nome": "boxe",
+                          "calout": 60,
+                          "descrizione": ""
+                        }
+                      ]
+                    }
+                  }
                 }
               }
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token non valido o scaduto"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Utente non trovato, o nessun'attività trovata per la data specificata"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Errore interno"
           }
         },
         "operationId": "get-api-activities-data",
-        "description": "Richiede le attività relative al giorno {data}",
+        "description": "Richiede le attività relative alla data specificata.\nLa data deve essere in formato YYYY-MM-DD.",
         "parameters": [
           {
             "schema": {
@@ -1364,23 +1740,27 @@
       "parameters": [
         {
           "schema": {
-            "type": "string"
+            "type": "string",
+            "example": "2020-04-20"
           },
           "name": "from",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Inizio del range (incluso) (YYYY-MM-DD oppure -)"
         },
         {
           "schema": {
-            "type": "string"
+            "type": "string",
+            "example": "2020-04-30"
           },
           "name": "to",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Fine del range (incluso) (YYYY-MM-DD oppure -)"
         }
       ],
       "get": {
-        "summary": "Attività (range di date)",
+        "summary": "03. Ottieni attività (range di date)",
         "tags": [
           "activities"
         ],
@@ -1402,22 +1782,45 @@
                       }
                     }
                   }
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "username": "AkihikoSanada",
+                      "dataPoints": [
+                        {
+                          "created": "2020-04-25T00:00:00.000Z",
+                          "data": "2020-04-24T22:00:00.000Z",
+                          "nome": "esplorazione tartarus",
+                          "calout": 100,
+                          "descrizione": ""
+                        },
+                        {
+                          "created": "2020-04-27T00:00:00.000Z",
+                          "data": "2020-04-26T22:00:00.000Z",
+                          "nome": "boxe",
+                          "calout": 60,
+                          "descrizione": ""
+                        }
+                      ]
+                    }
+                  }
                 }
               }
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token non valido o scaduto"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Utente non trovato"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Errore interno"
           }
         },
         "operationId": "get-api-activities-from-to",
-        "description": "Richiede attività tra il giorno {from} a quello {to}, estremi inclusi",
+        "description": "Recupera le attività registrate dell'utente relativamente a giorni compresi tra le date {from} e {to} (incluse). Usare un trattino ('-') al posto di una delle date per indicare l'assenza di un limite da quel lato.\nLe date devono essere in formato YYYY-MM-DD.",
         "parameters": [
           {
             "schema": {
@@ -1435,8 +1838,12 @@
   "components": {
     "schemas": {
       "activity": {
-        "title": "activity",
+        "title": "Modello: Attività",
         "type": "object",
+        "x-tags": [
+          "activities"
+        ],
+        "description": "Un record che rappresenta un'attività registrata dall'utente.",
         "properties": {
           "created": {
             "type": "string",
@@ -1459,10 +1866,53 @@
             "description": "Informazioni aggiuntive"
           }
         },
+        "required": [
+          "data",
+          "nome",
+          "calout",
+          "descrizione"
+        ]
+      },
+      "ApplicazioneOAuth": {
+        "title": "Modello: ApplicazioneOAuth",
+        "type": "object",
         "x-tags": [
-          "activities"
+          "developer"
         ],
-        "description": "Attività"
+        "x-examples": {
+          "Esempio": {
+            "id": 1,
+            "clientid": 10,
+            "clientname": "pippo",
+            "redirect": "http://example.com"
+          }
+        },
+        "description": "Dati associati a un'applicazione registrata da un utente per la procedura OAuth.",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Id dell'utente che ha registrato l'applicazione"
+          },
+          "clientid": {
+            "type": "number",
+            "description": "Id dell'applicazione"
+          },
+          "clientname": {
+            "type": "string",
+            "description": "Nome applicazione"
+          },
+          "redirect": {
+            "type": "string",
+            "description": "Redirect URL per la procedura oAuth",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "id",
+          "clientid",
+          "clientname",
+          "redirect"
+        ]
       }
     },
     "securitySchemes": {

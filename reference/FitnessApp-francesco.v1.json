@@ -37,7 +37,7 @@
   "paths": {
     "/api/user/register": {
       "post": {
-        "summary": "Registra nuovo utente",
+        "summary": "01. Registra nuovo utente",
         "operationId": "post-api-user-register",
         "responses": {
           "200": {
@@ -50,7 +50,7 @@
             "description": "Errore interno"
           }
         },
-        "description": "Registra un nuovo utente con username e password dati nel corpo. Lo username non deve essere già stato registrato da un altro utente. Uso interno.",
+        "description": "Registra un nuovo utente con username e password dati nel corpo. Lo username non deve essere già stato registrato da un altro utente. Questo path è usato solo nelle comunicazioni fra front-end e back-end.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -91,7 +91,7 @@
     },
     "/api/user/login": {
       "post": {
-        "summary": "Effettua login",
+        "summary": "02. Effettua login",
         "tags": [
           "user"
         ],
@@ -130,7 +130,7 @@
           }
         },
         "operationId": "post-api-user-login",
-        "description": "Effettua il login con username e password forniti. Fornisce un bearer token da mettere nell'header Authorization di tutte le richieste che chiedono autenticazione e che dura 5 ore. Uso interno.",
+        "description": "Effettua il login con username e password forniti. Fornisce un bearer token da mettere nell'header Authorization di tutte le richieste che chiedono autenticazione e che dura 5 ore. Questo path è usato solo nelle comunicazioni fra front-end e back-end.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -168,7 +168,7 @@
     },
     "/api/user/oauth": {
       "post": {
-        "summary": "OAuth2",
+        "summary": "03. OAuth2",
         "tags": [
           "user"
         ],
@@ -200,7 +200,7 @@
             }
           },
           "400": {
-            "description": "Redirect URL fornita non combacia con quella registrata per l'applicazione"
+            "description": "La redirect URL fornita non combacia con quella registrata per l'applicazione"
           },
           "403": {
             "description": "Username o password errati"
@@ -213,7 +213,7 @@
           }
         },
         "operationId": "post-api-user-oauth",
-        "description": "Effettua il login OAuth2, secondo il flusso Implicit Code Grant. Fornire username e password dell'account da loggare, e Client ID e Redirect URL dell'applicazione. Fornisce un bearer token da mettere nell'header Authorization di tutte le richieste che chiedono autenticazione e che dura 5 ore. Uso interno.",
+        "description": "Effettua il login OAuth2, secondo il flusso Implicit Code Grant. Fornire username e password dell'account da loggare, e Client ID e Redirect URL dell'applicazione. Fornisce un bearer token da mettere nell'header Authorization di tutte le richieste che chiedono autenticazione e che dura 5 ore. Questo path è usato solo nelle comunicazioni fra front-end e back-end.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -263,7 +263,7 @@
     },
     "/api/calories": {
       "get": {
-        "summary": "Ottieni dati calorie (tutti)",
+        "summary": "01. Ottieni dati calorie (tutti)",
         "tags": [
           "calories"
         ],
@@ -317,11 +317,6 @@
         },
         "operationId": "get-api-calories",
         "description": "Recupera tutti i dati delle calorie ingerite e bruciate dell'utente.",
-        "security": [
-          {
-            "Bearer Token": []
-          }
-        ],
         "parameters": [
           {
             "schema": {
@@ -341,7 +336,8 @@
       "parameters": [
         {
           "schema": {
-            "type": "string"
+            "type": "string",
+            "example": "2020-04-27"
           },
           "name": "data",
           "in": "path",
@@ -350,7 +346,7 @@
         }
       ],
       "get": {
-        "summary": "Ottieni dati calorie (data specifica)",
+        "summary": "02. Ottieni dati calorie (data specifica)",
         "tags": [
           "calories"
         ],
@@ -392,11 +388,6 @@
         },
         "operationId": "get-api-calories-data",
         "description": "Recupera i dati delle calorie ingerite e bruciate dell'utente in un giorno specifico, se esitono.\nLa data deve essere in formato YYYY-MM-DD.",
-        "security": [
-          {
-            "Bearer Token": []
-          }
-        ],
         "parameters": [
           {
             "schema": {
@@ -414,7 +405,8 @@
       "parameters": [
         {
           "schema": {
-            "type": "string"
+            "type": "string",
+            "example": "2020-04-20"
           },
           "name": "from",
           "in": "path",
@@ -423,7 +415,8 @@
         },
         {
           "schema": {
-            "type": "string"
+            "type": "string",
+            "example": "2020-04-30"
           },
           "name": "to",
           "in": "path",
@@ -432,7 +425,7 @@
         }
       ],
       "get": {
-        "summary": "Ottieni dati calorie (range di date)",
+        "summary": "03. Ottieni dati calorie (range di date)",
         "tags": [
           "calories"
         ],
@@ -486,11 +479,6 @@
         },
         "operationId": "get-api-calories-from-to",
         "description": "Recupera i dati delle calorie ingerite e bruciate dell'utente relativi ai giorni compresi tra le date from e to (incluse). Usare un trattino ('-') al posto di una delle date per indicare l'assenza di un limite da quel lato.\nLe date devono essere in formato YYYY-MM-DD.",
-        "security": [
-          {
-            "Bearer Token": []
-          }
-        ],
         "parameters": [
           {
             "schema": {
@@ -506,7 +494,7 @@
     },
     "/api/weight": {
       "get": {
-        "summary": "Ottieni misure peso (tutte)",
+        "summary": "01. Ottieni misure peso (tutte)",
         "tags": [
           "weight"
         ],
@@ -554,11 +542,6 @@
         },
         "operationId": "get-api-weight",
         "description": "Recupera tutte le misure di peso dell'utente.",
-        "security": [
-          {
-            "Bearer Token": []
-          }
-        ],
         "parameters": [
           {
             "schema": {
@@ -573,13 +556,13 @@
         ]
       },
       "post": {
-        "summary": "Aggiungi misura peso",
+        "summary": "04. Aggiungi misura peso",
         "tags": [
           "weight"
         ],
         "responses": {
           "201": {
-            "description": "Misura aggiunta con successo: essa viene restituita",
+            "description": "Misura aggiunta con successo: la risposta contiene ne contiene una copia",
             "content": {
               "application/json": {
                 "schema": {
@@ -614,11 +597,6 @@
         },
         "operationId": "post-api-weight",
         "description": "Aggiunge una misura peso relativa alla data odierna.\nDà errore se tale misura è già presente: usare una PUT per modificarla.",
-        "security": [
-          {
-            "Bearer Token": []
-          }
-        ],
         "parameters": [
           {
             "schema": {
@@ -654,7 +632,8 @@
       "parameters": [
         {
           "schema": {
-            "type": "string"
+            "type": "string",
+            "example": "2020-04-27"
           },
           "name": "data",
           "in": "path",
@@ -663,7 +642,7 @@
         }
       ],
       "get": {
-        "summary": "Ottieni misura peso (data specifica)",
+        "summary": "02. Ottieni misura peso (data specifica)",
         "tags": [
           "weight"
         ],
@@ -703,11 +682,6 @@
         },
         "operationId": "get-api-weight-data",
         "description": "Recupera la misura peso dell'utente relativa al giorno indicato, se esiste.\nLa data deve essere in formato YYYY-MM-DD.",
-        "security": [
-          {
-            "Bearer Token": []
-          }
-        ],
         "parameters": [
           {
             "schema": {
@@ -722,13 +696,13 @@
         ]
       },
       "put": {
-        "summary": "Modifica misura peso",
+        "summary": "05. Modifica misura peso",
         "tags": [
           "weight"
         ],
         "responses": {
           "200": {
-            "description": "Misura modificata con successo: la nuova misura viene restituita",
+            "description": "Misura modificata con successo: la risposta contiene una copia della nuova misura",
             "content": {
               "application/json": {
                 "schema": {
@@ -760,11 +734,6 @@
         },
         "operationId": "put-api-weight-data",
         "description": "Modifica la misura peso relativa alla data specificata.\nSolo il peso misurato può essere modificato.\nLa data deve essere in formato YYYY-MM-DD.",
-        "security": [
-          {
-            "Bearer Token": []
-          }
-        ],
         "parameters": [
           {
             "schema": {
@@ -795,13 +764,13 @@
         }
       },
       "delete": {
-        "summary": "Elimina misura peso",
+        "summary": "06. Elimina misura peso",
         "tags": [
           "weight"
         ],
         "responses": {
           "200": {
-            "description": "Misura peso eliminata con successo: essa viene restituita.",
+            "description": "Misura peso eliminata con successo: la risposta contiene la misura appena eliminata.",
             "content": {
               "application/json": {
                 "schema": {
@@ -830,11 +799,6 @@
         },
         "operationId": "delete-api-weight-data",
         "description": "Elimina la misura peso relativa alla data indicata.\nQuest'operazione non può essere annullata.\nLa data deve essere in formato YYYY-MM-DD.",
-        "security": [
-          {
-            "Bearer Token": []
-          }
-        ],
         "parameters": [
           {
             "schema": {
@@ -853,7 +817,8 @@
       "parameters": [
         {
           "schema": {
-            "type": "string"
+            "type": "string",
+            "example": "2020-04-20"
           },
           "name": "from",
           "in": "path",
@@ -862,7 +827,8 @@
         },
         {
           "schema": {
-            "type": "string"
+            "type": "string",
+            "example": "2020-04-30"
           },
           "name": "to",
           "in": "path",
@@ -871,7 +837,7 @@
         }
       ],
       "get": {
-        "summary": "Ottieni misure peso (range di date)",
+        "summary": "03. Ottieni misure peso (range di date)",
         "tags": [
           "weight"
         ],
@@ -919,11 +885,6 @@
         },
         "operationId": "get-api-weight-from-to",
         "description": "Recupera le misure peso dell'utente relative ai giorni compresi tra le date from e to (incluse). Usare un trattino ('-') al posto di una delle date per indicare l'assenza di un limite da quel lato.\nLe date devono essere in formato YYYY-MM-DD.",
-        "security": [
-          {
-            "Bearer Token": []
-          }
-        ],
         "parameters": [
           {
             "schema": {
@@ -940,13 +901,13 @@
     },
     "/api/food": {
       "post": {
-        "summary": "Aggiungi log cibo",
+        "summary": "04. Aggiungi log cibo",
         "tags": [
           "food"
         ],
         "responses": {
           "201": {
-            "description": "Cibo creato con successo: esso viene restituito.",
+            "description": "Cibo creato con successo: la risposta contiene i suoi dati.",
             "content": {
               "application/json": {
                 "schema": {
@@ -987,11 +948,6 @@
         },
         "operationId": "post-api-food",
         "description": "Aggiunge un cibo.",
-        "security": [
-          {
-            "Bearer Token": []
-          }
-        ],
         "parameters": [
           {
             "schema": {
@@ -1054,7 +1010,7 @@
         }
       },
       "get": {
-        "summary": "Ottieni log cibo (tutti)",
+        "summary": "01. Ottieni log cibo (tutti)",
         "tags": [
           "food"
         ],
@@ -1104,11 +1060,6 @@
         },
         "operationId": "get-api-food",
         "description": "Recupera tutti i cibi registrati dell'utente.",
-        "security": [
-          {
-            "Bearer Token": []
-          }
-        ],
         "parameters": [
           {
             "schema": {
@@ -1127,7 +1078,8 @@
       "parameters": [
         {
           "schema": {
-            "type": "string"
+            "type": "string",
+            "example": "2020-04-27"
           },
           "name": "data",
           "in": "path",
@@ -1136,7 +1088,7 @@
         }
       ],
       "get": {
-        "summary": "Ottieni log cibo (data specifica)",
+        "summary": "02. Ottieni log cibo (data specifica)",
         "tags": [
           "food"
         ],
@@ -1186,11 +1138,6 @@
         },
         "operationId": "get-api-food-data",
         "description": "Recupera i cibi registrati dell'utente relativamente alla data specificata.\nLa data deve essere in formato YYYY-MM-DD.",
-        "security": [
-          {
-            "Bearer Token": []
-          }
-        ],
         "parameters": [
           {
             "schema": {
@@ -1209,7 +1156,8 @@
       "parameters": [
         {
           "schema": {
-            "type": "string"
+            "type": "string",
+            "example": "2020-04-20"
           },
           "name": "from",
           "in": "path",
@@ -1218,7 +1166,8 @@
         },
         {
           "schema": {
-            "type": "string"
+            "type": "string",
+            "example": "2020-04-30"
           },
           "name": "to",
           "in": "path",
@@ -1227,7 +1176,7 @@
         }
       ],
       "get": {
-        "summary": "Ottieni log cibo (range di date)",
+        "summary": "03. Ottieni log cibo (range di date)",
         "tags": [
           "food"
         ],
@@ -1276,12 +1225,7 @@
           }
         },
         "operationId": "get-api-food-from-to",
-        "description": "Recupera i cibi registrati dell'utente relativamente a giorni compresi tra le date from e to (incluse). Usare un trattino ('-') al posto di una delle date per indicare l'assenza di un limite da quel lato.\nLe date devono essere in formato YYYY-MM-DD.",
-        "security": [
-          {
-            "Bearer Token": []
-          }
-        ],
+        "description": "Recupera i cibi registrati dell'utente relativamente a giorni compresi tra le date {from} e {to} (incluse). Usare un trattino ('-') al posto di una delle date per indicare l'assenza di un limite da quel lato.\nLe date devono essere in formato YYYY-MM-DD.",
         "parameters": [
           {
             "schema": {
@@ -1300,7 +1244,8 @@
       "parameters": [
         {
           "schema": {
-            "type": "string"
+            "type": "string",
+            "example": "2020-05-23T11:12:10.514Z"
           },
           "name": "ts",
           "in": "path",
@@ -1309,13 +1254,13 @@
         }
       ],
       "put": {
-        "summary": "Modifica log cibo",
+        "summary": "06. Modifica log cibo",
         "tags": [
           "food"
         ],
         "responses": {
           "200": {
-            "description": "Cibo modificato con successo: il nuovo record viene restituito",
+            "description": "Cibo modificato con successo: la risposta contiene i nuovi dati",
             "content": {
               "application/json": {
                 "schema": {
@@ -1353,11 +1298,6 @@
         },
         "operationId": "put-api-food-ts",
         "description": "Modifica il cibo dell'utente identificato dal timestamp fornito.\nTutti i parametri devono essere specificati, anche quelli che non si vogliono modificare.\nSi consiglia di usare come ts il parametro created restituito dalle chiamate relative al cibo.",
-        "security": [
-          {
-            "Bearer Token": []
-          }
-        ],
         "parameters": [
           {
             "schema": {
@@ -1416,13 +1356,13 @@
         }
       },
       "delete": {
-        "summary": "Elimina log cibo",
+        "summary": "07. Elimina log cibo",
         "tags": [
           "food"
         ],
         "responses": {
           "200": {
-            "description": "Cibo eliminato con successo: esso viene restituito",
+            "description": "Cibo eliminato con successo: la risposta contiene i dati appena eliminati.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1454,11 +1394,6 @@
         },
         "operationId": "delete-api-food-ts",
         "description": "Elimina il cibo dell'utente identificato dal timestamp fornito.\nQuest'operazione non può essere annullata.\nSi consiglia di usare come ts il parametro created restituito dalle chiamate relative al cibo.",
-        "security": [
-          {
-            "Bearer Token": []
-          }
-        ],
         "parameters": [
           {
             "schema": {
@@ -1475,13 +1410,13 @@
     },
     "/api/food/off": {
       "post": {
-        "summary": "Aggiungi cibo con Open Food Facts",
+        "summary": "05. Aggiungi cibo con Open Food Facts",
         "tags": [
           "food"
         ],
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Operazione effettuata con successo: la risposta contiene i dati del cibo appena registrato.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1569,11 +1504,6 @@
           "description": "Specificare il codice a barre del cibo consumato, ed opzionalmente altre proprietà"
         },
         "description": "Aggiunge un cibo per l'utente recuperando i dati nutrizionali dal database di Open Food Facts tramite REST.",
-        "security": [
-          {
-            "Bearer Token": []
-          }
-        ],
         "parameters": [
           {
             "schema": {
@@ -1592,7 +1522,7 @@
   "components": {
     "schemas": {
       "MisuraCalorie": {
-        "title": "MisuraCalorie",
+        "title": "Modello: MisuraCalorie",
         "type": "object",
         "description": "Un record che rappresenta calorie ingerite e consumate da un utente in un giorno.",
         "properties": {
@@ -1632,7 +1562,7 @@
         }
       },
       "MisuraPeso": {
-        "title": "MisuraPeso",
+        "title": "Modello: MisuraPeso",
         "type": "object",
         "description": "Peso misurato da un utente in un giorno.",
         "x-tags": [
@@ -1660,7 +1590,7 @@
         }
       },
       "InputPeso": {
-        "title": "InputPeso",
+        "title": "Modello: InputPeso",
         "type": "object",
         "description": "Il peso da dare come input alle chiamate POST e PUT.",
         "properties": {
@@ -1682,7 +1612,7 @@
         }
       },
       "Cibo": {
-        "title": "Cibo",
+        "title": "Modello: Cibo",
         "type": "object",
         "x-tags": [
           "food"
@@ -1728,7 +1658,7 @@
         }
       },
       "OutputCalorie": {
-        "title": "OutputCalorie",
+        "title": "Modello: OutputCalorie",
         "type": "object",
         "x-tags": [
           "calories"
@@ -1778,7 +1708,7 @@
         ]
       },
       "OutputPeso": {
-        "title": "OutputPeso",
+        "title": "Modello: OutputPeso",
         "type": "object",
         "x-tags": [
           "weight"
@@ -1822,7 +1752,7 @@
         }
       },
       "OutputCibo": {
-        "title": "OutputCibo",
+        "title": "Modello: OutputCibo",
         "type": "object",
         "x-tags": [
           "food"
