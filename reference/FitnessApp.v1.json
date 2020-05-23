@@ -3571,9 +3571,9 @@
           }
         },
         "properties": {
-          "id": {
-            "type": "number",
-            "description": "Id dell'utente"
+          "username": {
+            "description": "Username dell'utente",
+            "type": "string"
           },
           "dataPoints": {
             "type": "array",
@@ -3584,7 +3584,7 @@
           }
         },
         "required": [
-          "id",
+          "username",
           "dataPoints"
         ]
       },
