@@ -20,7 +20,7 @@ Per scaricare il progetto si può clonare la repository con git, per farlo è su
 git clone urldigit.github.com
 ```
 ### Dipendenze
-Per eseguire correttamente il codice è necessario avere installato Node, per installare tutte le altre dipendenze del progetto occorre nmp. Una volta scaricato npm posizionarsi nella cartella fitnessapp/backend-end ed eseguire 
+Per eseguire correttamente il codice è necessario avere installato Node, per installare tutte le altre dipendenze del progetto occorre npm. Una volta scaricato npm posizionarsi nella cartella fitnessapp/backend-end ed eseguire 
 ```bash
 npm install
 ```
