@@ -84,12 +84,39 @@ Quindi per iniziare a utilizzare FitnessApp connettersi con un browser all'indir
 ```
 http://localhost:5000
 ```
-### Testare l'applicazione
+
+## Documentazione
+
+### API REST
+
+La documentazione è inclusa in formato JSON nella cartella reference di questo repository ed è consultabile in formato human-readable alla seguente URL:
+```
+https://stoplight.io/p/docs/gh/fulvio-p/fitnessapp/reference/FitnessApp.v1.json
+```
+
+I corpi di richiesta e risposta, se presenti, sono sempre in JSON.
+
+### Websocket
+
+TODO sarebbe carino scrivere quel mini protocollino da due messaggi in croce che abbiamo, forse?
+
+## Testare l'applicazione
 Dopo essersi collegati all'applicazione è possibile registrarsi con il modulo in fondo alla landing page oppure accedere con uno degli account di test.
 
-| Username            | Password    |                         |
+| Username            | Password    | Note                    |
 |---------------------|-------------|-------------------------|
 | AkihikoSanada       | polydeuces  | Utente completo         |
 | CassiusBright       | estelle1186 | Solo misure di peso     |
 | ChieSatonaka        | tomoe       | Solo misure di calorie  |
 | EdelgardVonHresvelg | blackeagle  | Un record di ogni campo |
+
+## TODO controllare/riscrivere questa parte quando sappiamo che tipo di test vuole Vit
+<!-- Poi cancellare quest'intestazione -->
+
+[Per avere un token ...]
+
+Ciascuna API REST della documentazione (vedi sopra) può essere testata configurando la richiesta corrispondente su un client REST come Postman, avendo cura di includere il token fornito [...] nell'header Authorization (formato: ```Bearer <token>```).
+
+Se la richiesta richiede un corpo, la documentazione contiene almeno un esempio per ogni richiesta, pronto per essere copiato e incollato direttamente nel corpo della richiesta corrispondente.
+
+Se la richiesta richiede uno o più parametri nel path, i valori dipendono dai dati con cui si ha effettivamente a che fare: si consiglia di fare prima una GET senza parametri di path sullo stesso endpoint per avere un'idea di quali valori usare.
