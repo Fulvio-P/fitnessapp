@@ -1,0 +1,3708 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "FitnessApp",
+    "version": "1.1",
+    "description": "Documentazione REST per il progetto FitnessApp, sono inclusi sia endpoint pubblici, sia quelli utilizzati solo per la comunicazione tra front-end e back-end.",
+    "contact": {
+      "name": "Contatto"
+    },
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "tags": [
+    {
+      "name": "opinioni",
+      "description": "Raccolta messaggi agli sviluppatori"
+    },
+    {
+      "name": "developer",
+      "description": "Gestione applicazioni oAuth"
+    },
+    {
+      "name": "profile",
+      "description": "Gestione informazioni utente"
+    },
+    {
+      "name": "activities",
+      "description": "Gestione attività utente"
+    },
+    {
+      "name": "user",
+      "description": "Operazioni di autenticazione"
+    },
+    {
+      "name": "calories",
+      "description": "Dati sulle calorie ingerite e bruciate"
+    },
+    {
+      "name": "weight",
+      "description": "Dati e operazioni sul peso corporeo dell'utente"
+    },
+    {
+      "name": "food",
+      "description": "Dati e operazioni sui cibi consumati dall'utente"
+    }
+  ],
+  "servers": [
+    {
+      "url": "http://localhost:5000"
+    }
+  ],
+  "paths": {
+    "/opinion": {
+      "post": {
+        "summary": "01. Invia un messaggio agli sviluppatori",
+        "operationId": "post-opinion",
+        "responses": {
+          "201": {
+            "description": "Messaggio inviato con successo: la risposta ne contiene una copia",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Una copia del messaggio appena inviato",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "format": "email",
+                      "description": "email fornita"
+                    },
+                    "testo": {
+                      "type": "string",
+                      "description": "corpo del messaggio scritto"
+                    }
+                  },
+                  "required": [
+                    "email",
+                    "testo"
+                  ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "email": "a.sanada@gekkoukan.edu",
+                      "testo": "Ottima app, essenziale per mantenersi in forma giorno, notte, etc. La consiglierò a tutti i miei compagni!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "description": "Permette di inviare un messaggio agli sviluppatori.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Email presso cui si vuole ricevere la risposta"
+                  },
+                  "testo": {
+                    "type": "string",
+                    "description": "Corpo del messaggio"
+                  }
+                },
+                "required": [
+                  "email",
+                  "testo"
+                ]
+              },
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "email": "a.sanada@gekkoukan.edu",
+                    "testo": "Ottima app, essenziale per mantenersi in forma giorno, notte, etc. La consiglierò a tutti i miei compagni!"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Il campo email deve contenere l'indirizzo presso cui si vuole ricevere la risposta, testo contiene il corpo del messaggio."
+        },
+        "tags": [
+          "opinioni"
+        ],
+        "security": []
+      }
+    },
+    "/api/developer": {
+      "get": {
+        "summary": "01. Mostra applicazioni oAuth registrate",
+        "tags": [
+          "developer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "description": "Username dell'utente autenticato"
+                    },
+                    "dataPoints": {
+                      "type": "array",
+                      "description": "Array di applicazioni registrate",
+                      "items": {
+                        "$ref": "#/components/schemas/ApplicazioneOAuth"
+                      }
+                    }
+                  },
+                  "required": [
+                    "dataPoints"
+                  ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "username": "AkihikoSanada",
+                      "dataPoints": [
+                        {
+                          "id": 1,
+                          "clientid": 9,
+                          "clientname": "string",
+                          "redirect": "http://example.com"
+                        },
+                        {
+                          "id": 1,
+                          "clientid": 10,
+                          "clientname": "pippo",
+                          "redirect": "http://example.com"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "403": {
+            "description": "Forbidden: questo endpoint può essere usato solo con un token interno"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "operationId": "get-developers",
+        "description": "Recupera tutte le applicazioni dell'utente associato al token interno. Questo path è usato solo nelle comunicazioni fra front-end e back-end.",
+        "security": [
+          {
+            "Internal Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Internal Token",
+            "required": true
+          }
+        ]
+      },
+      "parameters": [],
+      "post": {
+        "summary": "02. Registra Applicazione  oAuth",
+        "operationId": "post-api-developer",
+        "responses": {
+          "201": {
+            "description": "Applicazione registrata con successo: La risposta contiene una copia dei dati relativi a essa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicazioneOAuth"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "id": 1,
+                      "clientid": 10,
+                      "clientname": "Applicazione oAuth",
+                      "redirect": "http://example.com"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Non hai specificato tutti i campi obbligatori"
+          },
+          "401": {
+            "description": "Wrong Token or No token"
+          },
+          "403": {
+            "description": "Forbidden: questo endpoint può essere usato solo con un token interno"
+          },
+          "404": {
+            "description": "User ID does not exist"
+          },
+          "413": {
+            "description": "String too long"
+          },
+          "429": {
+            "description": "Sei troppo veloce! RRiprova tra qualche secondo..."
+          }
+        },
+        "description": "Registra una nuova applicazione oAuth per l'utente correntemente autenticato. Questo path è usato solo nelle comunicazioni fra front-end e back-end.",
+        "security": [
+          {
+            "Internal Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Internal Token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "",
+                "properties": {
+                  "clientname": {
+                    "type": "string",
+                    "description": "Nome dell'applicazione che si vuole registrare"
+                  },
+                  "redirect": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Redirect URL a da usare nella procedura oAuth"
+                  }
+                },
+                "required": [
+                  "clientname",
+                  "redirect"
+                ]
+              },
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "clientname": "Applicazione oAuth",
+                    "redirect": "http://esempio.com/oauth"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Clientname contiene il nome dell'applicazione che si vuole registrare, redirect l'URL a cui quella applicazione vuole essere ridiretta dopo la procedura di oAuth"
+        },
+        "tags": [
+          "developer"
+        ]
+      }
+    },
+    "/api/profile": {
+      "get": {
+        "summary": "01. Ottieni dati profilo",
+        "tags": [
+          "profile"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK: la risposta contiene solo le proprietà effettivamente definite nel profilo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Indirizzo email"
+                    },
+                    "altezza": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
+                      "description": "altezza in cm"
+                    },
+                    "fitbituser": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Username FitBit associato"
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "Username dell'utente"
+                    }
+                  },
+                  "required": [
+                    "username"
+                  ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "email": "a.sanada@gekkoukan.edu",
+                      "altezza": 175,
+                      "username": "AkihikoSanada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "operationId": "get-api-profile",
+        "description": "Recupera le info addizionali associate al profilo, ovvero indirizzo email, altezza e username FitBit associato, se presenti",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          }
+        ]
+      },
+      "patch": {
+        "summary": "06. Aggiorna dati profilo",
+        "operationId": "patch-api-profile",
+        "responses": {
+          "200": {
+            "description": "Modifica effettuata con successo: la risposta contiene i nuovi valori delle sole proprietà modificate.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "description": "Indirizzo email"
+                    },
+                    "altezza": {
+                      "type": "number",
+                      "description": "Altezza in cm"
+                    }
+                  }
+                },
+                "examples": {
+                  "Esempio 1": {
+                    "value": {
+                      "email": "a.sanada@gekkoukan.edu"
+                    }
+                  },
+                  "Esempio 2": {
+                    "value": {
+                      "altezza": 175
+                    }
+                  },
+                  "Esempio 3": {
+                    "value": {
+                      "email": "a.sanada@gekkoukan.edu",
+                      "altezza": 175
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "413": {
+            "description": "L'email fornita eccede il limite di caratteri"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "description": "Aggiorna campi delle informazioni aggiuntive passati nel body. Solo email e altezza possono essere modificate in questo modo.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "Indirizzo email",
+                    "format": "email"
+                  },
+                  "altezza": {
+                    "type": "integer",
+                    "description": "altezza in cm"
+                  }
+                }
+              },
+              "examples": {
+                "Esempio 1": {
+                  "value": {
+                    "email": "a.sanada@gekkoukan.edu"
+                  }
+                },
+                "Esempio 2": {
+                  "value": {
+                    "altezza": 175
+                  }
+                },
+                "Esempio 3": {
+                  "value": {
+                    "email": "a.sanada@gekkoukan.edu",
+                    "altezza": 175
+                  }
+                }
+              }
+            }
+          },
+          "description": "Specificare le proprietà che si vogliono modificare (le altre non sono obbligatorie)"
+        },
+        "tags": [
+          "profile"
+        ]
+      },
+      "parameters": [],
+      "delete": {
+        "summary": "13. Elimina profilo utente",
+        "operationId": "delete-api-profile",
+        "responses": {
+          "204": {
+            "description": "Account eliminato con successo."
+          },
+          "400": {
+            "description": "Richiesta rifiutata per mancanza del query parameter \"sure\""
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "403": {
+            "description": "Forbidden: questo endpoint può essere usato solo con un token interno"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "description": "Cancella tutti i dati di un utente ed elimina il suo account, serve un token interno. \nL'eliminazione è definitiva e non può essere annullata.\nPer confermare l'operazione ed evitare di colpire questo endpoint per sbaglio, il query parameter 'sure' deve essere 'true'.",
+        "security": [
+          {
+            "Internal Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Internal Token",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "example": "true"
+            },
+            "in": "query",
+            "name": "sure",
+            "description": "Deve essere true per confermare l'operazione",
+            "required": true
+          }
+        ],
+        "tags": [
+          "profile"
+        ]
+      }
+    },
+    "/api/profile/username": {
+      "get": {
+        "summary": "02. Mostra username",
+        "tags": [
+          "profile"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "description": "Username dell'utente"
+                    }
+                  },
+                  "required": [
+                    "username"
+                  ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "username": "AkihikoSanada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "operationId": "get-api-profile-username",
+        "description": "Recupera lo username dell'utente autenticato.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          }
+        ]
+      },
+      "parameters": []
+    },
+    "/api/profile/email": {
+      "get": {
+        "summary": "03. Mostra email associata al profilo",
+        "tags": [
+          "profile"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Indirizzo email",
+                      "format": "email"
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "Username associato"
+                    }
+                  },
+                  "required": [
+                    "email",
+                    "username"
+                  ]
+                },
+                "examples": {
+                  "Esempio 1": {
+                    "value": {
+                      "email": "a.sanada@gekkoukan.edu",
+                      "username": "AkihikoSanada"
+                    }
+                  },
+                  "Esempio 2": {
+                    "value": {
+                      "email": null,
+                      "username": "AkihikoSanada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "operationId": "get-api-profile-email",
+        "description": "Recupera l'indirizzo email dell'utente autenticato",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      },
+      "put": {
+        "summary": "07. Aggiorna email",
+        "operationId": "put-api-profile-email",
+        "responses": {
+          "200": {
+            "description": "Modifica effettuata con successo: la risposta contiene il nuovo indirizzo email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "description": "Username dell'utente"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "Nuovo valore dell'indirizzo email"
+                    }
+                  },
+                  "required": [
+                    "username",
+                    "email"
+                  ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "email": "a.sanada@gekkoukan.edu",
+                      "username": "AkihikoSanada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "413": {
+            "description": "L'email fornita eccede il limite di caratteri"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "description": "Aggiorna l'indirizzo email per l'utente autenticato, nel caso non sia presente un indirizzo verrà inserito ",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Nuovo indirizzo email"
+                  }
+                },
+                "required": [
+                  "email"
+                ]
+              },
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "email": "a.sanada@gekkoukan.edu"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Specificare il nuovo indirizzo email"
+        },
+        "tags": [
+          "profile"
+        ]
+      },
+      "delete": {
+        "summary": "10. Elimina email",
+        "operationId": "delete-api-profile-email",
+        "responses": {
+          "200": {
+            "description": "Email eliminmata con successo: la risposta contiene l'indirizzo appena eliminato",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Email cancellata",
+                      "format": "email"
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "Account associato"
+                    }
+                  },
+                  "required": [
+                    "email",
+                    "username"
+                  ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "email": "a.sanada@gekkoukan.edu",
+                      "username": "AkihikoSanada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "description": "Cancella indirizzo email associato all'account",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ],
+        "tags": [
+          "profile"
+        ]
+      },
+      "parameters": []
+    },
+    "/api/profile/height": {
+      "get": {
+        "summary": "04. Mostra altezza",
+        "tags": [
+          "profile"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "altezza": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
+                      "description": "Altezza in cm"
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "Username dell'utente"
+                    }
+                  },
+                  "required": [
+                    "altezza",
+                    "username"
+                  ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "altezza": 175,
+                      "username": "AkihikoSanada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "operationId": "get-api-profile-height",
+        "description": "Recupera l'altezza (in cm) dell'utente autenticato",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      },
+      "put": {
+        "summary": "08. Aggiorna altezza",
+        "operationId": "put-api-profile-height",
+        "responses": {
+          "200": {
+            "description": "Modifica effettuata con successo: la risposta contiene la nuova altezza",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "description": "Username dell'utente"
+                    },
+                    "altezza": {
+                      "type": "integer",
+                      "description": "Altezza in cm"
+                    }
+                  },
+                  "required": [
+                    "username",
+                    "altezza"
+                  ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "altezza": 175,
+                      "username": "AkihikoSanada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "description": "Aggiorna l'altezza dell'utente, se non è presente la inserisce",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "altezza": {
+                    "type": "integer",
+                    "description": "Altezza in cm"
+                  }
+                },
+                "required": [
+                  "altezza"
+                ]
+              },
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "altezza": 175
+                  }
+                }
+              }
+            }
+          },
+          "description": "Inserire la nuova altezza (in cm)"
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ],
+        "tags": [
+          "profile"
+        ]
+      },
+      "delete": {
+        "summary": "11. Elimina altezza",
+        "operationId": "delete-api-profile-height",
+        "responses": {
+          "200": {
+            "description": "Eliminazione effettuata con successo: la risposta contiene l'altezza appena eliminata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "altezza": {
+                      "type": [
+                        "number",
+                        "null"
+                      ],
+                      "description": "Altezza appena eliminata"
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "Username dell'utente"
+                    }
+                  },
+                  "required": [
+                    "altezza",
+                    "username"
+                  ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "altezza": 175,
+                      "username": "AkihikoSanada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "description": "Elimina l'altezza associata all'utente",
+        "tags": [
+          "profile"
+        ]
+      },
+      "parameters": []
+    },
+    "/api/profile/fitbit": {
+      "get": {
+        "summary": "05. Ottieni username Fitbit",
+        "tags": [
+          "profile"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "fitbituser": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Display name dell'account fitbit collegato"
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "Username utente FitnessApp"
+                    }
+                  },
+                  "required": [
+                    "username"
+                  ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "fitbituser": "Akihiko S.",
+                      "username": "AkihikoSanada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente FitnessApp non trovato"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "operationId": "get-api-profile-fitbit",
+        "description": "Recupera il display name dell'account fibit collegato",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      },
+      "put": {
+        "summary": "09. Associa profilo Fitbit",
+        "operationId": "put-api-profile-fitbit",
+        "responses": {
+          "200": {
+            "description": "Account Fitbit collegato con successo"
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "500": {
+            "description": "Uno dei seguenti:\n - Errore interno\n - Errore durante la procedura oAuth con Fitbit"
+          }
+        },
+        "description": "Richiede al back-end di procurarsi nuovi token da Fitbit con l'authentication code ottentuto dalla pagina di login di fitbit.\nPer ulteriori informazioni sulla procedura oAuth di Fitbit, visitare https://dev.fitbit.com/build/reference/web-api/oauth2/",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "authCode": {
+                    "type": "string",
+                    "description": "Authorization code fornito da Fitbit"
+                  }
+                },
+                "required": [
+                  "authCode"
+                ]
+              },
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "authCode": "ksdncvlasinc83wenluhi"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Indicare l'Authentication Code fornito da Fitbit"
+        },
+        "tags": [
+          "profile"
+        ]
+      },
+      "delete": {
+        "summary": "12. Cancella dati Fitbit",
+        "operationId": "delete-api-profile-fitbit",
+        "responses": {
+          "200": {
+            "description": "Account scollegato con successo"
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "description": "Dissocia un eventuale account fibit rimuovendo tutti i dati relativi",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token"
+          }
+        ],
+        "tags": [
+          "profile"
+        ]
+      },
+      "parameters": []
+    },
+    "/api/activities": {
+      "get": {
+        "summary": "01. Ottieni attività (tutte)",
+        "tags": [
+          "activities"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "description": "Username utente autenticato"
+                    },
+                    "dataPoints": {
+                      "type": "array",
+                      "description": "Array di attività",
+                      "items": {
+                        "$ref": "#/components/schemas/activity"
+                      }
+                    }
+                  },
+                  "required": [
+                    "username",
+                    "dataPoints"
+                  ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "username": "AkihikoSanada",
+                      "dataPoints": [
+                        {
+                          "created": "2020-04-25T00:00:00.000Z",
+                          "data": "2020-04-24T22:00:00.000Z",
+                          "nome": "esplorazione tartarus",
+                          "calout": 100,
+                          "descrizione": ""
+                        },
+                        {
+                          "created": "2020-04-27T00:00:00.000Z",
+                          "data": "2020-04-26T22:00:00.000Z",
+                          "nome": "boxe",
+                          "calout": 60,
+                          "descrizione": ""
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "500": {
+            "description": "Internal Database Error"
+          }
+        },
+        "operationId": "get-api-activities",
+        "description": "Recupera tutte le attività dell'utente autenticato",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      },
+      "parameters": [],
+      "post": {
+        "summary": "04. Aggiungi attività",
+        "operationId": "post-api-activities",
+        "responses": {
+          "201": {
+            "description": "Attività registrata con successo: la risposta contiene i suoi dati",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/activity"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "created": "2020-05-23T11:12:10.514Z",
+                      "data": "2020-05-22T22:00:00.000Z",
+                      "nome": "torneo di boxe",
+                      "calout": 200,
+                      "descrizione": ""
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Non sono stati specificati tutti i parametri obbligatri"
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "413": {
+            "description": "Una delle stringhe supera il limite di caratteri"
+          },
+          "429": {
+            "description": "Rallentare le richieste a circa 1/ms"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "description": "Aggiunge una nuova attività",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "string",
+                    "description": "Data attività (default: oggi)"
+                  },
+                  "nome": {
+                    "type": "string",
+                    "description": "Nome attività"
+                  },
+                  "calout": {
+                    "type": "integer",
+                    "description": "Calorie bruciate"
+                  },
+                  "descrizione": {
+                    "type": "string",
+                    "description": "Info aggiuntive (max 500 caratteri) (default: niente)"
+                  }
+                },
+                "required": [
+                  "nome",
+                  "calout"
+                ]
+              },
+              "examples": {
+                "Esempio 1": {
+                  "value": {
+                    "nome": "torneo di boxe",
+                    "calout": 200
+                  }
+                },
+                "Esempio 2": {
+                  "value": {
+                    "data": "2020-06-03",
+                    "nome": "torneo di boxe",
+                    "calout": 200,
+                    "descrizione": "Terzo posto, molti degni avversari"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Descrivere l'attività da aggiungere"
+        },
+        "tags": [
+          "activities"
+        ]
+      }
+    },
+    "/api/developer/{clientid}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "integer",
+            "example": 5651
+          },
+          "name": "clientid",
+          "in": "path",
+          "required": true,
+          "description": "Id dell'applicazione"
+        }
+      ],
+      "delete": {
+        "summary": "03. Elimina una applicazione registrata",
+        "operationId": "delete-api-developer-clientid",
+        "responses": {
+          "200": {
+            "description": "Eliminazione completata con successo: la risposta contiene i dati dell'applocazione appena eliminata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicazioneOAuth"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "id": 1,
+                      "clientid": 10,
+                      "clientname": "pippo",
+                      "redirect": "http://example.com"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "403": {
+            "description": "Forbidden: questo endpoint può essere usato solo con un token interno"
+          },
+          "404": {
+            "description": "L'applicazione specificata non esisteva neanche prima della richiesta"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "tags": [
+          "developer"
+        ],
+        "description": "Elimina l'applicazione client registrata con id clientid. Questo path è usato solo nelle comunicazioni fra front-end e back-end.",
+        "security": [
+          {
+            "Internal Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/profile/{sure}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "sure",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    "/api/activities/{ts}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string",
+            "example": "2020-05-23T11:12:10.514Z"
+          },
+          "name": "ts",
+          "in": "path",
+          "required": true,
+          "description": "Timestamp dell'attività bersaglio"
+        }
+      ],
+      "put": {
+        "summary": "05. Modifica attività",
+        "operationId": "put-api-activities-ts",
+        "responses": {
+          "200": {
+            "description": "Attività modificata con successo: la risposta contiene i nuovi dati",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/activity"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "created": "2020-05-23T11:12:10.514Z",
+                      "data": "2020-06-02T22:00:00.000Z",
+                      "nome": "torneo di boxe",
+                      "calout": 200,
+                      "descrizione": "Terzo posto, molti degni avversari"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Non sono stati specificati tutti i parametri obbligatori"
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Nessun'attività trovata per il timestamp fornito"
+          },
+          "413": {
+            "description": "Una delle stringhe supera il limite di caratteri"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "tags": [
+          "activities"
+        ],
+        "description": "Modifica l'attività dell'utente identificata dal timestamp fornito.\nTutti i parametri devono essere specificati, anche quelli che non si vogliono modificare.\nSi consiglia di usare come ts il parametro created restituito dalle chiamate relative alle attività.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "string",
+                    "description": "Nuova data di svolgimento dell'attività (YYYY-MM-DD)"
+                  },
+                  "nome": {
+                    "type": "string",
+                    "description": "Nuovo nome"
+                  },
+                  "calout": {
+                    "type": "integer",
+                    "description": "Nuove calorie consumate"
+                  },
+                  "descizione": {
+                    "type": "string",
+                    "description": "Nuova descrizione (max 500 caratteri)"
+                  }
+                },
+                "required": [
+                  "data",
+                  "nome",
+                  "calout",
+                  "descizione"
+                ]
+              },
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "data": "2020-06-03",
+                    "nome": "torneo di boxe",
+                    "calout": 200,
+                    "descrizione": "Terzo posto, molti degni avversari"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Fornire il nuovo stato dell'attività."
+        }
+      },
+      "delete": {
+        "summary": "06. Elimina attività",
+        "operationId": "delete-api-activities-ts",
+        "responses": {
+          "200": {
+            "description": "Eliminazione effettuata con successo: la risposta contiene i dati dell'attività appena eliminata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/activity"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "created": "2020-05-23T11:12:10.514Z",
+                      "data": "2020-06-02T22:00:00.000Z",
+                      "nome": "torneo di boxe",
+                      "calout": 200,
+                      "descrizione": "Terzo posto, molti degni avversari"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Nessun'attività trovata al timestamp indicato"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "activities"
+        ],
+        "description": "Elimina arrività identificata dal timestamp fornito.\nQuest'operazione non può essere annullata.\nSi consiglia di usare come ts il parametro created restituito dalle chiamate relative alle attività.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/activities/{data}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string",
+            "example": "2020-04-27"
+          },
+          "name": "data",
+          "in": "path",
+          "required": true,
+          "description": "La data da chiedere (YYYY-MM-DD)"
+        }
+      ],
+      "get": {
+        "summary": "02. Ottieni attività (data specifica)",
+        "tags": [
+          "activities"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string"
+                    },
+                    "dataPoints": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/activity"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "username": "AkihikoSanada",
+                      "dataPoints": [
+                        {
+                          "created": "2020-04-25T00:00:00.000Z",
+                          "data": "2020-02-22T22:00:00.000Z",
+                          "nome": "esplorazione tartarus",
+                          "calout": 100,
+                          "descrizione": ""
+                        },
+                        {
+                          "created": "2020-04-27T00:00:00.000Z",
+                          "data": "2020-02-22T22:00:00.000Z",
+                          "nome": "boxe",
+                          "calout": 60,
+                          "descrizione": ""
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato, o nessun'attività trovata per la data specificata"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "get-api-activities-data",
+        "description": "Richiede le attività relative alla data specificata.\nLa data deve essere in formato YYYY-MM-DD.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/activities/{from}/{to}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string",
+            "example": "2020-04-20"
+          },
+          "name": "from",
+          "in": "path",
+          "required": true,
+          "description": "Inizio del range (incluso) (YYYY-MM-DD oppure -)"
+        },
+        {
+          "schema": {
+            "type": "string",
+            "example": "2020-04-30"
+          },
+          "name": "to",
+          "in": "path",
+          "required": true,
+          "description": "Fine del range (incluso) (YYYY-MM-DD oppure -)"
+        }
+      ],
+      "get": {
+        "summary": "03. Ottieni attività (range di date)",
+        "tags": [
+          "activities"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string"
+                    },
+                    "dataPoints": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/activity"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "username": "AkihikoSanada",
+                      "dataPoints": [
+                        {
+                          "created": "2020-04-25T00:00:00.000Z",
+                          "data": "2020-04-24T22:00:00.000Z",
+                          "nome": "esplorazione tartarus",
+                          "calout": 100,
+                          "descrizione": ""
+                        },
+                        {
+                          "created": "2020-04-27T00:00:00.000Z",
+                          "data": "2020-04-26T22:00:00.000Z",
+                          "nome": "boxe",
+                          "calout": 60,
+                          "descrizione": ""
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "get-api-activities-from-to",
+        "description": "Recupera le attività registrate dell'utente relativamente a giorni compresi tra le date {from} e {to} (incluse). Usare un trattino ('-') al posto di una delle date per indicare l'assenza di un limite da quel lato.\nLe date devono essere in formato YYYY-MM-DD.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "description": "Bearer Token"
+          }
+        ]
+      }
+    },
+    "/api/user/register": {
+      "post": {
+        "summary": "01. Registra nuovo utente",
+        "operationId": "post-api-user-register",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Utente già registrato"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "description": "Registra un nuovo utente con username e password dati nel corpo. Lo username non deve essere già stato registrato da un altro utente. Questo path è usato solo nelle comunicazioni fra front-end e back-end.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "username da assegnare al nuovo utente; non deve essere già stato registrato da qualcun altro"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "password da assegnare al nuovo utente"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password"
+                ]
+              },
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "username": "AkihikoSanada",
+                    "password": "polydeuces"
+                  }
+                }
+              }
+            }
+          },
+          "description": "username e password da assegnare al nuovo utente"
+        },
+        "tags": [
+          "user"
+        ],
+        "security": []
+      }
+    },
+    "/api/user/login": {
+      "post": {
+        "summary": "02. Effettua login",
+        "tags": [
+          "user"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "bearer token"
+                    }
+                  },
+                  "required": [
+                    "token"
+                  ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "token": "sdvjrweiot8qrqi3hf894hiu8fh389q.wieufh387gfodc8n48o.2ofh4hhweu8"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Username o password errati"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "post-api-user-login",
+        "description": "Effettua il login con username e password forniti. Fornisce un bearer token da mettere nell'header Authorization di tutte le richieste che chiedono autenticazione e che dura 5 ore. Questo path è usato solo nelle comunicazioni fra front-end e back-end.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "lo username con cui effettuare il login"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "la password con cui effettuare il login"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password"
+                ]
+              },
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "username": "AkihikoSanada",
+                    "password": "polydeuces"
+                  }
+                }
+              }
+            }
+          },
+          "description": "username e password con cui effettuare il login"
+        },
+        "security": []
+      },
+      "parameters": []
+    },
+    "/api/user/oauth": {
+      "post": {
+        "summary": "03. OAuth2",
+        "tags": [
+          "user"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "bearer token"
+                    }
+                  },
+                  "required": [
+                    "token"
+                  ]
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "token": "sdvjrweiot8qrqi3hf894hiu8fh389q.wieufh387gfodc8n48o.2ofh4hhweu8"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "La redirect URL fornita non combacia con quella registrata per l'applicazione"
+          },
+          "403": {
+            "description": "Username o password errati"
+          },
+          "404": {
+            "description": "Client ID non trovato"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "post-api-user-oauth",
+        "description": "Effettua il login OAuth2, secondo il flusso Implicit Code Grant. Fornire username e password dell'account da loggare, e Client ID e Redirect URL dell'applicazione. Fornisce un bearer token da mettere nell'header Authorization di tutte le richieste che chiedono autenticazione e che dura 5 ore. Questo path è usato solo nelle comunicazioni fra front-end e back-end.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "username dell'utente da registrare"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "password dell'utente da registrare"
+                  },
+                  "id": {
+                    "type": "number",
+                    "description": "id dell'applicazione"
+                  },
+                  "redirect": {
+                    "type": "string",
+                    "description": "password dell'applicazione"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password",
+                  "id",
+                  "redirect"
+                ]
+              },
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "username": "AkihikoSanada",
+                    "password": "polydeuces",
+                    "id": 45323,
+                    "redirect": "http://gekkoufit.jp/fitnessapp-oauth-redirect/"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Username e password dell'account da loggare, e Client ID e Redirect URL dell'applicazione."
+        },
+        "security": []
+      },
+      "parameters": []
+    },
+    "/api/calories": {
+      "get": {
+        "summary": "01. Ottieni dati calorie (tutti)",
+        "tags": [
+          "calories"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputCalorie"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "id": 1,
+                      "dataPoints": [
+                        {
+                          "data": "2020-04-24T22:00:00.000Z",
+                          "calin": 100,
+                          "calout": 100,
+                          "bilancio": 0
+                        },
+                        {
+                          "data": "2020-04-25T22:00:00.000Z",
+                          "calin": 50,
+                          "calout": 0,
+                          "bilancio": 50
+                        },
+                        {
+                          "data": "2020-04-26T22:00:00.000Z",
+                          "calin": 0,
+                          "calout": 60,
+                          "bilancio": -60
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "get-api-calories",
+        "description": "Recupera tutti i dati delle calorie ingerite e bruciate dell'utente.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      },
+      "parameters": []
+    },
+    "/api/calories/{data}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string",
+            "example": "2020-04-27"
+          },
+          "name": "data",
+          "in": "path",
+          "required": true,
+          "description": "La data da chiedere (YYYY-MM-DD)"
+        }
+      ],
+      "get": {
+        "summary": "02. Ottieni dati calorie (data specifica)",
+        "tags": [
+          "calories"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputCalorie"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "id": 1,
+                      "dataPoints": [
+                        {
+                          "data": "2020-04-24T22:00:00.000Z",
+                          "calin": 100,
+                          "calout": 100,
+                          "bilancio": 0
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato, oppure dati di questo giorno non trovati"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "get-api-calories-data",
+        "description": "Recupera i dati delle calorie ingerite e bruciate dell'utente in un giorno specifico, se esitono.\nLa data deve essere in formato YYYY-MM-DD.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token"
+          }
+        ]
+      }
+    },
+    "/api/calories/{from}/{to}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string",
+            "example": "2020-04-20"
+          },
+          "name": "from",
+          "in": "path",
+          "required": true,
+          "description": "Inizio del range (incluso) (YYYY-MM-DD oppure -)"
+        },
+        {
+          "schema": {
+            "type": "string",
+            "example": "2020-04-30"
+          },
+          "name": "to",
+          "in": "path",
+          "required": true,
+          "description": "Fine del range (incluso) (YYYY-MM-DD oppure -)"
+        }
+      ],
+      "get": {
+        "summary": "03. Ottieni dati calorie (range di date)",
+        "tags": [
+          "calories"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputCalorie"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "id": 1,
+                      "dataPoints": [
+                        {
+                          "data": "2020-04-24T22:00:00.000Z",
+                          "calin": 100,
+                          "calout": 100,
+                          "bilancio": 0
+                        },
+                        {
+                          "data": "2020-04-25T22:00:00.000Z",
+                          "calin": 50,
+                          "calout": 0,
+                          "bilancio": 50
+                        },
+                        {
+                          "data": "2020-04-26T22:00:00.000Z",
+                          "calin": 0,
+                          "calout": 60,
+                          "bilancio": -60
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "get-api-calories-from-to",
+        "description": "Recupera i dati delle calorie ingerite e bruciate dell'utente relativi ai giorni compresi tra le date from e to (incluse). Usare un trattino ('-') al posto di una delle date per indicare l'assenza di un limite da quel lato.\nLe date devono essere in formato YYYY-MM-DD.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token"
+          }
+        ]
+      }
+    },
+    "/api/weight": {
+      "get": {
+        "summary": "01. Ottieni misure peso (tutte)",
+        "tags": [
+          "weight"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputPeso"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "username": "AkihikoSanada",
+                      "dataPoints": [
+                        {
+                          "data": "2020-04-24T22:00:00.000Z",
+                          "peso": 80
+                        },
+                        {
+                          "data": "2020-04-25T22:00:00.000Z",
+                          "peso": 70
+                        },
+                        {
+                          "data": "2020-04-26T22:00:00.000Z",
+                          "peso": 75
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "get-api-weight",
+        "description": "Recupera tutte le misure di peso dell'utente.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      },
+      "post": {
+        "summary": "04. Aggiungi misura peso",
+        "tags": [
+          "weight"
+        ],
+        "responses": {
+          "201": {
+            "description": "Misura aggiunta con successo: la risposta contiene ne contiene una copia",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MisuraPeso"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "data": "2020-05-21T22:00:00.000Z",
+                      "peso": 67
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Peso non specificato"
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "409": {
+            "description": "Misura peso già esistente per la data di oggi"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "post-api-weight",
+        "description": "Aggiunge una misura peso relativa alla data odierna.\nDà errore se tale misura è già presente: usare una PUT per modificarla.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InputPeso"
+              },
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "peso": 67
+                  }
+                }
+              }
+            }
+          },
+          "description": "Inserire il peso misurato"
+        }
+      }
+    },
+    "/api/weight/{data}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string",
+            "example": "2020-04-27"
+          },
+          "name": "data",
+          "in": "path",
+          "required": true,
+          "description": "La data bersaglio (YYYY-MM-DD)"
+        }
+      ],
+      "get": {
+        "summary": "02. Ottieni misura peso (data specifica)",
+        "tags": [
+          "weight"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputPeso"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "username": "AkihikoSanada",
+                      "dataPoints": [
+                        {
+                          "data": "2020-04-24T22:00:00.000Z",
+                          "peso": 80
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato, o misura peso del giorno specificato non trovata"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "get-api-weight-data",
+        "description": "Recupera la misura peso dell'utente relativa al giorno indicato, se esiste.\nLa data deve essere in formato YYYY-MM-DD.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      },
+      "put": {
+        "summary": "05. Modifica misura peso",
+        "tags": [
+          "weight"
+        ],
+        "responses": {
+          "200": {
+            "description": "Misura modificata con successo: la risposta contiene una copia della nuova misura",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MisuraPeso"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "data": "2020-05-21T22:00:00.000Z",
+                      "peso": 67
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Peso non specificato"
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Misura peso inesistente per la data indicata"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "put-api-weight-data",
+        "description": "Modifica la misura peso relativa alla data specificata.\nSolo il peso misurato può essere modificato.\nLa data deve essere in formato YYYY-MM-DD.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InputPeso"
+              },
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "peso": 67
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "06. Elimina misura peso",
+        "tags": [
+          "weight"
+        ],
+        "responses": {
+          "200": {
+            "description": "Misura peso eliminata con successo: la risposta contiene la misura appena eliminata.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MisuraPeso"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "data": "2020-05-21T22:00:00.000Z",
+                      "peso": 67
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Misura peso inesistente per la data specificata"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "delete-api-weight-data",
+        "description": "Elimina la misura peso relativa alla data indicata.\nQuest'operazione non può essere annullata.\nLa data deve essere in formato YYYY-MM-DD.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/weight/{from}/{to}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string",
+            "example": "2020-04-20"
+          },
+          "name": "from",
+          "in": "path",
+          "required": true,
+          "description": "Inizio del range (incluso) (YYYY-MM-DD oppure -)"
+        },
+        {
+          "schema": {
+            "type": "string",
+            "example": "2020-04-30"
+          },
+          "name": "to",
+          "in": "path",
+          "required": true,
+          "description": "Fine del range (incluso) (YYYY-MM-DD oppure -)"
+        }
+      ],
+      "get": {
+        "summary": "03. Ottieni misure peso (range di date)",
+        "tags": [
+          "weight"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputPeso"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "username": "AkihikoSanada",
+                      "dataPoints": [
+                        {
+                          "data": "2020-04-24T22:00:00.000Z",
+                          "peso": 80
+                        },
+                        {
+                          "data": "2020-04-25T22:00:00.000Z",
+                          "peso": 70
+                        },
+                        {
+                          "data": "2020-04-26T22:00:00.000Z",
+                          "peso": 75
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "get-api-weight-from-to",
+        "description": "Recupera le misure peso dell'utente relative ai giorni compresi tra le date from e to (incluse). Usare un trattino ('-') al posto di una delle date per indicare l'assenza di un limite da quel lato.\nLe date devono essere in formato YYYY-MM-DD.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/food": {
+      "post": {
+        "summary": "04. Aggiungi log cibo",
+        "tags": [
+          "food"
+        ],
+        "responses": {
+          "201": {
+            "description": "Cibo creato con successo: la risposta contiene i suoi dati.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cibo"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "created": "2020-05-22T09:01:41.718Z",
+                      "data": "2020-05-21T22:00:00.000Z",
+                      "nome": "riso",
+                      "calin": 250,
+                      "descrizione": ""
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Non sono stati specificati tutti i parametri obbligatori nel body"
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "413": {
+            "description": "Una stringa è troppo lunga"
+          },
+          "429": {
+            "description": "Rallentare le richieste a circa 1/ms"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "post-api-food",
+        "description": "Aggiunge un cibo.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "description": "Bearer Token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "string",
+                    "description": "Giorno in cui è stato consumato il cibo (default: oggi)"
+                  },
+                  "nome": {
+                    "type": "string",
+                    "description": "Nome del cibo consumato"
+                  },
+                  "calin": {
+                    "type": "number",
+                    "description": "Apporto calorico del cibo consumato"
+                  },
+                  "descrizione": {
+                    "type": "string",
+                    "description": "Descrizione personalizzata (max 500 caratteri) (default: niente)"
+                  }
+                },
+                "required": [
+                  "nome",
+                  "calin"
+                ]
+              },
+              "examples": {
+                "Esempio 1": {
+                  "value": {
+                    "nome": "riso",
+                    "calin": "250"
+                  }
+                },
+                "Esempio 2": {
+                  "value": {
+                    "nome": "riso",
+                    "calin": "250",
+                    "data": "2020-04-01",
+                    "descrizione": "Il sapore era strano per qualche motivo..."
+                  }
+                }
+              }
+            }
+          },
+          "description": "Descrivere il cibo da aggiungere."
+        }
+      },
+      "get": {
+        "summary": "01. Ottieni log cibo (tutti)",
+        "tags": [
+          "food"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputCibo"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "username": "AkihikoSanada",
+                      "dataPoints": [
+                        {
+                          "created": "2020-04-25T00:00:00.000Z",
+                          "data": "2020-04-24T22:00:00.000Z",
+                          "nome": "pollo",
+                          "calin": 100,
+                          "descrizione": ""
+                        },
+                        {
+                          "created": "2020-04-26T00:00:00.000Z",
+                          "data": "2020-04-25T22:00:00.000Z",
+                          "nome": "sushi",
+                          "calin": 50,
+                          "descrizione": ""
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "get-api-food",
+        "description": "Recupera tutti i cibi registrati dell'utente.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/food/{data}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string",
+            "example": "2020-04-27"
+          },
+          "name": "data",
+          "in": "path",
+          "required": true,
+          "description": "La data da chiedere (YYYY-MM-DD)"
+        }
+      ],
+      "get": {
+        "summary": "02. Ottieni log cibo (data specifica)",
+        "tags": [
+          "food"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputCibo"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "username": "AkihikoSanada",
+                      "dataPoints": [
+                        {
+                          "created": "2020-04-25T00:00:00.000Z",
+                          "data": "2020-01-11T22:00:00.000Z",
+                          "nome": "pollo",
+                          "calin": 100,
+                          "descrizione": ""
+                        },
+                        {
+                          "created": "2020-04-26T00:00:00.000Z",
+                          "data": "2020-01-11T22:00:00.000Z",
+                          "nome": "sushi",
+                          "calin": 50,
+                          "descrizione": ""
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato, o nessun cibo trovato per la data specificata"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "get-api-food-data",
+        "description": "Recupera i cibi registrati dell'utente relativamente alla data specificata.\nLa data deve essere in formato YYYY-MM-DD.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/food/{from}/{to}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string",
+            "example": "2020-04-20"
+          },
+          "name": "from",
+          "in": "path",
+          "required": true,
+          "description": "Inizio del range (incluso) (YYYY-MM-DD oppure -)"
+        },
+        {
+          "schema": {
+            "type": "string",
+            "example": "2020-04-30"
+          },
+          "name": "to",
+          "in": "path",
+          "required": true,
+          "description": "Fine del range (incluso) (YYYY-MM-DD oppure -)"
+        }
+      ],
+      "get": {
+        "summary": "03. Ottieni log cibo (range di date)",
+        "tags": [
+          "food"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputCibo"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "username": "AkihikoSanada",
+                      "dataPoints": [
+                        {
+                          "created": "2020-04-25T00:00:00.000Z",
+                          "data": "2020-04-24T22:00:00.000Z",
+                          "nome": "pollo",
+                          "calin": 100,
+                          "descrizione": ""
+                        },
+                        {
+                          "created": "2020-04-26T00:00:00.000Z",
+                          "data": "2020-04-25T22:00:00.000Z",
+                          "nome": "sushi",
+                          "calin": 50,
+                          "descrizione": ""
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Utente non trovato"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "get-api-food-from-to",
+        "description": "Recupera i cibi registrati dell'utente relativamente a giorni compresi tra le date {from} e {to} (incluse). Usare un trattino ('-') al posto di una delle date per indicare l'assenza di un limite da quel lato.\nLe date devono essere in formato YYYY-MM-DD.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "description": "Bearer Token"
+          }
+        ]
+      }
+    },
+    "/api/food/{ts}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string",
+            "example": "2020-05-23T11:12:10.514Z"
+          },
+          "name": "ts",
+          "in": "path",
+          "required": true,
+          "description": "Timestamp del cibo bersaglio"
+        }
+      ],
+      "put": {
+        "summary": "06. Modifica log cibo",
+        "tags": [
+          "food"
+        ],
+        "responses": {
+          "200": {
+            "description": "Cibo modificato con successo: la risposta contiene i nuovi dati",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cibo"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "created": "2020-05-22T09:01:41.718Z",
+                      "data": "2020-05-21T22:00:00.000Z",
+                      "nome": "riso",
+                      "calin": 250,
+                      "descrizione": ""
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Non tutti i parametri sono stati specificati"
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Nessun cibo trovato per il timestamp fornito"
+          },
+          "413": {
+            "description": "Una delle stringhe è troppo lunga"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "put-api-food-ts",
+        "description": "Modifica il cibo dell'utente identificato dal timestamp fornito.\nTutti i parametri devono essere specificati, anche quelli che non si vogliono modificare.\nSi consiglia di usare come ts il parametro created restituito dalle chiamate relative al cibo.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "string",
+                    "description": "Nuova data di consumazione"
+                  },
+                  "nome": {
+                    "type": "string",
+                    "description": "Nuovo nome dele cibo"
+                  },
+                  "calin": {
+                    "type": "number",
+                    "description": "Nuovo apporto calorico"
+                  },
+                  "descrizione": {
+                    "type": "string",
+                    "description": "Nuova descrizione (max 500 caratteri)"
+                  }
+                },
+                "required": [
+                  "data",
+                  "nome",
+                  "calin",
+                  "descrizione"
+                ]
+              },
+              "examples": {
+                "Esempio": {
+                  "value": {
+                    "nome": "riso",
+                    "calin": "250",
+                    "data": "2020-04-01",
+                    "descrizione": "Il sapore era strano per qualche motivo..."
+                  }
+                }
+              }
+            }
+          },
+          "description": "Fornire il nuovo stato del cibo."
+        }
+      },
+      "delete": {
+        "summary": "07. Elimina log cibo",
+        "tags": [
+          "food"
+        ],
+        "responses": {
+          "200": {
+            "description": "Cibo eliminato con successo: la risposta contiene i dati appena eliminati.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cibo"
+                },
+                "examples": {
+                  "Esempio": {
+                    "value": {
+                      "created": "2020-05-22T09:01:41.718Z",
+                      "data": "2020-05-21T22:00:00.000Z",
+                      "nome": "riso",
+                      "calin": 250,
+                      "descrizione": ""
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "token non valido o scaduto"
+          },
+          "404": {
+            "description": "Nessun cibo trovato al timestamp indicato"
+          },
+          "500": {
+            "description": "Errore interno"
+          }
+        },
+        "operationId": "delete-api-food-ts",
+        "description": "Elimina il cibo dell'utente identificato dal timestamp fornito.\nQuest'operazione non può essere annullata.\nSi consiglia di usare come ts il parametro created restituito dalle chiamate relative al cibo.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer Token",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/food/off": {
+      "post": {
+        "summary": "05. Aggiungi cibo con Open Food Facts",
+        "tags": [
+          "food"
+        ],
+        "responses": {
+          "201": {
+            "description": "Operazione effettuata con successo: la risposta contiene i dati del cibo appena registrato.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cibo"
+                },
+                "examples": {
+                  "Esempio 1": {
+                    "value": {
+                      "created": "2020-05-22T09:06:42.967Z",
+                      "data": "2020-05-21T22:00:00.000Z",
+                      "nome": "Fusilli n°34",
+                      "calin": 351,
+                      "descrizione": "Quantità consumata: 100 unità\nCarboidrati: 69g\nProteine: 14g\nGrassi: 1.5g"
+                    }
+                  },
+                  "Esempio 2": {
+                    "value": {
+                      "created": "2020-05-22T09:10:06.825Z",
+                      "data": "2020-04-30T22:00:00.000Z",
+                      "nome": "Fusilli n°34",
+                      "calin": 175.5,
+                      "descrizione": "Quantità consumata: 50 unità\nCarboidrati: 34.5g\nProteine: 7g\nGrassi: 0.75g"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Codice a barre non specificato"
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
+          "404": {
+            "description": "Uno dei seguenti:\n - La ricerca con O.F.F. non ha prodotto risultati\n - Utente non trovato"
+          },
+          "429": {
+            "description": "Rallentare le richieste a circa 1/ms"
+          },
+          "500": {
+            "description": "Errore interno (tutti gli errori che avvengono durante la chiamata a O.F.F. sono inclusi in questa categoria, tra gli altri)"
+          }
+        },
+        "operationId": "post-api-food-off",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "barcode": {
+                    "type": "integer",
+                    "description": "Il codice a barre del cibo consumato, usato per cercarlo su O.F.F."
+                  },
+                  "quantita": {
+                    "type": "number",
+                    "description": "Quantità consumata, in g, ml o altra unità appropriata. Usata per calcolare i dati nutrizionali della specifica consumazione. (Default: 100, o altra quantità indicata sull'etichetta)"
+                  },
+                  "data": {
+                    "type": "string",
+                    "description": "Data di consumazione del cibo. (Default: oggi)"
+                  }
+                },
+                "required": [
+                  "barcode"
+                ]
+              },
+              "examples": {
+                "Esempio 1": {
+                  "value": {
+                    "barcode": 8001250120342
+                  }
+                },
+                "Esempio 2": {
+                  "value": {
+                    "barcode": 8001250120342,
+                    "quantita": 50,
+                    "data": "2020-05-01"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Specificare il codice a barre del cibo consumato, ed opzionalmente altre proprietà"
+        },
+        "description": "Aggiunge un cibo per l'utente recuperando i dati nutrizionali dal database di Open Food Facts tramite REST.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "Bearer hdsagfuialwsghfauilbfasdghfeuigaf203y45r89432"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "description": "Bearer Token"
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "activity": {
+        "title": "Modello: Attività",
+        "type": "object",
+        "x-tags": [
+          "activities"
+        ],
+        "description": "Un record che rappresenta un'attività registrata dall'utente.",
+        "properties": {
+          "created": {
+            "type": "string",
+            "description": "Timestamp di creazione usato come chiave"
+          },
+          "data": {
+            "type": "string",
+            "description": "Data di riferimento"
+          },
+          "nome": {
+            "type": "string",
+            "description": "Nome attività"
+          },
+          "calout": {
+            "type": "integer",
+            "description": "Calorie bruciate"
+          },
+          "descrizione": {
+            "type": "string",
+            "description": "Informazioni aggiuntive"
+          }
+        },
+        "required": [
+          "data",
+          "nome",
+          "calout",
+          "descrizione"
+        ]
+      },
+      "ApplicazioneOAuth": {
+        "title": "Modello: ApplicazioneOAuth",
+        "type": "object",
+        "x-tags": [
+          "developer"
+        ],
+        "x-examples": {
+          "Esempio": {
+            "id": 1,
+            "clientid": 10,
+            "clientname": "pippo",
+            "redirect": "http://example.com"
+          }
+        },
+        "description": "Dati associati a un'applicazione registrata da un utente per la procedura OAuth.",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Id dell'utente che ha registrato l'applicazione"
+          },
+          "clientid": {
+            "type": "number",
+            "description": "Id dell'applicazione"
+          },
+          "clientname": {
+            "type": "string",
+            "description": "Nome applicazione"
+          },
+          "redirect": {
+            "type": "string",
+            "description": "Redirect URL per la procedura oAuth",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "id",
+          "clientid",
+          "clientname",
+          "redirect"
+        ]
+      },
+      "MisuraCalorie": {
+        "title": "Modello: MisuraCalorie",
+        "type": "object",
+        "description": "Un record che rappresenta calorie ingerite e consumate da un utente in un giorno.",
+        "properties": {
+          "data": {
+            "type": "string",
+            "description": "La data a cui fa riferimento questo record"
+          },
+          "calin": {
+            "type": "number",
+            "description": "Calorie ingerite in questo giorno"
+          },
+          "calout": {
+            "type": "number",
+            "description": "Calorie consumate in questo giorno"
+          },
+          "bilancio": {
+            "type": "number",
+            "description": "Bilancio complessivo delle calorie in questo giorno: positivo se sono state ingerite più calorie, negativo se ne sono state consumate di più.\n[calin-calout]"
+          }
+        },
+        "required": [
+          "data",
+          "calin",
+          "calout",
+          "bilancio"
+        ],
+        "x-tags": [
+          "calories"
+        ],
+        "x-examples": {
+          "Esempio": {
+            "data": "2020-04-24T22:00:00.000Z",
+            "calin": 150,
+            "calout": 100,
+            "bilancio": 50
+          }
+        }
+      },
+      "MisuraPeso": {
+        "title": "Modello: MisuraPeso",
+        "type": "object",
+        "description": "Peso misurato da un utente in un giorno.",
+        "x-tags": [
+          "weight"
+        ],
+        "properties": {
+          "data": {
+            "type": "string",
+            "description": "La data a cui fa riferimento questa misura"
+          },
+          "peso": {
+            "type": "number",
+            "description": "La data a cui fa riferimento questa misura"
+          }
+        },
+        "required": [
+          "data",
+          "peso"
+        ],
+        "x-examples": {
+          "Esempio": {
+            "data": "2020-04-24T22:00:00.000Z",
+            "peso": 80
+          }
+        }
+      },
+      "InputPeso": {
+        "title": "Modello: InputPeso",
+        "type": "object",
+        "description": "Il peso da dare come input alle chiamate POST e PUT.",
+        "properties": {
+          "peso": {
+            "type": "string",
+            "description": "Il nuovo peso misurato"
+          }
+        },
+        "required": [
+          "peso"
+        ],
+        "x-tags": [
+          "weight"
+        ],
+        "x-examples": {
+          "Esempio": {
+            "peso": 70
+          }
+        }
+      },
+      "Cibo": {
+        "title": "Modello: Cibo",
+        "type": "object",
+        "x-tags": [
+          "food"
+        ],
+        "description": "Un record che rappresenta un cibo registrato dall'utente.",
+        "properties": {
+          "created": {
+            "type": "string",
+            "description": "Timestamp di creazione di questo record. Usato come identificatore del record."
+          },
+          "data": {
+            "type": "string",
+            "description": "Giorno a cui fa riferimento questo record"
+          },
+          "nome": {
+            "type": "string",
+            "description": "Nome del cibo consumato"
+          },
+          "calin": {
+            "type": "number",
+            "description": "Apporto calorico del cibo"
+          },
+          "descrizione": {
+            "type": "string",
+            "description": "Descrizione personalizzata (max 500 caratteri)"
+          }
+        },
+        "required": [
+          "created",
+          "data",
+          "nome",
+          "calin",
+          "descrizione"
+        ],
+        "x-examples": {
+          "Esempio": {
+            "created": "2020-05-22T08:36:02.411Z",
+            "data": "2020-05-21T22:00:00.000Z",
+            "nome": "Pasta",
+            "calin": 200,
+            "descrizione": "sugo di pomodori appena raccolti"
+          }
+        }
+      },
+      "OutputCalorie": {
+        "title": "Modello: OutputCalorie",
+        "type": "object",
+        "x-tags": [
+          "calories"
+        ],
+        "description": "L'oggetto mandato in output dalle GET sulle calorie.",
+        "x-examples": {
+          "Esempio": {
+            "id": 1,
+            "dataPoints": [
+              {
+                "data": "2020-04-24T22:00:00.000Z",
+                "calin": 100,
+                "calout": 100,
+                "bilancio": 0
+              },
+              {
+                "data": "2020-04-25T22:00:00.000Z",
+                "calin": 50,
+                "calout": 0,
+                "bilancio": 50
+              },
+              {
+                "data": "2020-04-26T22:00:00.000Z",
+                "calin": 0,
+                "calout": 60,
+                "bilancio": -60
+              }
+            ]
+          }
+        },
+        "properties": {
+          "username": {
+            "description": "Username dell'utente",
+            "type": "string"
+          },
+          "dataPoints": {
+            "type": "array",
+            "description": "Array di misure di calorie",
+            "items": {
+              "$ref": "#/components/schemas/MisuraCalorie"
+            }
+          }
+        },
+        "required": [
+          "username",
+          "dataPoints"
+        ]
+      },
+      "OutputPeso": {
+        "title": "Modello: OutputPeso",
+        "type": "object",
+        "x-tags": [
+          "weight"
+        ],
+        "description": "L'oggetto mandato in output dalle GET sul peso.",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Lo username dell'utente"
+          },
+          "dataPoints": {
+            "type": "array",
+            "description": "Array contenente le misure di peso",
+            "items": {
+              "$ref": "#/components/schemas/MisuraPeso"
+            }
+          }
+        },
+        "required": [
+          "username",
+          "dataPoints"
+        ],
+        "x-examples": {
+          "Esempio": {
+            "username": "AkihikoSanada",
+            "dataPoints": [
+              {
+                "data": "2020-04-24T22:00:00.000Z",
+                "peso": 80
+              },
+              {
+                "data": "2020-04-25T22:00:00.000Z",
+                "peso": 70
+              },
+              {
+                "data": "2020-04-26T22:00:00.000Z",
+                "peso": 75
+              }
+            ]
+          }
+        }
+      },
+      "OutputCibo": {
+        "title": "Modello: OutputCibo",
+        "type": "object",
+        "x-tags": [
+          "food"
+        ],
+        "description": "L'oggetto mandato in output dalle GET sul cibo.",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Username dell'utente"
+          },
+          "dataPoints": {
+            "type": "array",
+            "description": "Array contenente i cibi richiesti",
+            "items": {
+              "$ref": "#/components/schemas/Cibo"
+            }
+          }
+        },
+        "required": [
+          "username",
+          "dataPoints"
+        ],
+        "x-examples": {
+          "Esempio": {
+            "username": "AkihikoSanada",
+            "dataPoints": [
+              {
+                "created": "2020-04-25T00:00:00.000Z",
+                "data": "2020-04-24T22:00:00.000Z",
+                "nome": "pollo",
+                "calin": 100,
+                "descrizione": ""
+              },
+              {
+                "created": "2020-04-26T00:00:00.000Z",
+                "data": "2020-04-25T22:00:00.000Z",
+                "nome": "sushi",
+                "calin": 50,
+                "descrizione": ""
+              }
+            ]
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer Token": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "http://localhost:5000/oauth",
+            "refreshUrl": "",
+            "scopes": {}
+          }
+        },
+        "description": ""
+      },
+      "Internal Token": {
+        "type": "openIdConnect",
+        "openIdConnectUrl": "http://localhost:5000/login"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer Token": []
+    },
+    {
+      "Internal Token": []
+    }
+  ]
+}
