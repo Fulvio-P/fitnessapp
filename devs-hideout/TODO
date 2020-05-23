@@ -10,13 +10,17 @@ Cose da fare (Priorità decrescente):
         [ ] deploy
         [ ] revisione
 
-memento: staimo usando stoplight
+memento: stiamo usando stoplight
 
 memento: in caso servano, questi progetti dovrebbero permettere di renderizzare
 il file .json risultante in Vue:
     https://github.com/koumoul-dev/vue-openapi
     https://github.com/mrin9/OpenAPI-Viewer
-    https://github.com/OAIE/oaie-sketch
+E questi altri lo fanno senza Vue:
+    https://www.apitree.com
+    https://lucybot.com/docgen
+    https://mrin9.github.io/RapiDoc/
+    stoplight?
 
 -quando passiamo in produzione, trasformare tutte le url hardcoded in url locali
 
