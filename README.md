@@ -69,6 +69,12 @@ Per avviarre il container eseguire
 ```bash
 sudo docker start elefante
 ```
+Dopodichè perr inizializzare il progetto posizionarsi nella cartella back-end ed eseguire
+```bash
+node server/db/dev-stuff.js
+```
+Nella shell interattiva digitare CT per creare il database con gli utenti di prova.
+(NB: una volta inizializzato il db sarà salvato e non ci sarà bisogno di ri crearlo, per distruggere, resettare o navigare il db usare gli altri comandi, la shell va chiusa con Ctrl+C dopo l'esecuzione di qualsiasi comando prima di poterne eseguire uno nuovo)
 
 Per avviare il server node posizionarsi nella cartella back-end ed eseguire
 ```
@@ -79,3 +85,12 @@ Quindi per iniziare a utilizzare FitnessApp connettersi con un browser all'indir
 ```
 http://localhost:5000
 ```
+### Testare l'applicazione
+Dopo essersi collegati all'applicazione è possibile registrarsi con il modulo in fondo alla landing page oppure accedere con uno degli account di test.
+
+| Username            | Password    |                         |
+|---------------------|-------------|-------------------------|
+| AkihikoSanada       | polydeuces  | Utente completo         |
+| CassiusBright       | estelle1186 | Solo misure di peso     |
+| ChieSatonaka        | tomoe       | Solo misure di calorie  |
+| EdelgardVonHresvelg | blackeagle  | Un record di ogni campo |
