@@ -4,15 +4,11 @@
       <b-navbar-brand router-link to="/">FitnessApp</b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
-
         <!--eventuali elementi non allineati a destra (ora nessuno)-->
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <b-nav-item
-            router-link
-            to="/login"
-          >
+          <b-nav-item router-link to="/login">
             Log in
           </b-nav-item>
         </b-navbar-nav>

@@ -35,7 +35,6 @@
     </p>
 
     <b-overlay :show="this.$store.getters.isLoading" no-wrap> </b-overlay>
-
   </div>
 </template>
 

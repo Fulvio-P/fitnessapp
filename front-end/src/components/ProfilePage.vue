@@ -1,6 +1,5 @@
 <template>
   <div class="profilepage">
-
     <!-- Tabella info addizionali -->
     <b-table
       :items="items"
@@ -26,8 +25,8 @@
           <h1>Sviluppatori</h1>
           <b-button router-link to="/developer">Pagina developer</b-button>
           <p>
-            Regitra la tua applicazione per usare le API di FitnessApp 
-            usando oAuth 2 (è supportato solo il workflow implicit code grant)
+            Regitra la tua applicazione per usare le API di FitnessApp usando
+            oAuth 2 (è supportato solo il workflow implicit code grant)
           </p>
         </b-col>
 
@@ -41,14 +40,6 @@
         </b-col>
       </b-row>
     </b-container>
-    
-    
-
-
-    
-    
-
-    
 
     <!-- Eliminazione account -->
     <h1 class="pericolo">Pericolo!</h1>
@@ -81,7 +72,7 @@ export default {
       this.$store.dispatch("AUTH_LOGOUT").then(() => {
         this.$router.push("/");
       });
-    },
+    }
   }
 };
 </script>

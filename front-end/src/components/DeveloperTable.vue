@@ -1,7 +1,6 @@
 <template>
   <div>
     <b-table :items="items" :fields="fields" striped responsive="sm">
-
       <template v-slot:cell(delete)="row">
         <b-button
           size="sm"
@@ -11,24 +10,23 @@
           Elimina
         </b-button>
       </template>
-
     </b-table>
   </div>
 </template>
 
 <script>
-const developerURL = 'http://localhost:5000/api/developer/';
+const developerURL = "http://localhost:5000/api/developer/";
 
 export default {
   data() {
     return {
-      fields:[
-        { key: 'clientname', label: 'Nome Applicazione' },
-        { key: 'clientid', label: 'Codice Applicazione' },
-        { key: 'redirect', label: 'Redirect URL' },
-        { key: "delete", label: "" }       
+      fields: [
+        { key: "clientname", label: "Nome Applicazione" },
+        { key: "clientid", label: "Codice Applicazione" },
+        { key: "redirect", label: "Redirect URL" },
+        { key: "delete", label: "" }
       ],
-      items:[],
+      items: []
     };
   },
   methods: {
@@ -36,17 +34,17 @@ export default {
       let url = developerURL + key;
       //avvio chiamata API (gestita da vuex)
       this.$store
-        .dispatch('API_DELETE', url)
+        .dispatch("API_DELETE", url)
         //se tutto va bene
-        .then(()=>{
+        .then(() => {
           this.getClients();
         })
         //se qualcosa va male
-        .catch(()=>{
+        .catch(() => {
           alert(this.$store.state.status);
         });
     },
-    
+
     getClients() {
       this.$store
         //avvio chiamata API (gestita da vuex)
@@ -59,10 +57,10 @@ export default {
         .catch(() => {
           alert(this.$store.state.status);
         });
-    },
+    }
   },
   created() {
     this.getClients();
-  },    
-}
+  }
+};
 </script>

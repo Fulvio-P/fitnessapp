@@ -8,13 +8,12 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-
     //stati usati per il login vero
     token: localStorage.getItem("user-token") || "", //JWT conservato anche se localstorage non disponibile
     status: "", //status interno della applicazione per richieste di login, regitrazione e altre API
     socket: {
       isConnected: false, //questo stato non viene mai usato, ma potrebbe servire quindi lo tengo
-      loading: false,
+      loading: false
     }
   },
 
@@ -24,11 +23,9 @@ export default new Vuex.Store({
     isLoading: state =>
       state.status == "loading" ||
       state.status == "reg-loading" ||
-      state.status == "api-loading"
-    ,
+      state.status == "api-loading",
     isSocketConneted: state => state.socket.isConnected,
-    isSocketLoading: state => state.socket.loading,
-    
+    isSocketLoading: state => state.socket.loading
   },
 
   mutations: {
@@ -95,18 +92,19 @@ export default new Vuex.Store({
 
     //COMMENTO: ONOPEN e ONCLOSE non sono usate per il momento
     //          però potrebbero essere utili quindi le tengo
-    SOCKET_ONOPEN (state)  {
-      /* Vue.prototype.$socket = event.currentTarget */ 
-      state.socket.isConnected = true
+    SOCKET_ONOPEN(state) {
+      /* Vue.prototype.$socket = event.currentTarget */
+
+      state.socket.isConnected = true;
     },
-    SOCKET_ONCLOSE (state)  {
-      state.socket.isConnected = false
+    SOCKET_ONCLOSE(state) {
+      state.socket.isConnected = false;
     },
-    SOCKET_ONMESSAGE (state)  {
-      state.socket.loading = false
+    SOCKET_ONMESSAGE(state) {
+      state.socket.loading = false;
     },
-    SOCKET_ONSEND (state) {
-      state.socket.loading = true
+    SOCKET_ONSEND(state) {
+      state.socket.loading = true;
     }
   },
 
@@ -127,7 +125,7 @@ export default new Vuex.Store({
             axios.defaults.headers.common["Authorization"] = "Bearer " + token;
             commit("AUTH_SUCCESS", token);
             //apro il websocket, this._vm accede all'istanza Vue
-            this._vm.$connectwithtoken(this.state.token)  //funzione definita da me in main.js
+            this._vm.$connectwithtoken(this.state.token); //funzione definita da me in main.js
             resolve(resp);
           })
 
@@ -260,18 +258,16 @@ export default new Vuex.Store({
       });
     },
 
-
     /* Azioni websocket */
     FITBIT_SYNC({ commit }, socket) {
       try {
         socket.sendObj({
-        //l'autemticazione è spostata all'apertura della connessione, non serve più inviare il token qui
-        action: "fitbitsync"
+          //l'autemticazione è spostata all'apertura della connessione, non serve più inviare il token qui
+          action: "fitbitsync"
         });
         commit("SOCKET_ONSEND");
-      } catch (err) {   //in realtà da lato vue non sembra lanciare errori, ma comunque è sempre meglio un try-catch in più che uno in meno
-        console.error("and the ws error is...");
-        console.error(err);
+      } catch (err) {
+        //in realtà da lato vue non sembra lanciare errori, ma comunque è sempre meglio un try-catch in più che uno in meno
         alert("Errore durante l'invio della richiesta di sincronizzazione");
       }
     }

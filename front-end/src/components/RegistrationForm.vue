@@ -56,7 +56,7 @@ export default {
         .then(() => {
           //this.$router.push("/login");
           //provo login automatico
-          return this.$store.dispatch("AUTH_REQUEST", { username, password })
+          return this.$store.dispatch("AUTH_REQUEST", { username, password });
         })
         .then(() => {
           this.$router.push("/charts");
