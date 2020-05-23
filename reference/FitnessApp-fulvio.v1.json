@@ -426,6 +426,9 @@
               }
             }
           },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
           "413": {
             "description": "L'email fornita eccede il limite di caratteri"
           },
@@ -655,6 +658,9 @@
               }
             }
           },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
           "404": {
             "description": "Utente non trovato"
           },
@@ -711,6 +717,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
           },
           "413": {
             "description": "L'email fornita eccede il limite di caratteri"
@@ -802,6 +811,9 @@
               }
             }
           },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
           "500": {
             "description": "Internal Database Error"
           }
@@ -866,6 +878,9 @@
               }
             }
           },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
           "404": {
             "description": "Utente non trovato"
           },
@@ -922,6 +937,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
           },
           "500": {
             "description": "Internal Database Error"
@@ -1008,6 +1026,9 @@
               }
             }
           },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
           "500": {
             "description": "Internal Database Error"
           }
@@ -1060,6 +1081,9 @@
               }
             }
           },
+          "401": {
+            "description": "Token non valido o scaduto"
+          },
           "404": {
             "description": "Utente FitnessApp non trovato"
           },
@@ -1087,6 +1111,9 @@
         "responses": {
           "200": {
             "description": "Account Fitbit collegato con successo"
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
           },
           "500": {
             "description": "Uno dei seguenti:\n - Errore interno\n - Errore durante la procedura oAuth con Fitbit"
@@ -1140,6 +1167,9 @@
         "responses": {
           "200": {
             "description": "Account scollegato con successo"
+          },
+          "401": {
+            "description": "Token non valido o scaduto"
           },
           "500": {
             "description": "Internal Database Error"
