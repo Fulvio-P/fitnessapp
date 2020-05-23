@@ -1466,51 +1466,7 @@
           "in": "path",
           "required": true
         }
-      ],
-      "delete": {
-        "summary": "[MARCATO PER RIMOZIONE] Elimina profilo utente",
-        "operationId": "delete-api-profile-sure",
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "tags": [
-          "profile"
-        ],
-        "description": "[sure è un query param, non un path param; ho copiato l'operazione al posto giusto]\nCancella tutti i dati di un utente ed elimina il suo account, serve un token interno. Affinchè l'operazione vada a buon fine {sure} deve essere 'true'.",
-        "security": [
-          {
-            "Internal Token": []
-          }
-        ],
-        "parameters": [
-          {
-            "schema": {
-              "type": "string"
-            },
-            "in": "header",
-            "name": "Authorization",
-            "description": "Bearer Token",
-            "required": true
-          }
-        ]
-      }
+      ]
     },
     "/api/activities/{ts}": {
       "parameters": [
