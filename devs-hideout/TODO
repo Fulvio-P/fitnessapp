@@ -14,6 +14,7 @@ memento: stiamo usando stoplight
 
 -quando passiamo in produzione, trasformare tutte le url hardcoded in url locali
 
+-aggiungere procedure guidate per i test?
 -mirage?
 -Dare la possibilità di mettere una descrizione personalizzata anche
  nel form OFF (apparirebbe dopo quella pregenerata)
