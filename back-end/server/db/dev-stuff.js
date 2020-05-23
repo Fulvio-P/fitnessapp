@@ -37,7 +37,7 @@ async function initDB(testUsers) {
             "fitbitToken VARCHAR(1024), "+    //i token fitbit possono essere fino a 1024 byte
             "fitbitRefresh VARCHAR(1024), "+
             "fitbitUser VARCHAR(100) ,"+      //non sono sicuro del limite per questo ma 100 caratteri dovrebbero essere abbastanza 
-            "lastFitbitUpdate VARCHAR(19) DEFAULT '2010-01-01T00:00:00' "+   //le stringhe rappresentano date nel formato yyyy-mm-ddThh:mm:ss     
+            "lastFitbitUpdate VARCHAR(19) DEFAULT '2007-01-01T00:00:00' "+   //le stringhe rappresentano date nel formato yyyy-mm-ddThh:mm:ss     
             //eventuali altre
             ");"
     );
