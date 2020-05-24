@@ -152,6 +152,7 @@ async function initDB(testUsers) {
             "(3, '2020-04-27', '2020-04-27', 'kung fu', 60), "+
             "(4, '2020-04-27', '2020-04-27', 'esercitazione ascia', 200.5);"
         );
+        await index.addClient(1, "LoremFit", "http://localhost:5500/oauth-test-client/welcome.html")
         console.log("Tutto OK, Ctrl+C per uscire");
     }
 }

@@ -3,6 +3,14 @@
     <head>
         <title>LoremFit: benvenuto</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+        <style>
+            #token {
+                border: 2px solid black;
+                padding: 0.5em;
+                margin: 0.5em;
+                overflow-wrap: break-word;
+            }
+        </style>
         <script>
             function buttonThings() {
                 const regex = /([?]|&)token=([^&]*)/;
@@ -13,7 +21,7 @@
                 }
                 const token=matches[2];
                 axios.get(
-                    "http://localhost:5000/api/food",
+                    "http://localhost:5000/api/profile/username",
                     {
                         headers: {
                             Authorization: "Bearer " + token
@@ -23,11 +31,24 @@
                     document.getElementById("username").innerHTML = resp.data.username;
                 });
             }
+            function putToken() {
+                const regex = /([?]|&)token=([^&]*)/;
+                const matches = window.location.search.match(regex);
+                if (matches==null) {
+                    document.getElementById("token").innerHTML = "Parametro token mancante";
+                    return;
+                }
+                const token=matches[2];
+                document.getElementById("token").innerHTML = token;
+            }
         </script>
     </head>
-    <body>
+    <body onload="putToken()">
         <h1>Benvenuto in LoremFit!</h1>
         <p>Sit amet per aver fatto il login con FitnessApp</p>
+        <p>Il tuo token è:</p>
+        <p id="token"></p>
+        <p>Per testare le API da un client REST come Postman, puoi copiare e usare questo token.</p>
         <button onclick="buttonThings()">Clicca qui per sapere il tuo username su FitnessApp</button>
         <p id="username"></p>
     </body>
