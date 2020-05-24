@@ -28,7 +28,7 @@ function sync(userId){
                 reject("Internal Datbase Error");
             }
             
-            let lastChecked = dbRes.lastfitbitupdate
+            const lastChecked = dbRes.lastfitbitupdate   //le const hanno scope di blocco, quindi la posso ridichiarare bene a ogni iterazione
 
             
             //Imposto i parrametri della richiesta
@@ -42,7 +42,7 @@ function sync(userId){
 
 
 
-
+            var newLastChecked = lastChecked;  //scope di funzione, ci serve nella finally
 
             //trasformo l'uso esplicito di .then e .catch nell'uso di await
             //per poter fare un ciclo più facilmente
@@ -51,7 +51,6 @@ function sync(userId){
                 //Provo a ottenere i dati da fitbit
                 //mi serve scope di funzione per usarla nella condizione del do-while
                 var response = await fitbit.get(userId, requestUrl);
-                console.log(response.data);
                 
                 //successo: fitbit ha risposto con dati
 
@@ -67,37 +66,41 @@ function sync(userId){
                     
                     
                     //Questo controllo serve ad escludere record già considerati
-                    if(lastFitbit != lastChecked){
+                    //if(lastFitbit != lastChecked){
+                    if (new Date(lastFitbit) > new Date(lastChecked)) {
                         
                         //Per ogni attività creo un rercord nel database
                         try {
                             await db.addAttivita(userId, data, nome, calout, 'Attività importata da Fitbit');
+                            newLastChecked = lastFitbit;
                         } catch (error) {
+                            canResolve=false;
                             reject("Internal Datbase Error");
                         }
 
                     }
-                    
-                    lastChecked = lastFitbit;
                 };
                 
 
             
-                //Accedo al database per aggiornare last checked all'ora del record più recente
-                let what = {lastfitbitupdate: lastChecked};
-                try {
-                    await db.editAdditionalInfo(userId, what);
-                } catch (error) {
-                    reject("Internal Database Error")
-                }
-                
 
             } catch (error) {
                 canResolve=false;
                 //fallimento: fitbit ha inviato un messaggio di errore
                 reject(error);
+            } finally {
+                //Accedo al database per aggiornare last checked all'ora del record più recente
+                //deve aggiornarsi sempre, anche in caso d'errore
+                let what = {lastfitbitupdate: newLastChecked};
+                try {
+                    await db.editAdditionalInfo(userId, what);
+                } catch (error) {
+                    reject("Internal Database Error")
+                }
             }
-        } while (response.data.pagination.next);   //una stringa che se non-vuota indica che c'è ancora dell'altro
+        } while (response.data.pagination.next && canResolve);
+        // next è una stringa che se non-vuota indica che c'è ancora dell'altro
+        // la condizione su canResolve serve a terminare il ciclo in caso d'errore
         //alla fine dell'iterazione il campo lastfitbitupdate viene aggiornato,
         //quindi la prossima richiesta riprenderà dove l'altra era arrivata.
 
