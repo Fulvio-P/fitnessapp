@@ -13,9 +13,13 @@
             Pagina GitHub
           </a>
           <br />
-          <router-link to="/about" class="git-hub">
+          <a
+            href="https://stoplight.io/p/docs/gh/fulvio-p/fitnessapp/reference/FitnessApp.v1.json"
+            class="git-hub"
+            target="_blank"
+          >
             Documentazione API
-          </router-link>
+          </a>
         </b-col>
         <b-col sm class="footer-section contact-form">
           <h1>Contattaci</h1>
