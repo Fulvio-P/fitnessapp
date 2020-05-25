@@ -2,10 +2,10 @@ Cose da fare (Priorità decrescente):
 
 Mostrare username nella sidebar (Francesco):
   [ø] Restituire anche username con login
-  [ ] Aggiungere stato username in vuex e localstorage
-  [ ] Settarlo con AUTH_SUCCESS
-  [ ] Rimuoverlo con logout (funzione per rimuovere tutto)
-  [ ] Mostrare username nella sidebar
+  [ø] Aggiungere stato username in vuex e localstorage
+  [ø] Settarlo con AUTH_SUCCESS
+  [ø] Rimuoverlo con logout (funzione per rimuovere tutto)
+  [ø] Mostrare username nella sidebar
   [ ] Aggiornare documentazione
 
 Produzione definitva (Fulvio):
