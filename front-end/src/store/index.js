@@ -6,10 +6,17 @@ const regURL = "http://localhost:5000/api/user/register";
 
 Vue.use(Vuex);
 
+//elimina i valori inseriti nei campi di localstorage che ci interessano qui (lasciando eventuali altri intatti)
+function clearLocalStorage() {
+  localStorage.removeItem("user-token");
+  localStorage.removeItem("user-username");
+}
+
 export default new Vuex.Store({
   state: {
     //stati usati per il login vero
     token: localStorage.getItem("user-token") || "", //JWT conservato anche se localstorage non disponibile
+    username: localStorage.getItem("user-username") || "",
     status: "", //status interno della applicazione per richieste di login, regitrazione e altre API
     socket: {
       isConnected: false, //questo stato non viene mai usato, ma potrebbe servire quindi lo tengo
@@ -37,14 +44,16 @@ export default new Vuex.Store({
     },
 
     //segna successo nel login
-    AUTH_SUCCESS(state, token) {
+    AUTH_SUCCESS(state, payload) {
       state.status = "success";
-      state.token = token;
+      state.token = payload.token;
+      state.username = payload.username;
     },
 
     /* Mutazione del logout */
     AUTH_LOGOUT(state) {
       state.token = "";
+      state.username = "";
       state.status = "";
     },
 
@@ -119,11 +128,17 @@ export default new Vuex.Store({
           //gestisco la risposta positiva
           .then(resp => {
             //salvo il token
+            //e anche lo username
             const token = resp.data.token;
+            const username = resp.data.username;
             localStorage.setItem("user-token", token);
+            localStorage.setItem("user-username", username);
             //imposto il token come header di default
             axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-            commit("AUTH_SUCCESS", token);
+            commit("AUTH_SUCCESS", {
+              token,
+              username
+            });
             //apro il websocket, this._vm accede all'istanza Vue
             this._vm.$connectwithtoken(this.state.token); //funzione definita da me in main.js
             resolve(resp);
@@ -133,7 +148,7 @@ export default new Vuex.Store({
           .catch(err => {
             commit("REQUEST_ERROR", err);
             //rimuovo il token dal local storage
-            localStorage.removeItem("user-token");
+            clearLocalStorage();
             //rimuovo il token dall'header
             delete axios.defaults.headers.common["Authorization"];
             reject(err);
@@ -145,7 +160,7 @@ export default new Vuex.Store({
     AUTH_LOGOUT({ commit }) {
       return new Promise(resolve => {
         commit("AUTH_LOGOUT");
-        localStorage.removeItem("user-token");
+        clearLocalStorage();
         //chiudo il websocket, this._vm accede all'istanza Vue
         this._vm.$disconnect();
         resolve();
@@ -169,7 +184,7 @@ export default new Vuex.Store({
           .catch(error => {
             commit("REQUEST_ERROR", error);
             //rimuovo il token dal local storage per sicurezza
-            localStorage.removeItem("user-token");
+            clearLocalStorage();
             //rimuovo il token dall'header per sicurezza
             delete axios.defaults.headers.common["Authorization"];
             reject(error);

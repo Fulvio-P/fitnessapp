@@ -107,7 +107,8 @@ async function genericLogin(req, res, internalToken) {
 
     /* Invio risposta al front-end */
     return res.status(200).send({
-        'token':token
+        token,
+        username
     });
 
 }
