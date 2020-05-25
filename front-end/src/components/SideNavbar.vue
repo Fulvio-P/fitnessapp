@@ -22,7 +22,7 @@
       <li class="SideNavItem">
         <ActivatingRouterLink to="/profile" class="SideNavLink">
           <BIconPerson class="centopercento" />
-          <span class="LinkText">Profilo</span>
+          <span class="LinkText">{{ loggedUsername || "Profilo" }}</span>
         </ActivatingRouterLink>
       </li>
     </ul>
@@ -48,6 +48,11 @@ export default {
     BIconFileText,
     BIconPerson,
     ActivatingRouterLink
+  },
+  computed: {
+    loggedUsername() {
+      return this.$store.state.username;
+    }
   }
 };
 </script>
