@@ -15,7 +15,9 @@
             function buttonStuff() {
                 //modifica queste variabili per corrispondere coi dati mostrati da FitnessAp
                 const id = "1";
-                const redirect = window.location.origin+window.location.pathname + "welcome.html";
+                const redirect = "http://localhost:5500/oauth-test-client/welcome.html"
+                //COMMENTO: la cosa automatica non mi funziona 
+                /* window.location.origin+window.location.pathname + "welcome.html"; */
                 window.location.href = "http://localhost:8080/oauth?id="+id+"&redirect="+redirect;
             }
         </script>
