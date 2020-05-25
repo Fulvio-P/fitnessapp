@@ -6,12 +6,15 @@ Mostrare username nella sidebar (Francesco):
   [ø] Settarlo con AUTH_SUCCESS
   [ø] Rimuoverlo con logout (funzione per rimuovere tutto)
   [ø] Mostrare username nella sidebar
-  [ ] Aggiornare documentazione
+  [ø] Aggiornare documentazione
 
 Produzione definitva (Fulvio):
   [ ] Mettere server del frontend
   [ ] Aggiornare documentazione
   [ ] Cambiare titolo della pagina (e icona)
+
+Sistemare faccenda: in questo momento la pagina docs di spotlight
+dà sia documentazione2 che FitnessApp-1.0
 
 Test su Chrome
 
