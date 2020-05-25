@@ -1,18 +1,19 @@
 Cose da fare (Priorità decrescente):
 
--Documentazione installazione, uso API e casi di prova
-    Fulvio:
-        developer
-        opinion
-        activities
-        profile
-    Francesco:
-        [ø] deploy
-        [ø] revisione
+Mostrare username nella sidebar (Francesco):
+  [ø] Restituire anche username con login
+  [ ] Aggiungere stato username in vuex e localstorage
+  [ ] Settarlo con AUTH_SUCCESS
+  [ ] Rimuoverlo con logout (funzione per rimuovere tutto)
+  [ ] Mostrare username nella sidebar
+  [ ] Aggiornare documentazione
 
-memento: stiamo usando stoplight
+Produzione definitva (Fulvio):
+  [ ] Mettere server del frontend
+  [ ] Aggiornare documentazione
+  [ ] Cambiare titolo della pagina (e icona)
 
--quando passiamo in produzione, trasformare tutte le url hardcoded in url locali
+Test su Chrome
 
 -aggiungere procedure guidate per i test?
 -mirage?
