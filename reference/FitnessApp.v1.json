@@ -1896,16 +1896,22 @@
                     "token": {
                       "type": "string",
                       "description": "bearer token"
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "Username dell'utente appena loggato"
                     }
                   },
                   "required": [
-                    "token"
+                    "token",
+                    "username"
                   ]
                 },
                 "examples": {
                   "Esempio": {
                     "value": {
-                      "token": "sdvjrweiot8qrqi3hf894hiu8fh389q.wieufh387gfodc8n48o.2ofh4hhweu8"
+                      "token": "sdvjrweiot8qrqi3hf894hiu8fh389q.wieufh387gfodc8n48o.2ofh4hhweu8",
+                      "username": "AkihikoSanada"
                     }
                   }
                 }
@@ -1974,16 +1980,22 @@
                     "token": {
                       "type": "string",
                       "description": "bearer token"
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "Username dell'utente appena loggato"
                     }
                   },
                   "required": [
-                    "token"
+                    "token",
+                    "username"
                   ]
                 },
                 "examples": {
                   "Esempio": {
                     "value": {
-                      "token": "sdvjrweiot8qrqi3hf894hiu8fh389q.wieufh387gfodc8n48o.2ofh4hhweu8"
+                      "token": "sdvjrweiot8qrqi3hf894hiu8fh389q.wieufh387gfodc8n48o.2ofh4hhweu8",
+                      "username": "AkihikoSanada"
                     }
                   }
                 }
