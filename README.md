@@ -105,7 +105,19 @@ I corpi di richiesta e risposta, se presenti, sono sempre in JSON.
 
 ### Websocket
 
-TODO sarebbe carino scrivere quel mini protocollino da due messaggi in croce che abbiamo, forse?
+Il server back-end mette a disposizione una Websocket per ricevere richieste di sincronizzazione delle attività dell'account FitBit collegato e comunicare il completamento di tale operazione. La Websocket è disponibile all'URL ```ws://localhost:5000/ws/fitbitsync```.
+
+Per potersi autenticare, è necessario inviare un token valido come parametro di query chiamato "token". Quindi, l'indirizzo completo a cui connettersi assume questa forma:
+```
+ws://localhost:5000/ws/fitbitsync?token=<token>
+```
+Se l'autenticazione fallisce, il server rigetta la connessione inviando oggetto JSON con "type":"error", se invece l'autenticazione riesce, l'handshake si conclude semplicemente con successo e il server si mette in ascolto di ulteriori messaggi.
+
+L'unico tipo di messaggio accettato dal server è un oggetto JSON con la proprietà "action":"fitbitsync". Messaggi diversi generano un errore.
+
+Quando il server riceve un messaggio fitbitsync, esso invia un acknowledgement nella forma di un oggetto JSON con la proprietà "type":"info" e prende in carico l'operazione di sincronizzazione delle attività dell'account FitBit collegato all'utente a cui appartiene il token usato per l'autenticazione. Il successo o fallimento dell'operazione viene comunicato tramite un successivo messaggio lungo la stessa Websocket, formattato ancora una volta come un JSON dove la proprietà "type" avrà, rispettivamente, valore "success" o "error".
+
+Una volta che l'autenticazione ha avuto successo, la Websocket rimane aperta e disponibile finché il client non decide di chiuderla.
 
 ## Testare l'applicazione
 Dopo essersi collegati all'applicazione è possibile registrarsi con il modulo in fondo alla landing page oppure accedere con uno degli account di test.
@@ -117,8 +129,9 @@ Dopo essersi collegati all'applicazione è possibile registrarsi con il modulo i
 | ChieSatonaka        | tomoe       | Solo misure di calorie  |
 | EdelgardVonHresvelg | blackeagle  | Un record di ogni campo |
 
+<!-- 
 ## TODO controllare/riscrivere questa parte quando sappiamo che tipo di test vuole Vit
-<!-- Poi cancellare quest'intestazione -->
+<!-- Poi cancellare quest'intestazione 
 
 [Per avere un token ...]
 
@@ -126,4 +139,4 @@ Ciascuna API REST della documentazione (vedi sopra) può essere testata configur
 
 Se la richiesta richiede un corpo, la documentazione contiene almeno un esempio per ogni richiesta, pronto per essere copiato e incollato direttamente nel corpo della richiesta corrispondente.
 
-Se la richiesta richiede uno o più parametri nel path, i valori dipendono dai dati con cui si ha effettivamente a che fare: si consiglia di fare prima una GET senza parametri di path sullo stesso endpoint per avere un'idea di quali valori usare.
+Se la richiesta richiede uno o più parametri nel path, i valori dipendono dai dati con cui si ha effettivamente a che fare: si consiglia di fare prima una GET senza parametri di path sullo stesso endpoint per avere un'idea di quali valori usare. -->
