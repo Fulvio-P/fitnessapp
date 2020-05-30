@@ -29,13 +29,6 @@ const ifAuthenticated = (to, from, next) => {
 };
 
 const routes = [
-  /* Path di test */
-  {
-    path: "/about",
-    name: "About",
-    component: () => import("../views/About.vue")
-  },
-
   /* Path buoni */
   {
     path: "/",
