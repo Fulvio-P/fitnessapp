@@ -56,7 +56,7 @@ export default {
 /* nav, nav-link e active  sono classi possedute dalle b-tabs di default */
 
 .formspage .nav .nav-link.active {
-  /*non ho idea di cosa sia !important, ma senza non applica i colori, percui :/ */
+  /* !important serve a far applicare i colori correttamente */
   background-color: var(--nord10) !important;
   color: var(--nord6) !important;
 }
