@@ -1,6 +1,0 @@
-Con vue CLI ho installato diversi plug-in:
--babel : serve a rendere retrocompatibile ECMAS6 con le versioni precedenti
--vuex : mantiene sincronizzato lo stato delle componenti
--router : permette di creare una applicazione single-page e farla sembrare con più pagine
--eslint : impedisce di salvare modifiche al codice se contengono errori o cose scritte male
--prettier : fa in modo che il codice sia formattato per bene (dovrebbe funzionare insieme a eslint)
