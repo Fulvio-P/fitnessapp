@@ -44,7 +44,7 @@ async function initDB(testUsers) {
     await pool.query("CREATE TABLE misuraPeso ("+
                         "id integer NOT NULL REFERENCES utente(id), "+
                         "data DATE NOT NULL DEFAULT CURRENT_DATE, "+    //DATE è solo giorno, senza ora, e con questo DEFAULT possiamo prendere in automatico la data corrente.
-                        "peso REAL NOT NULL, "+   //ha una precisione limitata (6 cifre decimali, più che sufficienti per i nostri scopi, ma non va convertito ogni volta da stringa a float
+                        "peso REAL NOT NULL, "+   //ha una precisione limitata (6 cifre decimali, più che sufficienti per i nostri scopi), ma non va convertito ogni volta da stringa a float
                         "PRIMARY KEY (id, data));"    //solo una misurazione al giorno per utente
     );
 
