@@ -18,7 +18,6 @@ function trySend(ws, msg) {
         console.error(`ws.send error: ${err.message}`);
     }
 }
-//non si sa mai...
 function tryClose(ws) {
     try {
         ws.close();
@@ -34,7 +33,7 @@ function verifyTokenInQuery(ws, query) {
         var decoded = jwt.verify(query.token, jwtSecret);
     }
     catch (err) {
-        console.error(`jwt ${err.name}: ${err.message}`);   //non sono sicuro che vogliamo rimandare al client il messaggio d'errore di jwt
+        console.error(`jwt ${err.name}: ${err.message}`);   //non vogliamo rimandare al client il messaggio d'errore di jwt
         if (err.name=="TokenExpiredError") {
             trySend(ws, JSON.stringify({
                 type: "error",
@@ -57,13 +56,13 @@ function verifyTokenInQuery(ws, query) {
 router.ws("/", function(ws, req) {
 
     /*
-      il modo in cui funzionerà l'autenticazione è: invia il token nella querystring.
+      il modo in cui funziona l'autenticazione è: invia il token nella querystring.
       i browser non fanno caching delle URL ws, quindi non c'è lo stesso
       rischio di caching che c'è in HTTP, e tolto questo una querystring è
       equivalente a un header (che l'api ws nativa non fa usare).
     */
 
-    //i ws possono avere uno stato: questa variabile user si può usare (e modificare con side-effect? in realtà non ci ho ancora provato, ma non dovrebbe servirci)
+    //i ws possono avere uno stato: questa variabile user si può usare
     //nei vari gestori del ws, ed è indipendente per ogni ws aperto
     var user = verifyTokenInQuery(ws, req.query);  //abbiamo la req.query normale di express a disposizione
     if (!user) {
@@ -92,8 +91,6 @@ router.ws("/", function(ws, req) {
             type: "info",
             message: "Sincronizzazione avviata..."
         }));
-
-        /* console.log("TODO do all the fitbit stuff"); */
 
         sync.sync(user.id)
         .then(()=>{

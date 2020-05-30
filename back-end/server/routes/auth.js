@@ -52,11 +52,11 @@ router.post('/register', async (req, res) => {
 //contiene tutta la logica di login.
 //la metto fuori perché i due endpoint seguenti dovranno svolgere la
 //medesima operazione, ma con valori diversi dell'argomento internalToken,
-//che vengono hardcodati nei rispettivi endpoint
+//che vengono hardcodati nei rispettivi endpoint.
 //internalToken è true se il login è stato effettuato su FitnessApp
 //(e non per un altro servizio tramite OAuth).
 //un token interno dà permessi particolari che non vogliamo rendere
-//disponibili a terza perti (tipo cancellare l'account).
+//disponibili a terze parti (tipo cancellare l'account).
 async function genericLogin(req, res, internalToken) {
 
     /* Estraggo i dati dalla richesta */
@@ -115,12 +115,12 @@ async function genericLogin(req, res, internalToken) {
 
 
 
-//POST api/user/login : riceve i dati e ritorna un id se corretti
+//POST api/user/login : riceve i dati e ritorna un token se corretti
 router.post('/login', async (req, res) => {
     await genericLogin(req, res, true);
 });
 
-//POST api/user/oauth : riceve i dati e ritorna un id se corretti
+//POST api/user/oauth : riceve i dati e ritorna un token se corretti
 router.post('/oauth', async (req, res) => {
     const client = await db.getClientById(req.body.id);
     if (!client) {

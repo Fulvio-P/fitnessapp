@@ -8,10 +8,6 @@ const jwtSecret = process.env.JWT_SECRET;
  * gestendo un po' d'errori nel frattempo.
  * Tutte le chiamate API devono usare questa funzione,
  * pressoché invariata.
- * L'ideale però sarebbe non necessitare affatto di questo file
- * e dover includere questa funzione solo una volta,
- * magari si possono mettere tutte le api che richiedono autorizzazione
- * sotto uno stesso path comune...
  */
 function verifyJWT(req, res, next) {
     var token, decoded;
@@ -21,7 +17,7 @@ function verifyJWT(req, res, next) {
         decoded = jwt.verify(token, jwtSecret);
     }
     catch (err) {
-        console.error(`jwt ${err.name}: ${err.message}`);   //non sono sicuro che vogliamo rimandare al client il messaggio d'errore di jwt
+        console.error(`jwt ${err.name}: ${err.message}`);   //non vogliamo rimandare al client il messaggio d'errore di jwt
         if (err.name=="TokenExpiredError") {
             return res.status(401).send("Token Expired");
         }

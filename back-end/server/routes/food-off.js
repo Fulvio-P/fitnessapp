@@ -3,7 +3,6 @@
 const express = require('express');
 const axios = require('axios').default;
 const db = require("../db/index");
-const utils = require("../globalutils");
 
 const router = express.Router();
 
@@ -23,15 +22,15 @@ router.post("/off", async (req, res) => {
         );
     } catch (err) {  //gestiamo vari tipi d'errore
         if (err.response) {
-            // Request made and server responded
+            // La richiesta è stata fatta e il server ha risposto
             console.error(`OFF request resulted in erroneous response:\n${err}`);
             return res.status(500).send("Il server Open Food Facts ha risposto con un errore.");
         } else if (err.request) {
-            // The request was made but no response was received
+            // La richiesta è stata fatta ma il server non ha risposto
             console.error(`No respose received for OFF request:\n${err}`);
             return res.status(500).send("Il server Open Food Facts non ha risposto.");
         } else {
-            // Something happened in setting up the request that triggered an Error
+            // L'errore è stato generato durante la generazione della richiesta
             console.error(`OFF request setup triggered an error:\n${err}`);
             return res.status(500).send("Errore interno durante la richiesta a Open Food Facts.");
         }
@@ -93,7 +92,7 @@ router.post("/off", async (req, res) => {
         var val100 = nutr[cosa.en];
         if (!val100) val100 = nutr[cosa.en+"_100g"];
         if (!val100) val100 = nutr[cosa.en+"_value"];
-        //cerchiamo di recuperare l'unità di misura (proviamo a fidarci, va'?)
+        //cerchiamo di recuperare l'unità di misura
         var um = nutr[cosa.en+"_unit"];
         if (!um) um="";
         //se abbiamo trovato qualcosa, lo inseriamo nella descrizione

@@ -1,8 +1,7 @@
 <!--
-    Per testare: lanciare il Live Server di VSC
+    Per testare: lanciare il Live Server di VSC (o altro server) sulla porta 5500
     (
-        se il browser che si auto-apre crasha, riprovare con Firefox normale
-        url da copincollare per convenienza:
+        url di questa pagina, da copiare e incollare per convenienza:
         http://localhost:5500/oauth-test-client/
     )
 -->
@@ -13,11 +12,9 @@
         <title>LoremFit</title>
         <script>
             function buttonStuff() {
-                //modifica queste variabili per corrispondere coi dati mostrati da FitnessAp
+                //Per testare: modificare queste variabili per corrispondere coi dati mostrati da FitnessAp
                 const id = "1";
                 const redirect = "http://localhost:5500/oauth-test-client/welcome.html"
-                //COMMENTO: la cosa automatica non mi funziona 
-                /* window.location.origin+window.location.pathname + "welcome.html"; */
                 window.location.href = "http://localhost:8080/oauth?id="+id+"&redirect="+redirect;
             }
         </script>

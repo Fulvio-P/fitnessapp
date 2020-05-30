@@ -12,12 +12,12 @@ const router = express.Router();
 ///////////////////////////////////// GET /////////////////////////////////////
 
 //recupera una info di un utente, null se non ce l'ha
-//name NON DEVE ESSERE SCELTO LIBERAMENTE DLL'UTENTE.
+//name NON DEVE ESSERE SCELTO LIBERAMENTE DALL'UTENTE.
 async function generalGet(req, res, name) {
     try {
         var info = await db.getAdditionalInfo(req.user.id, name);
     } catch (err) {
-        console.error(`postgres error no. ${err.code}: ${err.message}`);   //non sono sicuro che vogliamo rimandare al client il messaggio d'errore di postgres
+        console.error(`postgres error no. ${err.code}: ${err.message}`);   //non vogliamo rimandare al client il messaggio d'errore di postgres
         return res.status(500).send("Internal Database Error");
     }
     if (!info) {
@@ -41,7 +41,7 @@ router.get("/username", async (req, res) => {
     try {
         var user = await db.getUserById(req.user.id);
     } catch (err) {
-        console.error(`postgres error no. ${err.code}: ${err.message}`);   //non sono sicuro che vogliamo rimandare al client il messaggio d'errore di postgres
+        console.error(`postgres error no. ${err.code}: ${err.message}`);   //non vogliamo rimandare al client il messaggio d'errore di postgres
         return res.status(500).send("Internal Database Error");
     }
     if (!user) {
@@ -61,7 +61,7 @@ router.get("/username", async (req, res) => {
 ///////////////////////////////////// PUT /////////////////////////////////////
 
 //modifica un'info dell'utente
-//name NON DEVE ESSERE SCELTO LIBERAMENTE DLL'UTENTE.
+//name NON DEVE ESSERE SCELTO LIBERAMENTE DALL'UTENTE.
 async function generalPut(req, res, name) {
     var what = {};
     what[name] = req.body[name];
@@ -93,9 +93,6 @@ router.put("/fitbit", async(req,res) => {
     let authCode = req.body.authCode;
     let userId = req.user.id;
 
-    //COMMENTO EFFICIENZA:
-    //si potrebbe evitare di andare oltre se abbiamo già token
-
     fitbit.authenticate(userId, authCode)
 
     //fallimento: fitbit ha risposto con un errore
@@ -103,7 +100,7 @@ router.put("/fitbit", async(req,res) => {
         return res.status(500).send(error);
     })
 
-    //successo i token sono stati inseriti correttamente
+    //successo: i token sono stati inseriti correttamente
     .then(()=>{
         
         
@@ -161,7 +158,7 @@ router.delete("/email", async(req, res) => {
 router.delete("/height", async(req, res) => {
     return await generalDelete(req, res, "altezza");
 });
-//per questo non posso usare general delete dato che deve cancellare diverse colonne
+//per questo non posso usare generalDelete dato che deve cancellare diverse colonne
 router.delete("/fitbit", async(req, res) => {
     
     //provo a cancellare fitbit token

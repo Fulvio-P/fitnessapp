@@ -16,7 +16,7 @@ async function generalGet(req, res, from, to) {
         var rows = await db.getRangeMisurePeso(req.user.id, from, to);
     }
     catch (err) {
-        console.error(`postgres error no. ${err.code}: ${err.message}`);   //non sono sicuro che vogliamo rimandare al client il messaggio d'errore di postgres
+        console.error(`postgres error no. ${err.code}: ${err.message}`);   //non vogliamo rimandare al client il messaggio d'errore di postgres
         return res.status(500).send("Internal Database Error");
     }
     if (rows==null) {
@@ -36,8 +36,7 @@ router.get("/", async (req, res) => {
 });
 
 //recupera una misura di un giorno specifico.
-//ha un comportamento speciale se non esiste una msiurazione per quel giorno
-//perché personalmente lo ritengo più appropriato.
+//ha un comportamento speciale se non esiste una misurazione per quel giorno.
 router.get("/:data", async (req, res) => {
     const toSend = await generalGet(req, res, req.params.data, req.params.data);
     if (toSend.dataPoints.length<1) {
@@ -49,7 +48,6 @@ router.get("/:data", async (req, res) => {
 //recupera le misure in un range di date. ESTREMI INCLUSI.
 router.get("/:from/:to", async (req, res) => {
     //definiamo un carattere speciale per dire infinity.
-    //la scelta è stata completamente casuale e si può discutere.
     if (req.params.from=='-') req.params.from=db.MINFINITY;
     if (req.params.to=='-') req.params.to=db.INFINITY;
     const toSend = await generalGet(req, res, req.params.from, req.params.to);

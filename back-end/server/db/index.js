@@ -104,7 +104,7 @@ async function getAllMisurePeso(id) {
 
 //restituisce una misura peso di un utente dati id utente e data in cui è stata effettuata
 //credevo che servisse per una cosa, ma invece mi sbagliavo.
-//la lascio perché a livello di interfaccia col DB è una cosa che potremmo volere in futuro.
+//la lascio perché a livello di interfaccia col DB è una cosa utile.
 async function getOneMisuraPeso(id, data) {
     return await getRangeMisurePeso(id, data, data);
 }
@@ -426,7 +426,7 @@ async function getClientByUser(id){
     return res.rows;
 }
 
-//elimina una applicazione client dato id di utente e client,
+//elimina una applicazione client dato id di utente e client
 async function deleteClient(id, clientid){
     var res = await pool.query(
         "DELETE FROM developer "+
@@ -442,7 +442,7 @@ async function deleteClient(id, clientid){
 ////////////////////////////////////  OPINIONI  //////////////////////////////////////////
 
 //aggiunge una nuova opinione al database
-//ritorna la riga appena aggiunta (anche se forse non serve)
+//ritorna la riga appena aggiunta, se mai dovesse servire
 async function addOpinione(email, testo) {
     var res = await pool.query(
         "INSERT INTO opinioni(email, testo) "+
@@ -465,13 +465,13 @@ async function addOpinione(email, testo) {
 //(usare numeri negativi per sottrarre, 0 per lasciare una componente com'è)
 //se quella misura non esiste, la crea
 //restituisce il nuovo stato della riga, se mai dovesse servire
-//l'oggetto che fa la query è parametrizzato pr funzionare correttamente con doTransaction
+//l'oggetto che fa la query è parametrizzato per funzionare correttamente con doTransaction
 //se a seguito dell'operazione non ci sono più calorie ingerite né consumate,
 //la riga viene considerata inutile e cancellata.
 async function addOrSubtractCalories(agent, id, data, calinMod, caloutMod) {
     var res = await agent.query(
         "UPDATE misuraCalorie "+
-        "SET calin=calin+$3, calout=calout+$4 "+   //testato sulla nostra shell che postgres (e JS, e persino python) si comporta bene con comandi del tipo "calin=calin+-100". Da umano è una sintassi strana, ma in effetti per un albero sintattico non fa una piega.
+        "SET calin=calin+$3, calout=calout+$4 "+
         "WHERE id=$1 AND data=$2 "+
         "RETURNING data, calin, calout;",
         [id, data, calinMod, caloutMod]
@@ -496,11 +496,11 @@ async function addOrSubtractCalories(agent, id, data, calinMod, caloutMod) {
 }
 
 //fa una transazione che esegue le istruzioni date, restituendo l'eventuale valore di ritorno.
-//body deve essere una funzione async che prende come argomento il client che farà la transazione.
+//body DEVE essere una funzione async che prende come argomento il client che farà la transazione.
 async function doTransaction(body) {
     //uso un client specifico per la transazione secondo quanto indicato dal tutorial node-postgres
     //https://node-postgres.com/features/transactions
-    //e poi così mi sento un pochino più sicuro nel caso di più transazioni di qusto tipo fatte in concorrenza/parallelo.
+    //per evitare problemi nel caso di più transazioni di qusto tipo fatte contemporaneamente.
     const client = await pool.connect();
     try {
         await client.query("BEGIN;");
@@ -517,8 +517,6 @@ async function doTransaction(body) {
 
 //genera stringhe e array da aggiungere alle query INSERT per cibo e attività per gestire
 //correttamente i parametri opzionali (pg non ha una keyword DEFAULT da usare, purtroppo).
-//questa funzione è estremamente specifica e, allo stato attuale, NON PORTABILE
-//è una funzione solo perché viene usata IDENTICA in cibo e attività
 function generateInsertOptionals(data, descrizione) {
     const plusInsert = (data ? ", data" : "") + (descrizione ? ", descrizione" : "");
     const plusValues = (data||descrizione ? ", $4": "") + (data&&descrizione ? ", $5": "");
@@ -533,9 +531,8 @@ function generateInsertOptionals(data, descrizione) {
 //startFrom è il numero da cui cominciare per generare i placeholder $
 //per i parametri di node-postgres. (è meglio che gli opzionali siano gli ultimi)
 //startWithComma è un booleano che indica se la stringa plusSet dovrà cominciare con una virgola
-//o no. Usare false se non si sono altre assegnazioni nella SET originale, true se invece
+//o no. Usare false se non ci sono altre assegnazioni nella SET originale, true se invece
 //quelle restituite da questa funzione saranno le prime.
-//TODO una volta accertato che funziona, tradurre quella in funzione di questa
 function generateUpdateOptionalsGeneric(args, startFrom, startWithComma) {
     var i = startFrom;
     var plusSet = startWithComma ? ", " : "";
@@ -567,7 +564,7 @@ function generateUpdateOptionalsGeneric(args, startFrom, startWithComma) {
 
 
 
-/* FUNZIONI USATE PER I TEST */
+/* FUNZIONI USATE PER I TEST (invocate da dev-stuff) */
 
 //crea un nuovo utente nel DB di test
 async function newUser(email, username, password) {
@@ -599,7 +596,6 @@ async function getId(username) {
 }
 
 //aggiunge/modifica una misura di peso di un utente in una data
-//TODO mettere id come parametro, non username
 async function setPeso(username, data, peso) {
     var id;
     try {
@@ -621,7 +617,6 @@ async function setPeso(username, data, peso) {
 }
 
 //aggiunge/modifica una misura di calorie di un utente in una data
-//TODO mettere id come parametro, non username
 async function setCalorie(username, data, calin, calout) {
     var id;
     try {
@@ -686,5 +681,3 @@ module.exports = {
     setCalorie,
     setPeso,
 }
-
-//shell();

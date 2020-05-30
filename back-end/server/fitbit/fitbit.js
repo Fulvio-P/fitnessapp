@@ -14,7 +14,7 @@ const utils = require('./fitbitUtils');
     Gestione della prima autenticazione:
     dato un id e un authCode ottenuti dal front-end viene fatta richiesta
     dei token a fitbit, in caso di successo questi vengono salvati nel
-    datbase, altrimenti l'errore viene rimandato al chiamante per essere
+    database, altrimenti l'errore viene rimandato al chiamante per essere
     gestito (possibilmente inviando un qualcosa di adegauto al front-end)
 */
 function authenticate(userId, authCode){
@@ -64,10 +64,9 @@ function authenticate(userId, authCode){
     una nuova richiesta al server all'url, questo metodo non viene
     esposto, ma viene usato dalle funzioni di questo modulo
 
-    requestFunction è il metodo da usare per riprrovare dopo aver
+    requestFunction è il metodo da usare per riprovare dopo aver
     aggiornato i token, request payload è opzionale e serve nel caso
-    si abbiano da fare Post o Put (anche se di base non sono previste
-    in questa applicazione)
+    si abbiano da fare Post o Put
 
 */
 function retry(userId, requestFunction, requestURL, requestPayload){
@@ -160,10 +159,6 @@ function retry(userId, requestFunction, requestURL, requestPayload){
     dato un userId e un URL si prova a prendere il token dal database e
     usarlo per autenticare la richiesta dei dati, se il token è scaduto
     si riprova la richiesta dopo un refresh
-
-    COMMENTO EFFICIENZA: si potrebbe generalizzare questa funziona passando
-    la funzione da usare e un eventuale payload come parrametri ma per il
-    momento non facciamo che get quindi non serve
 */
 
 function get(userId, requestURL){

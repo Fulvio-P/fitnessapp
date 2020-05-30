@@ -1,8 +1,7 @@
 /*
 Questo script non verrà usato dalla app.
-Serve solo a noi sviluppatori per setuppare il DB.
-E come documentazione delle tabelle che lo compongono.
-Potrebbe (Dovrebbe) anche essere rimosso dalla versione finale.
+Serve solo a noi sviluppatori per setuppare il DB,
+e come documentazione delle tabelle che lo compongono.
 */
 
 const index = require("./index");
@@ -32,13 +31,12 @@ async function initDB(testUsers) {
     await pool.query(
         "CREATE TABLE infoAddizionali ("+
             "id integer PRIMARY KEY REFERENCES utente(id), "+
-            "email VARCHAR(300), "+           //sembra che il limite standard sia 254, e ci prendiamo un altro po' di spazio per buona misura
+            "email VARCHAR(300), "+           //il limite standard è 254, e ci prendiamo un po' di margine d'errore per buona misura
             "altezza SMALLINT, "+             //in centimetri (limite superiore: 32768)
             "fitbitToken VARCHAR(1024), "+    //i token fitbit possono essere fino a 1024 byte
             "fitbitRefresh VARCHAR(1024), "+
-            "fitbitUser VARCHAR(100) ,"+      //non sono sicuro del limite per questo ma 100 caratteri dovrebbero essere abbastanza 
+            "fitbitUser VARCHAR(100) ,"+ 
             "lastFitbitUpdate VARCHAR(19) DEFAULT '2007-01-01T00:00:00' "+   //le stringhe rappresentano date nel formato yyyy-mm-ddThh:mm:ss     
-            //eventuali altre
             ");"
     );
 
@@ -46,7 +44,7 @@ async function initDB(testUsers) {
     await pool.query("CREATE TABLE misuraPeso ("+
                         "id integer NOT NULL REFERENCES utente(id), "+
                         "data DATE NOT NULL DEFAULT CURRENT_DATE, "+    //DATE è solo giorno, senza ora, e con questo DEFAULT possiamo prendere in automatico la data corrente.
-                        "peso REAL NOT NULL, "+   //ha una precisione limitata (6 cifre decimali), ma non va convertito ogni volta da stringa a float
+                        "peso REAL NOT NULL, "+   //ha una precisione limitata (6 cifre decimali, più che sufficienti per i nostri scopi, ma non va convertito ogni volta da stringa a float
                         "PRIMARY KEY (id, data));"    //solo una misurazione al giorno per utente
     );
 
@@ -248,20 +246,10 @@ function questionPromise(rl) {
     });
 }
 async function shell() {
-    /*
-    await destroyDB();   //resetta in caso il server sia crashato l'ultima volta
-    try {
-        await initDB();
-    } catch(err) {
-        console.error("crashato initDB:\n"+err.message);
-        return;
-    }
-    */
     var stop=false;
     while(!stop) {
         stop = await questionPromise(rl);
     }
-    //await destroyDB();
     rl.close();
 }
 

@@ -10,13 +10,13 @@ const router = express.Router();
  */
 router.use(utils.verifyJWT);
 
-//get generica che viene usata in varie declinazioni dai vari dipi di route get
+//get generica che viene usata in varie declinazioni dai vari tipi di route get
 async function generalGet(req, res, from, to) {
     try {
         var rows = await db.getRangeAttivita(req.user.id, from, to);
     } catch (err) {
         //questa è una get, non ci sono vincoli da violare
-        console.error(`postgres error no. ${err.code}: ${err.message}`);   //non sono sicuro che vogliamo rimandare al client il messaggio d'errore di postgres
+        console.error(`postgres error no. ${err.code}: ${err.message}`);   //non vogliamo rimandare al client il messaggio d'errore di postgres
         return res.status(500).send("Internal Database Error");
     }
     if (rows==null) {
@@ -47,7 +47,6 @@ router.get("/:data", async (req, res) => {
 //recupera le attività la cui "data" è in un certo range. ESTREMI INCLUSI.
 router.get("/:from/:to", async (req, res) => {
     //definiamo un carattere speciale per dire infinity.
-    //la scelta è stata completamente casuale e si può discutere.
     if (req.params.from=='-') req.params.from=db.MINFINITY;
     if (req.params.to=='-') req.params.to=db.INFINITY;
     const toSend = await generalGet(req, res, req.params.from, req.params.to);

@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
     try {
         var info = await db.getAdditionalInfo(req.user.id, "email, altezza, fitbituser");
     } catch (err) {
-        console.error(`postgres error no. ${err.code}: ${err.message}`);   //non sono sicuro che vogliamo rimandare al client il messaggio d'errore di postgres
+        console.error(`postgres error no. ${err.code}: ${err.message}`);   //non vogliamo rimandare al client il messaggio d'errore di postgres
         return res.status(500).send("Internal Database Error");
     }
     if (!info) {
@@ -29,11 +29,14 @@ router.get("/", async (req, res) => {
     return res.status(200).json(info);
 });
 
-//modifica più info addizionali contemporaneamente (username, password e dati fitbit non vengono toccati)
+//modifica più info addizionali contemporaneamente
+//(username, password e dati fitbit non vengono toccati)
 router.patch("/", async (req, res) => {
-    //estraiamo manualmente le singole proprietà permesse perché la funzione che fa la query ha bisogno di concatenare i nomi delle proprietà direttamente alla query, e non voglio injection
+    //estraiamo manualmente le singole proprietà permesse
+    //perché la funzione che fa la query ha bisogno di
+    //concatenare i nomi delle proprietà direttamente alla query, e non voglio injection
     var args = {};
-    for (prop of ["email", "altezza"]) {   //<-- aggiungere qui eventuali altre info addizionali
+    for (prop of ["email", "altezza"]) {
         if (req.body[prop]) args[prop]=req.body[prop];
     }
     try {

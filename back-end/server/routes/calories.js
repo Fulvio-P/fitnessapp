@@ -10,7 +10,7 @@ const router = express.Router();
  */
 router.use(utils.verifyJWT);
 
-//get generica che viene usata in varie declinazioni dai vari dipi di route get
+//get generica che viene usata in varie declinazioni dai vari tipi di route get
 async function generalGet(req, res, from, to) {
     try {
         var rows = await db.getRangeMisureCalorie(req.user.id, from, to);
@@ -35,8 +35,7 @@ router.get("/", async (req, res) => {
 });
 
 //recupera una misura di un giorno specifico.
-//ha un comportamento speciale se non esiste una msiurazione per quel giorno
-//perché personalmente lo ritengo più appropriato.
+//ha un comportamento speciale se non esiste una misurazione per quel giorno.
 router.get("/:data", async (req, res) => {
     const toSend = await generalGet(req, res, req.params.data, req.params.data);
     if (toSend.dataPoints.length<1) {
@@ -48,7 +47,6 @@ router.get("/:data", async (req, res) => {
 //recupera le misure in un range di date. ESTREMI INCLUSI.
 router.get("/:from/:to", async (req, res) => {
     //definiamo un carattere speciale per dire infinity.
-    //la scelta è stata completamente casuale e si può discutere.
     if (req.params.from=='-') req.params.from=db.MINFINITY;
     if (req.params.to=='-') req.params.to=db.INFINITY;
     const toSend = await generalGet(req, res, req.params.from, req.params.to);

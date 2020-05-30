@@ -5,7 +5,7 @@ const db = require('../db/index');
 /*
     README:
     questo file contiene le istruzioni per recuperare le info sulle attività da fitbit
-    e inserirle nel database insiame a quelle registrate tramite fitnessApp
+    e inserirle nel database insieme a quelle registrate tramite FitnessApp
 */
 
 
@@ -15,10 +15,10 @@ function sync(userId){
 
         //variabile aggiunta dopo la ristrutturazione della chiamata a fitbit.get,
         //al fine di mantenere la funzionalità originale
-        //(resolve va spostata fuori dal ciclo=)
+        //(resolve va spostata fuori dal ciclo)
         var canResolve = true;
 
-        do {   //metto su un ciclo per poter ripetere la richiesta più volte se dobbiamo sincronizzare più di 20 attività per volta
+        do {   //metto su un ciclo per poter ripetere la richiesta più volte se dobbiamo sincronizzare più di attività di quante FitBit ce ne mandi in una sola risposta
             
             //Recupero la data di partenza dal database
             let dbRes;
@@ -31,7 +31,7 @@ function sync(userId){
             const lastChecked = dbRes.lastfitbitupdate   //le const hanno scope di blocco, quindi la posso ridichiarare bene a ogni iterazione
 
             
-            //Imposto i parrametri della richiesta
+            //Imposto i parametri della richiesta
             let requestUrl ='https://api.fitbit.com/1/user/-/activities/list.json?'+
                             'afterDate='+ lastChecked +
                             '&offset=0'+
@@ -44,8 +44,6 @@ function sync(userId){
 
             var newLastChecked = lastChecked;  //scope di funzione, ci serve nella finally
 
-            //trasformo l'uso esplicito di .then e .catch nell'uso di await
-            //per poter fare un ciclo più facilmente
             try {
 
                 //Provo a ottenere i dati da fitbit
@@ -66,7 +64,6 @@ function sync(userId){
                     
                     
                     //Questo controllo serve ad escludere record già considerati
-                    //if(lastFitbit != lastChecked){
                     if (new Date(lastFitbit) > new Date(lastChecked)) {
                         
                         //Per ogni attività creo un rercord nel database

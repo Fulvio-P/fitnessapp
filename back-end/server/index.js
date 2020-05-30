@@ -4,11 +4,11 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 
-//initializing server
+//inizializzazione server
 const app = express();
 
 //middleware
-var expressWs = require('express-ws')(app);   //basta scrivere questa riga. Non c'è bisogno di usare expressWs altrove.
+var expressWs = require('express-ws')(app);   //Basta scrivere questa riga. Non c'è bisogno di usare expressWs altrove.
 app.use(bodyParser.json());
 //cattura errori dal bodyParser
 app.use((err, req, res, next) => {   //https://stackoverflow.com/questions/15819337/catch-express-bodyparser-error
@@ -49,6 +49,6 @@ app.use("/ws/fitbitsync", fitbitsync);
 const developer = require("./routes/developer");
 app.use("/api/developer", developer);
 
-//starting server
+//avvio server
 const port = process.env.PORT || 5000;
 app.listen(port, () => { console.log(`Server started on port ${port}`)});

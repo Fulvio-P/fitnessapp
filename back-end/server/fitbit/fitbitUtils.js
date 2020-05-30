@@ -30,7 +30,7 @@ function makeBasicHeader(){
 
 
 
-//Chiede a fitbit di avere un nuovo token dato il refresh
+//Chiede a fitbit di avere un nuovo token dato il refresh token
 function requestRefresh(fitbitRefresh){
     return new Promise((resolve,reject) =>{
 
@@ -144,6 +144,5 @@ module.exports = {
     makeBasicHeader,
     requestRefresh,
     requestToken,
-    get,
-    //Aggiungere qui le funzioni da esportare
+    get
 }
