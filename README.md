@@ -132,16 +132,15 @@ Dopo essersi collegati all'applicazione è possibile registrarsi con il modulo i
 <!--TODO: Attenzione: bozza-->
 
 Il frontend di FitnessApp permette di testare molte funzioni dell'API REST di FitnessApp, tra cui:
-* GET peso/calorie/cibo/attività: automaticamente caricando i grafici o il diario
-* POST cibo/attività/peso: compilando e inviando uno dei form nella pagina di registrazione
-* DELETE cibo/attività/peso: tramite l'apposito pulsante nel diario
-* GET profilo: automaticamente caricando l'apposita pagina
-* PUT/DELETE profilo: tramite gli appositi pulsanti nella stessa pagina
-* GET FitBit: automaticamente caricando la pagina del profilo
-* POST/DELETE FitBit e relativo flusso oAuth: tramite gli appositi pulsanti nella pagina del profilo
-* GET developer: automaticamente caricando l'apposita pagina
-* POST developer: compilando e inviando il form nella stessa pagina
-* DELETE developer: tramite l'apposito pulsante nella stessa pagina
+* **GET peso,calorie,cibo,attività**: automaticamente caricando i grafici o il diario
+* **POST cibo,attività,peso**: compilando e inviando uno dei form nella pagina di registrazione
+* **DELETE cibo,attività,peso**: tramite l'apposito pulsante nel diario
+* **GET profilo,FitBit**: automaticamente caricando la pagina del profilo
+* **PUT,DELETE profilo**: tramite gli appositi pulsanti nella stessa pagina
+* **POST,DELETE FitBit e relativo flusso oAuth**: tramite gli appositi pulsanti nella pagina del profilo
+* **GET developer**: automaticamente caricando l'apposita pagina
+* **POST developer**: compilando e inviando il form nella stessa pagina
+* **DELETE developer**: tramite l'apposito pulsante nella stessa pagina
 
 Inoltre, ciascuna API REST della documentazione (vedi sopra) può essere testata configurando la richiesta corrispondente su un client REST come Postman, avendo cura di includere il token di autenticazione nell'header Authorization (formato: ```Bearer <token>```).
 
@@ -151,7 +150,7 @@ Se la richiesta richiede uno o più parametri nel path, i valori dipendono dai d
 
 Per testare il flusso oAuth Implicit Grant esposto da FitnessApp, è possibile usare LoremFit, una piccola applicazione di test situata nella cartella oauth-test-client. Se si sceglie di creare il database con i dati di test, LoremFit sarà già registrata come applicazione client (sotto l'account di AkihikoSanada), quindi per usarla basterà esporla sulla porta 5500. LoremFit permette anche di mostrare a schermo il token ricevuto durante la procedura oAuth, per facilitare i test tramite client REST.
 
-Per testare la funzionalità della Websocket, usare il pulsante "Sincronizza" che appare nella pagina del profilo una volta collegato un account FitBit. (Assicurarsi che tale account abbia almeno una attività registrata affinché la sincronizzazione abbia un effetto tangibile su FitnessApp.)
+Per testare la funzionalità della Websocket, usare il pulsante "Sincronizza" che appare nella pagina del profilo una volta collegato un account FitBit. (Assicurarsi che tale account abbia almeno una attività registrata affinché la sincronizzazione abbia un effetto visibile su FitnessApp.)
 
 <!-- TODO potrebbe convenirci specificare che la redirect URL per oAuth FitBit deve
      essere /profile -->
