@@ -150,3 +150,5 @@ Se la richiesta richiede un corpo, la documentazione contiene almeno un esempio 
 Se la richiesta richiede uno o più parametri nel path, i valori dipendono dai dati con cui si ha effettivamente a che fare: si consiglia di fare prima una GET senza parametri di path sullo stesso endpoint per avere un'idea di quali valori usare.
 
 Per testare il flusso oAuth Implicit Grant esposto da FitnessApp, è possibile usare LoremFit, una piccola applicazione di test situata nella cartella oauth-test-client. Se si sceglie di creare il database con i dati di test, LoremFit sarà già registrata come applicazione client (sotto l'account di AkihikoSanada), quindi per usarla basterà esporla sulla porta 5500. LoremFit permette anche di mostrare a schermo il token ricevuto durante la procedura oAuth, per facilitare i test tramite client REST.
+
+Per testare la funzionalità della Websocket, usare il pulsante "Sincronizza" che appare nella pagina del profilo una volta collegato un account FitBit. (Assicurarsi che tale account abbia almeno una attività registrata affinché la sincronizzazione abbia un effetto tangibile su FitnessApp.)
