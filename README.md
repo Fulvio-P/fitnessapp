@@ -129,8 +129,6 @@ Dopo essersi collegati all'applicazione è possibile registrarsi con il modulo i
 | ChieSatonaka        | tomoe       | Solo misure di calorie  |
 | EdelgardVonHresvelg | blackeagle  | Un record di ogni campo |
 
-<!--TODO: Attenzione: bozza-->
-
 Il frontend di FitnessApp permette di testare molte funzioni dell'API REST di FitnessApp, tra cui:
 * **GET peso,calorie,cibo,attività**: automaticamente caricando i grafici o il diario
 * **POST cibo,attività,peso**: compilando e inviando uno dei form nella pagina di registrazione
