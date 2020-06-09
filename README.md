@@ -50,7 +50,6 @@ FITBIT_ID=CLIENT_ID
 FITBIT_SEC=CLIENT_SECRET
 ```
 Il valore di JWT_SECRET può essere deciso arbitrariamente ed è la chiave che FitnessApp userà per firmare i JSON Web Token che proteggono gli endpoint REST. Le altre due variabili invece sono fornite da Fitbit e servono per la procedura oAuth. Per ottenerle bisogna eseguire il login nel sito Fitbit e nella sezione sviluppatori registrare FitnessApp con rerdirect URL 
-<!-- TODO: aggiornare il link post build -->
 ```
 http://localhost:8080/profile
 ```
