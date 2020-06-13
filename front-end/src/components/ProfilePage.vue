@@ -26,7 +26,7 @@
           <b-button router-link to="/developer">Pagina developer</b-button>
           <p>
             Regitra la tua applicazione per usare le API di FitnessApp usando
-            oAuth 2 (è supportato solo il workflow implicit code grant)
+            oAuth 2 (è supportato solo il workflow implicit grant)
           </p>
         </b-col>
 
